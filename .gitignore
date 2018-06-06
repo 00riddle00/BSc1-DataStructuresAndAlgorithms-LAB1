@@ -1,6 +1,6 @@
 .idea/
 *.o
 cmake-build-debug/
-demo
 .tags
-*.txt
+demo
+demo_ui

@@ -198,6 +198,7 @@ Number* setNumberFromDouble(long double number, int whole_digits, int decimal_di
 }
 
 
+
 void assign(Number* num1, Number* num2) {
 
     num1->digits_whole = num2->digits_whole;
@@ -374,6 +375,10 @@ int compareNumbers(Number* num1, Number* num2) {
         // less than
         cmp = 2;
     }
+    // return values:
+    // 1 - greater than
+    // 2 - less than
+    // 3 - equal
     return cmp;
 }
 
@@ -852,6 +857,26 @@ Number* multiply(Number* num1, Number* num2) {
 
 }
 
+// utility functions
+Number* getAbsoluteValue(Number* num) {
+    if (num->negative) {
+        num->negative = 0;
+    }
+    return num;
+}
+
+Number* getFloorNumber(Number* num) {
+    // TODO solve memory leak
+    if (num->digits_decimal > 1) {
+        num->digits_decimal = 1;
+        num->decimal_part[0] = 0;
+    }
+    return num;
+}
+
+int isInteger(Number* num) {
+    return (num->digits_decimal == 1 && num->decimal_part[0] == 0);
+}
 
 
 Number* multiplyByInt(Number* num1, int integer) {
@@ -998,131 +1023,117 @@ Number* divide(Number* num1, Number* num2) {
 
 
 Number* modulus(Number* num1, Number* num2) {
-    int quotient;
 
-    int rs = compare(num1, num2);
-
-    // if first is greater, the modulus will 
-    // be mod(num1, num2);
-    if (rs == 1) {
-    // if first is smaller than second, 
-    // the modulus will be the first number
-    } else if (rs == 2) {
-        return num1;
-    // else if numbers are equal, return zero 
-    } else if (rs == 3) {
-        // initalize Number with the value of zero
+    if (isZero(num1)) {
         Number* zero = setNewNumber();
+        return zero;
+    } else if (isZero(num2)) {
+        printf("ERROR: Division in zero in modulus expression!\n");
+        exit(1);
+    }
+
+    // compare absolute values. return whether num1 > num2
+    int cmp_abs= compareNumbers(getAbsoluteValue(num1), getAbsoluteValue(num2));
+
+    // if the absolute values of numbers are equal, return zero
+    if (cmp_abs == 3) {
+        Number *zero = setNewNumber();
         return zero;
     }
 
+    // shows if num1 > num2 (value=1) or vice a versa (value=0)
+    int cmp_gt;
 
-    Number* res = setNewNumber();
 
-    // initalize Number with the value of one
-    Number* one = setNumberFromChar((char*) ONE);
+    /* Finding which number is bigger, based on which absolute value
+     * is bigger and either the number is positive or negative
+     * (this saves computation time by avoiding another full comparison
+     * between numbers) */
 
-    // initalize Number with the value of ten
-    Number* ten = setNumberFromChar((char*) TEN);
-
-    // initalize Number with the value of 0.1
-    Number* zero_one = setNumberFromChar((char*) ZERO_ONE);
-
-    Number* tmp = (Number*) calloc(1, sizeof(Number));
-    assign(tmp, num1);
-    //tmp = num1;
-
-    // set the remainder as the dividend at first
-    Number* remainder = num1;
-
-    if (!quotient) {
-        one = multiply(one, zero_one);
-        tmp = multiply(tmp, ten);
-        remainder = multiply(remainder, ten);
-    }
-
-    // sets how many times the divisor is subtracted from remainder
-    // ie sets the whole number = remainder / divisor
-    int counter = 0;
-
-    // run the long division loop
-    while (1) {
-        tmp = subtract(tmp, num2);
-        // if remainder is not yet divided into equal parts or does
-        // not yet become negative, continue the division
-        if ((tmp->digits_whole > 1 || tmp->whole_part[0] != 0) && !(tmp->negative)) {
-            res = add(res, one, 0);
-            counter++;
-            continue;
-        // stop if the remainder becomes equal to zero (ie becomes divided
-        // into equal parts
-        } else if (isZero(tmp)) {
-            res = add(res, one, 0);
-            counter++;
-            free(one);
-            free(ten);
-            free(zero_one);
-
-            Number* zero = setNewNumber();
-            return zero;
+    // if |num1| > |num2|
+    if (cmp_abs == 1) {
+        // if num1 > 0
+        if (!num1->negative) {
+            // num1 > num2
+            cmp_gt = 1;
+        // else if num1 < 0
         } else {
-            return addNumbers(tmp, num2);
-            // if the divisor (second number) is greater than the remainder,
-            // multiply the remainder by ten and continue the division loop.
-            if (counter == 0) {
-                // tmp becomes remainder again
-                assign(tmp, remainder);
-
-                // the remainder is multiplied by ten
-                tmp = multiply(tmp, ten);
-                remainder = multiply(remainder, ten);
-
-                // enter a zero to the result, which means that the remainder
-                // was smaller than the divisor
-                
-                // TODO ar nereiktu pirma digits_decimal++ padaryti?
-                if (res->digits_decimal > 1) {
-                    res->decimal_part[(res->digits_decimal)++] = 0;
-                }
-                one = multiply(one, zero_one);
-
-                continue;
-            }
-            // FIXME temporary guard, else the program stops running 
-            // FIXME (gets stuck)
-            if (res->digits_decimal > 200) {
-                free(one);
-                free(ten);
-                free(zero_one);
-                fixNumber(res);
-                return res;
-            }
-            // get the new remainder (remainder -= divisor * (remainder / divisor))
-            //
-            //
-            remainder = subtract(remainder, multiplyByInt(num2, counter));
-
-            //one->decimal_part[one->digits_decimal-1] = 0;
-            //one->decimal_part[(one->digits_decimal)++] = 1;
-            one = multiply(one, zero_one);
-            //
-            counter = 0;
-
-            // tmp becomes remainder again
-            assign(tmp, remainder);
-
-            remainder = multiply(remainder, ten);
-            tmp = multiply(tmp, ten);
+            // num1 < num2
+            cmp_gt = 0;
+        }
+    // else if |num1| < |num2|
+    } else if (cmp_abs == 2) {
+        // if num2 > 0
+        if (!num2->negative) {
+            // num1 < num2
+            cmp_gt = 0;
+        // else if num2 < 0
+        } else {
+            // num1 > num2
+            cmp_gt = 1;
 
         }
     }
 
-    free(one);
-    free(ten);
-    free(zero_one);
-    fixNumber(res);
-    return res;
+    // if num1 < num2
+    if (cmp_gt == 0) {
+        // if num2 < 0
+        if (num2->negative) {
+            Number* ret_num = modulus(getAbsoluteValue(num1), getAbsoluteValue(num2));
+            ret_num->negative = 1;
+            return ret_num;
+        // else if num2 > 0
+        } else {
+            // if num1 > 0
+            if (!num1->negative) {
+                return num1;
+            }
+            // else if |num1| < |num2|
+            else if (cmp_abs == 2) {
+               return subtractNumbers(num2, getAbsoluteValue(num1)) ;
+            }
+            // else if |num1| > |num2|
+            else if(cmp_abs == 1) {
+                // if |num1|/num2 is integer
+                if (isInteger(divideNumbers(getAbsoluteValue(num1), num2))) {
+                    Number* zero = setNewNumber();
+                    return zero;
+                // else, if the quotient is not an integer
+                } else {
+                    Number* one = setNumberFromChar((char*) ONE);
+                    // return |(floor(|num1|/num2)+1)*num2| - |num1|
+                    return subtractNumbers(getAbsoluteValue(multiplyNumbers(addNumbers(getFloorNumber(divideNumbers(getAbsoluteValue(num1), num2)), one), num2)), getAbsoluteValue(num1));
+                }
+            }
+        }
+    // else if num1 > num2
+    } else if (cmp_gt == 1) {
+        // if num2 < 0
+        if (num2->negative) {
+            // if num1 > 0
+            if (!num1->negative) {
+                Number* one = setNumberFromChar((char*) ONE);
+                // ret_num = -(floor(num1/num2) + 1)*num2 - num1)
+                Number* ret_num = subtractNumbers(multiplyNumbers(addNumbers(divideNumbers(num1, num2), one), num2), num1);
+                ret_num->negative = 1;
+                return ret_num;
+            }
+            // else if num1 < 0
+            else {
+                // ret_num = -(modulus(|num1|,|num2|)
+                Number* ret_num = modulus(getAbsoluteValue(num1), getAbsoluteValue(num2));
+                ret_num->negative = 1;
+                return ret_num;
+            }
+        // else if num2 > 0
+        } else {
+            //return num1 - floor(num1/num2)*num2
+            return subtractNumbers(num1, multiply(getFloorNumber(divideNumbers(num1, num2)), num2));
+        }
+    }
+
 }
+
 
 
 void freeTable() {

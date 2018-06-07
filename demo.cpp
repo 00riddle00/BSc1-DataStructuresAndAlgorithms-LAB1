@@ -9,7 +9,6 @@
 
 // Header file with useful debugging macros
 #include "dbg.h"
-
 #include "numbers.h"
 
 
@@ -31,7 +30,13 @@ int main() {
     res = divideNumbers(num1, num2);
     assert(strcmp(numToChar(res), "-6561.544198600258072584801336513697992925982204711190874405227531521729371470501450875341584693541694678610733689628050801447636391038159947299252507253926596300570699756129255217355600294010456506944330918") == 0 && "Division test01 failed");
 
+    Number* num3 = setNumberFromChar((char*)"20.0");
+    Number* num4 = setNumberFromChar((char*)"7.0");
+
     // TODO modulus testing
+    res = modulus(num3, num4);
+    debug("res %s", numToChar(res));
+//    assert(strcmp(numToChar(res), "0.0") == 0 && "Modulus test failed");
     // ...
     // ...
 

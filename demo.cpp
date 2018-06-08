@@ -88,6 +88,7 @@ int main() {
 
     /* testing additional functions */
     int digit;
+    Number* num3 = setNumberFromChar((char*)"123.456");
 
     digit = getWholeLen(num3);
     assert(digit == 3 && "getWholeLen test01 failed");
@@ -100,8 +101,6 @@ int main() {
 
     digit = getIthDigit(num3, -2);
     assert(digit == 5 && "getIthDigit test02 failed");
-
-    Number* num3 = setNumberFromChar((char*)"123.456");
 
     increment(num3);
     assert(strcmp(numToChar(num3), "124.456") == 0 && "increment test01 failed");

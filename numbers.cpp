@@ -490,29 +490,29 @@ Number* add(Number* num1, Number* num2, int negative) {
 
     // part - the part to be transfered to the next sum. 
     //  Ex. 9+5 = 14, 1 then becomes the "part" to be transfered next.
-    int part;
+    int carry;
 
     // add decimal parts
     for (int i = smaller->digits_decimal - 1; i > 0; i--) {
         int result = res->decimal_part[i] + smaller->decimal_part[i];
-        part = 0;
+        carry = 0;
         if (result > 10) {
-            part = 1;
+            carry = 1;
             result %= 10;
         } else if (result == 10) {
             result = 0;
-            part = 1;
+            carry = 1;
         }
         res->decimal_part[i] = result;
-        res->decimal_part[i-1] += part;
+        res->decimal_part[i-1] += carry;
     }
     res->decimal_part[0] += smaller->decimal_part[0];
 
-    part = 0;
+    carry = 0;
 
-    // part then moves on to be added to the whole part of the number
+    // carry then moves on to be added to the whole part of the number
     if (res->decimal_part[0] >= 10) {
-        part = 1;
+        carry = 1;
         res->decimal_part[0] %= 10;
     } 
 
@@ -534,15 +534,15 @@ Number* add(Number* num1, Number* num2, int negative) {
     for (int i = 0; i < smaller->digits_whole; i++) {
         int result = res->whole_part[i] + smaller->whole_part[i];
         if (i == 0) {
-            result += part;
+            result += carry;
         }
-        part = 0;
+        carry = 0;
         if (result >= 10) {
-            part = 1;
+            carry = 1;
             result %= 10;
         }
         res->whole_part[i] = result;
-        res->whole_part[i+1] += part;
+        res->whole_part[i+1] += carry;
 
     }
 
@@ -551,9 +551,9 @@ Number* add(Number* num1, Number* num2, int negative) {
 /*        if (i + 1 == smaller->digits_whole) {*/
             //while(1) {
                 //if (res->whole_part[i+1] >= 10) {
-                    //part = 1;
+                    //carry = 1;
                     //res->whole_part[i+1] %= 10;
-                    //res->whole_part[i+2] += part;
+                    //res->whole_part[i+2] += carry;
                     //if (i+2 == res->digits_whole) {
                         //res->digits_whole++;
                         //breakas = 1;
@@ -773,7 +773,7 @@ Number* multiply(Number* num1, Number* num2) {
     // Set how many decimal numbers the result will contain at most
     int decimal_numbers = num1->digits_decimal + num2->digits_decimal;
 
-    int part = 0;
+    int carry = 0;
     int rc;
 
     // pos (position) sets how many zeroes there will be before the actual
@@ -800,16 +800,16 @@ Number* multiply(Number* num1, Number* num2) {
         pos = i;
         for (int j = 0; j < n1->digits_whole; j++) {
             rc = n2->whole_part[i] * n1->whole_part[j];
-            a[i][j+pos] = (rc + part) % 10; 
-            part = (rc+part) / 10;
+            a[i][j+pos] = (rc + carry) % 10;
+            carry = (rc+carry) / 10;
         }
-        // FIXME if part == 0 error
-        a[i][n1->digits_whole+pos] = part;
-        part = 0;
+        // FIXME if carry == 0 error
+        a[i][n1->digits_whole+pos] = carry;
+        carry = 0;
     }
 
     int result = 0;
-    part = 0;
+    carry = 0;
 
     // add all partial products together
     for (int j = 0; j < res->digits_whole; j++) {
@@ -817,8 +817,8 @@ Number* multiply(Number* num1, Number* num2) {
             result += a[i][j];
         }
 
-        result += part;
-        part = result / 10;
+        result += carry;
+        carry = result / 10;
         res->whole_part[j] = result % 10;
         result = 0;
     }

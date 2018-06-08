@@ -522,7 +522,7 @@ Number* add(Number* num1, Number* num2, int negative) {
         *bigger = *smaller;
         *smaller = temp;
     }
-    
+
     // copy whole_part to the result struct
     res->digits_whole = bigger->digits_whole + 1;
 
@@ -899,6 +899,27 @@ void increment(Number* num) {
 void decrement(Number* num) {
     assign(num, subtractNumbers(num, setNumberFromChar((char*) ONE)));
 }
+
+void plusEquals(Number* num1, Number* num2) {
+    assign(num1, addNumbers(num1, num2));
+}
+
+void minusEquals(Number* num1, Number* num2) {
+    assign(num1, subtractNumbers(num1, num2));
+}
+
+void multiplyEquals(Number* num1, Number* num2) {
+    assign(num1, multiplyNumbers(num1, num2));
+}
+
+void divideEquals(Number* num1, Number* num2) {
+    assign(num1, divideNumbers(num1, num2));
+}
+
+void modulusEquals(Number* num1, Number* num2) {
+    assign(num1, modulus(num1, num2));
+}
+
 
 // utility functions
 Number* getAbsoluteValue(Number* num) {

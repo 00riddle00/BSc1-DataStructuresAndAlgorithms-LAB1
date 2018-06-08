@@ -224,6 +224,22 @@ void increment(Number* num);
 
 // TODO comment
 void decrement(Number* num);
+
+// TODO comment
+void plusEquals(Number* num1, Number* num2);
+
+// TODO comment
+void minusEquals(Number* num1, Number* num2);
+
+// TODO comment
+void multiplyEquals(Number* num1, Number* num2);
+
+// TODO comment
+void divideEquals(Number* num1, Number* num2);
+
+// TODO comment
+void modulusEquals(Number* num1, Number* num2);
+
 /* // additional functions */
 
 

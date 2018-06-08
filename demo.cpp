@@ -129,5 +129,11 @@ int main() {
     assert(strcmp(numToChar(num3), "1.3") == 0 && "modulusEquals test01 failed");
     /* // testing additional functions */
 
+    Number* num4 = setNumberFromChar((char*)"6.0");
+    res = factorial(num4);
+    assert(strcmp(numToChar(res), "720.0") == 0 && "factorial test01 failed");
+
+
+
 }
 

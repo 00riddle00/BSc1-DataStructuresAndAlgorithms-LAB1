@@ -242,6 +242,9 @@ void modulusEquals(Number* num1, Number* num2);
 
 /* // additional functions */
 
+/* functions to be tested */
+Number* factorial(Number* num);
+
 
 // Declare table as a global variable
 extern Table* table;

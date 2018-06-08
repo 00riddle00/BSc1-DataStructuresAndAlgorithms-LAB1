@@ -922,6 +922,27 @@ void modulusEquals(Number* num1, Number* num2) {
 
 
 // utility functions
+int pow(int number, int power) {
+    int orig_number = number;
+    for (int i = 0; i < power-1; i++) {
+        debug("here");
+        number *= orig_number;
+    }
+    return number;
+}
+
+
+// converting Number ADT to int
+int toInt(Number* num) {
+    int int_repr = 0;
+    for (int i = num->digits_whole; i > 1; i--) {
+        int_repr += num->whole_part[i - 1] * pow(10, (i - 1));
+    }
+    int_repr += num->whole_part[0];
+    return int_repr;
+}
+
+
 Number* getAbsoluteValue(Number* num) {
     // if num > 0
     if (!num->negative) {
@@ -1201,7 +1222,7 @@ Number* modulus(Number* num1, Number* num2) {
                 // else if |num1| > |num2|
                 } else {
                     Number *one = setNumberFromChar((char *) ONE);
-                    Number *ret_num = addNumbers(multiplyNumbers( getFloorNumber(addNumbers(getAbsoluteValue(divideNumbers(num1, num2)), one)), num2), num1);
+                    Number *ret_num = addNumbers(multiplyNumbers(getFloorNumber(addNumbers(getAbsoluteValue(divideNumbers(num1, num2)), one)), num2), num1);
                     ret_num->negative = 1;
                     return ret_num;
                 }
@@ -1221,6 +1242,23 @@ Number* modulus(Number* num1, Number* num2) {
         }
     }
 
+}
+
+/* functions to be tested */
+Number* factorial(Number* num) {
+    int numToInt = toInt(num);
+
+    Number* one = setNumberFromChar((char*) ONE);
+    Number* ret_num = setNewNumber();
+    Number* diff = setNewNumber();
+    assign(diff, one);
+    assign(ret_num, num);
+
+    for (int i = 1; i < numToInt-1; i++) {
+        diff = multiplyByInt(one, i);
+        multiplyEquals(ret_num, subtractNumbers(num, diff));
+    }
+    return ret_num;
 }
 
 

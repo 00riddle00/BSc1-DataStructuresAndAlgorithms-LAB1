@@ -249,9 +249,6 @@ void fixNumber(Number* num) {
 
 
 
-int isZero(Number* num) {
-    return num->digits_whole == 1 && num->digits_decimal == 1 && num->whole_part[0] == 0 && num->decimal_part[0] == 0;
-}
 
 
 
@@ -857,6 +854,28 @@ Number* multiply(Number* num1, Number* num2) {
 
 }
 
+
+// additional functions
+int getWholeLen(Number* num) {
+    if (num->digits_whole == 1 && num->whole_part[0] == 0) {
+        return 0;
+    } else {
+        return num->digits_whole;
+    }
+}
+
+int getDecimalLen(Number* num) {
+    if (num->digits_decimal == 1 && num->decimal_part[0] == 0) {
+        return 0;
+    } else {
+        return num->digits_decimal;
+    }
+}
+
+
+
+
+
 // utility functions
 Number* getAbsoluteValue(Number* num) {
     // if num > 0
@@ -884,10 +903,14 @@ Number* getFloorNumber(Number* num) {
     }
 }
 
+
+int isZero(Number* num) {
+    return (!getWholeLen(num) && !getDecimalLen(num));
+}
+
 int isInteger(Number* num) {
     return (num->digits_decimal == 1 && num->decimal_part[0] == 0);
 }
-
 
 Number* multiplyByInt(Number* num1, int integer) {
 
@@ -903,6 +926,10 @@ Number* multiplyByInt(Number* num1, int integer) {
 
     return multiply(num1, num2);
 }
+// // utility functions
+
+
+
 
 // FIXME division works until +-35 digits are put in the result.
 // FIXME After that, the program freezes.

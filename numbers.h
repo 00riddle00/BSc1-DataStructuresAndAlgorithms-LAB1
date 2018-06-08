@@ -206,7 +206,26 @@ Number* multiplyByInt(Number* num1, int integer);
 Number* divide(Number* num1, Number* num2);
 
 
+// TODO comment
 Number* modulus(Number* num1, Number* num2);
+
+/* additional functions */
+// TODO comment
+int getWholeLen(Number* num);
+
+// TODO comment
+int getDecimalLen(Number* num);
+
+// TODO comment
+int getIthDigit(Number* num, int index);
+
+// TODO comment
+void increment(Number* num);
+
+// TODO comment
+void decrement(Number* num);
+/* // additional functions */
+
 
 // Declare table as a global variable
 extern Table* table;

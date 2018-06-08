@@ -872,9 +872,33 @@ int getDecimalLen(Number* num) {
     }
 }
 
+// decimal digits are marked by negative indexes
+// ex. Number is 12.34
+// ex.getIthDigit(0) returns 0 (nothing)
+// ex getIthDigit(1) returns 1
+// ex getIthDigit(2) returns 2
+// ex getIthDigit(-1) returns 3
+// ex getIthDigit(-2) returns 4
+int getIthDigit(Number* num, int index) {
+    if (!index) {
+        printf("WARNING: Zeroth index does not exist");
+    } else if (index > 0) {
+        return num->whole_part[index-1];
+    // else if index < 0
+    } else {
+        return num->decimal_part[-index-1];
+    }
+}
 
+// TODO optimize
+void increment(Number* num) {
+    assign(num, addNumbers(num, setNumberFromChar((char*) ONE)));
+}
 
-
+// TODO optimize
+void decrement(Number* num) {
+    assign(num, subtractNumbers(num, setNumberFromChar((char*) ONE)));
+}
 
 // utility functions
 Number* getAbsoluteValue(Number* num) {

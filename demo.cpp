@@ -18,6 +18,7 @@ int main() {
 
     Number* res;
 
+    /* testing arithmetic */
     res = addNumbers(num1, num2);
     assert(strcmp(numToChar(res), "81222431942852815.06580908") == 0 && "Addition test01 failed");
 
@@ -29,6 +30,7 @@ int main() {
 
     res = divideNumbers(num1, num2);
     assert(strcmp(numToChar(res), "-6561.544198600258072584801336513697992925982204711190874405227531521729371470501450875341584693541694678610733689628050801447636391038159947299252507253926596300570699756129255217355600294010456506944330918") == 0 && "Division test01 failed");
+    /* // testing arithmetic */
 
     /* testing modulus  (all possible combinations the quotient of two positive/negative numbers */
     res = modulus(setNumberFromChar((char*)"-20.0"), setNumberFromChar((char*)"-7.0"));
@@ -59,6 +61,7 @@ int main() {
     assert(strcmp(numToChar(res), "0.0") == 0 && "Modulus test09 failed");
     /*  // testing modulus */
 
+    /* testing comparison */
     int cmp;
 
     cmp = compareEqual(num1, num2);
@@ -81,6 +84,33 @@ int main() {
     
     assign(num1, num2);
     assert(strcmp(numToChar(num1), numToChar(num2)) == 0 && "Assign test01 failed");
+    /* // testing comparison */
+
+    /* testing additional functions */
+    int digit;
+
+    Number* num3 = setNumberFromChar((char*)"123.456");
+
+    digit = getWholeLen(num3);
+    assert(digit == 3 && "getWholeLen test01 failed");
+
+    digit = getDecimalLen(num3);
+    assert(digit == 3 && "getDecimalLen test01 failed");
+
+    digit = getIthDigit(num3, 2);
+    assert(digit == 2 && "getIthDigit test01 failed");
+
+    digit = getIthDigit(num3, -2);
+    assert(digit == 5 && "getIthDigit test02 failed");
+
+    increment(num3);
+
+    assert(strcmp(numToChar(num3), "124.456") == 0 && "increment test01 failed");
+
+    decrement(num3);
+    decrement(num3);
+    assert(strcmp(numToChar(num3), "122.456") == 0 && "increment test01 failed");
+    /* // testing additional functions */
 
 }
 

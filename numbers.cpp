@@ -859,19 +859,29 @@ Number* multiply(Number* num1, Number* num2) {
 
 // utility functions
 Number* getAbsoluteValue(Number* num) {
-    if (num->negative) {
-        num->negative = 0;
+    // if num > 0
+    if (!num->negative) {
+        return num;
+    // else if num <= 0
+    } else {
+        Number *ret_num = (Number*) calloc(1, sizeof(Number));
+        assign(ret_num, num);
+        ret_num->negative = 0;
+        return ret_num;
     }
-    return num;
 }
 
 Number* getFloorNumber(Number* num) {
-    // TODO solve memory leak
-    if (num->digits_decimal > 1) {
-        num->digits_decimal = 1;
-        num->decimal_part[0] = 0;
+    if (num->digits_decimal == 1 && num->decimal_part[0] == 0) {
+        return num;
+    } else {
+        // TODO solve memory leak
+        Number* ret_num = (Number*) calloc(1, sizeof(Number));
+        assign(ret_num, num);
+        ret_num->digits_decimal = 1;
+        ret_num->decimal_part[0] = 0;
+        return ret_num;
     }
-    return num;
 }
 
 int isInteger(Number* num) {
@@ -1028,12 +1038,13 @@ Number* modulus(Number* num1, Number* num2) {
         Number* zero = setNewNumber();
         return zero;
     } else if (isZero(num2)) {
-        printf("ERROR: Division in zero in modulus expression!\n");
+        printf("ERROR: Division from zero in modulus expression!\n");
         exit(1);
     }
 
+
     // compare absolute values. return whether num1 > num2
-    int cmp_abs= compareNumbers(getAbsoluteValue(num1), getAbsoluteValue(num2));
+    int cmp_abs = compareNumbers(getAbsoluteValue(num1), getAbsoluteValue(num2));
 
     // if the absolute values of numbers are equal, return zero
     if (cmp_abs == 3) {
@@ -1112,15 +1123,21 @@ Number* modulus(Number* num1, Number* num2) {
         if (num2->negative) {
             // if num1 > 0
             if (!num1->negative) {
-                Number* one = setNumberFromChar((char*) ONE);
-                // ret_num = -(floor(num1/num2) + 1)*num2 - num1)
-                Number* ret_num = subtractNumbers(multiplyNumbers(addNumbers(divideNumbers(num1, num2), one), num2), num1);
-                ret_num->negative = 1;
-                return ret_num;
+                // if |num1| < |num2|
+                if (cmp_abs == 0) {
+                    return addNumbers(num1, num2);
+                // else if |num1| > |num2|
+                } else {
+                    Number *one = setNumberFromChar((char *) ONE);
+                    Number *ret_num = addNumbers(multiplyNumbers( getFloorNumber(addNumbers(getAbsoluteValue(divideNumbers(num1, num2)), one)), num2), num1);
+                    ret_num->negative = 1;
+                    return ret_num;
+                }
             }
             // else if num1 < 0
             else {
                 // ret_num = -(modulus(|num1|,|num2|)
+                // FIXME inf recursion
                 Number* ret_num = modulus(getAbsoluteValue(num1), getAbsoluteValue(num2));
                 ret_num->negative = 1;
                 return ret_num;

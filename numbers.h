@@ -76,6 +76,14 @@ typedef struct {
     int negative;
 } Number;
 
+typedef struct {
+    int whole_part[2*DIGITS];
+    int decimal_part[2*DIGITS];
+    int digits_whole;
+    int digits_decimal;
+    int negative;
+} TempNumber;
+
 // Table structure contains dynamic array of 
 // numbers. Used as a quosi-database for Number 
 // data type.
@@ -175,8 +183,7 @@ Number* multiplyNumbers(Number* num1, Number* num2);
 Number* divideNumbers(Number* num1, Number* num2);
 
 // add two numbers
-// ::params:: num1 - first number
-// ::params:: num2 - second number
+// ::params:: num1 - first number ::params:: num2 - second number
 // ::params:: negative - whether result should be negative
 // ::return::  a resulting Number
 Number* add(Number* num1, Number* num2, int negative);
@@ -240,11 +247,24 @@ void divideEquals(Number* num1, Number* num2);
 // TODO comment
 void modulusEquals(Number* num1, Number* num2);
 
+
 /* // additional functions */
 
+
+void setPrecision(Number* num, int precision);
+
 /* functions to be tested */
+// TODO comment
 Number* factorial(Number* num);
 
+// TODO comment
+Number* nextPrime(Number* num);
+
+// TODO comment
+Number* raiseByPow(Number* num, int power);
+
+// TODO comment
+Number* Log(Number* num);
 
 // Declare table as a global variable
 extern Table* table;

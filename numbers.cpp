@@ -38,6 +38,23 @@ void saveNumber(Number* number) {
     table->size++;
 }
 
+void printEntry2(TempNumber* number) {
+
+        if (number->negative) {
+            printf("-");
+        }
+
+        for (int i = number->digits_whole - 1; i >= 0; i--) {
+            printf("%d", number->whole_part[i]);
+        }
+        printf(".");
+
+        for (int i = 0; i < number->digits_decimal; i++) {
+            printf("%d", number->decimal_part[i]);
+        }
+        printf("\n");
+}
+
 void printEntry(Number* number) {
 
         if (number->negative) {
@@ -726,7 +743,14 @@ Number* subtract(Number* num1, Number* num2) {
 
 Number* multiply(Number* num1, Number* num2) {
 
+    debug("NUM1");
+    printEntry(num1);
+    debug("NUM2");
+    printEntry(num2);
+
+
     // TODO use setNewNumber here
+    // FIXME maybe this makes it crash
     Number* res = (Number*) calloc(1, sizeof(Number));
     // firstly, set the result as a whole part of the resulting number
     // set digits of the result to a maximum possible number after  multiplication
@@ -735,10 +759,12 @@ Number* multiply(Number* num1, Number* num2) {
     // two dimensional array used for storing partial products
     // first dimension size - how many numerals does the factor have (the second number)
     // second dimension size - the maximum possible number of digits after multiplication
+    // TODO add a[...+1] ??
     int a[num2->digits_whole+num2->digits_decimal][res->digits_whole];
     // initialize two dimensional array with zeroes.
     memset(a, 0, sizeof(a[0][0]) * (num2->digits_whole+num2->digits_decimal) * res->digits_whole);
 
+    // TODO simple assign might be enough
     // populate first factor with both decimal and whole parts of the first
     // number (convert decimal part to whole part) - ie move decimal dot(.) to 
     // the end of the number, or multiply it by 10^n, where n is the number of 
@@ -754,6 +780,8 @@ Number* multiply(Number* num1, Number* num2) {
         n1->whole_part[i+num1->digits_decimal] = num1->whole_part[i];
         n1->digits_whole++;
     }
+    // TODO add this line
+//    n1->digits_whole--;
 
     // populate second factor with both decimal and whole parts of the second
     // number (convert decimal part to whole part) - ie move decimal dot(.) to 
@@ -769,7 +797,17 @@ Number* multiply(Number* num1, Number* num2) {
         n2->whole_part[i+num2->digits_decimal] = num2->whole_part[i];
         n2->digits_whole++;
     }
+    // TODO add this line
+//    n2->digits_whole--;
 
+    debug("N1");
+    printEntry(n1);
+    debug("N2");
+    printEntry(n2);
+
+
+
+    // FIXME trouble point
     // Set how many decimal numbers the result will contain at most
     int decimal_numbers = num1->digits_decimal + num2->digits_decimal;
 
@@ -807,10 +845,26 @@ Number* multiply(Number* num1, Number* num2) {
         a[i][n1->digits_whole+pos] = carry;
         carry = 0;
     }
+    debug("D2");
 
     int result = 0;
     carry = 0;
 
+
+    debug("HERE");
+    for (int j = 0; j < 500; j++) {
+        printf("%d", a[203][j]);
+    }
+    printf("\n\n500: %d", a[203][500]);
+    printf("\n\n");
+
+
+
+    TempNumber* res2 = (TempNumber*) calloc(1, sizeof(TempNumber));
+    res2->digits_whole = 0;
+
+    debug("rdw: %d", res->digits_whole);
+    debug("n2dw: %d", n2->digits_whole);
     // add all partial products together
     for (int j = 0; j < res->digits_whole; j++) {
         for (int i = 0; i < n2->digits_whole; i++) {
@@ -819,9 +873,66 @@ Number* multiply(Number* num1, Number* num2) {
 
         result += carry;
         carry = result / 10;
-        res->whole_part[j] = result % 10;
+        res2->whole_part[j] = result % 10;
+        res2->digits_whole++;
         result = 0;
     }
+    debug("D3 %d", decimal_numbers);
+    printEntry2(res2);
+
+/* NEW CODE */
+
+    int whole_numbers = res2->digits_whole - decimal_numbers;
+
+    if (decimal_numbers > 500) {
+        debug("IF");
+        res->digits_decimal = 500;
+        debug("RES2dw %d", res2->digits_whole);
+        for (int i = res2->digits_whole - 500 - (res2->digits_whole - decimal_numbers), j = 499; i < res2->digits_whole; i++, j--) {
+            res->decimal_part[j] = res2->whole_part[i];
+        }
+
+        res->digits_whole = whole_numbers;
+        for (int i = res2->digits_whole - 1, j = whole_numbers - 1; i > res2->digits_whole - decimal_numbers - 1; i--, j--) {
+            res->whole_part[j] = res2->whole_part[i];
+        }
+    } else {
+        debug("ELSE");
+        res->digits_whole = whole_numbers;
+
+        for (int i = res2->digits_whole-1, j = whole_numbers - 1; i > res2->digits_whole - whole_numbers - 1; i--, j--) {
+            res->whole_part[j] = res2->whole_part[i];
+        }
+
+        res->digits_decimal = decimal_numbers;
+        for (int i = res2->digits_whole-whole_numbers-1, j = 0; i >= 0; i--, j++) {
+            res->decimal_part[j] = res2->whole_part[i];
+        }
+
+    }
+
+
+
+
+
+
+    debug("res");
+    printEntry(res);
+
+//    if (res2->digits_whole > 500) {
+//        res->digits_whole = 500;
+//        for (int i = res2->digits_whole - 500, j = 0; i < res2->digits_whole; i++, j++) {
+//            res->whole_part[j] = res2->whole_part[i];
+//        }
+//    }
+//    int roundedDigit = res2->whole_part[res2->digits_whole - 500 - 1];
+//    if (roundedDigit >= 5) {
+//        plusEquals(res, setNumberFromChar((char*)ONE));
+//    }
+
+/* // NEW CODE */
+
+
 
     
     // TODO readd this?
@@ -833,23 +944,48 @@ Number* multiply(Number* num1, Number* num2) {
             //break;
         //}
     //}
+    debug("RESSSS");
+    printEntry(res);
 
     // move decimal dot to the required place
     // ie convert whole number to a decimal number again
-    res->digits_decimal = decimal_numbers;
-    for (int i = 0; i < decimal_numbers; i++) {
-        res->decimal_part[i] = res->whole_part[decimal_numbers-1-i];
-    }
 
+    debug("RWP0: %d", res->whole_part[0]);
+//
+//    res->digits_decimal = decimal_numbers;
+//    debug("DEC NR: %d", decimal_numbers);
+//    for (int i = 0; i < decimal_numbers; i++) {
+//        res->decimal_part[i] = res->whole_part[decimal_numbers - 1 - i];
+//    }
+//    debug("D4");
+//    printEntry(res);
+//
+//
+//    for (int i = 0; i < res->digits_whole; i++) {
+//        res->whole_part[i] = res->whole_part[decimal_numbers+i];
+//    }
+//    res->digits_whole -= decimal_numbers;
 
-    for (int i = 0; i < res->digits_whole; i++) {
-        res->whole_part[i] = res->whole_part[decimal_numbers+i];
-    }
-    res->digits_whole -= decimal_numbers;
+    debug("n1dd %d", n1->digits_whole);
+    debug("n2dd %d", n2->digits_whole);
+
+    debug("D5");
+
+    debug("N1 IS");
+    printEntry(n1);
+    debug("N2 IS");
+    printEntry(n2);
+    debug("RES IS");
+    printEntry(res);
 
     free(n1);
+    debug("D6");
     free(n2);
+    debug("D7");
+    printEntry(res);
     fixNumber(res);
+    debug("D8");
+    printEntry(res);
     return res;
 
 }
@@ -1091,7 +1227,7 @@ Number* divide(Number* num1, Number* num2) {
             }
             // FIXME temporary guard, else the program stops running 
             // FIXME (gets stuck)
-            if (res->digits_decimal > 200) {
+            if (res->digits_decimal >= 204) {
                 free(one);
                 free(ten);
                 free(zero_one);
@@ -1259,6 +1395,126 @@ Number* factorial(Number* num) {
         multiplyEquals(ret_num, subtractNumbers(num, diff));
     }
     return ret_num;
+}
+
+int isPrime(Number* num) {
+    printEntry(num);
+    if (compareEqual(num, setNumberFromChar((char*)"2.0"))) {
+        return 1;
+    }
+    if (isZero(modulus(num, setNumberFromChar((char *) "2.0")))) {
+        return 0;
+    }
+    for (Number*i = setNumberFromChar((char *) "3.0"); compareLessThanOrEqual(multiplyNumbers(i, i), num); plusEquals(i, setNumberFromChar((char *) "2.0"))) {
+        if (isZero(modulus(num, i))) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+Number* nextPrime(Number* num) {
+    if (num->negative || isZero(num)) {
+        return setNumberFromChar((char *) "2.0");
+    } else {
+        num = getFloorNumber(num);
+        printEntry(num);
+        Number *diff = setNumberFromChar((char *) ONE);
+
+        while (!isPrime(addNumbers(num, diff))) {
+            plusEquals(diff, setNumberFromChar((char *) ONE));
+            printEntry(diff);
+        }
+
+        return addNumbers(num, diff);
+    }
+}
+
+
+Number* raiseByPow(Number* num, int power) {
+    Number* ret_val = setNewNumber();
+    assign(ret_val, num);
+
+    Number* orig_num = setNewNumber();
+    assign(orig_num, num);
+
+    for (int i = 0; i < power-1; i++) {
+        multiplyEquals(ret_val, orig_num);
+    }
+    return ret_val;
+}
+
+Number* Log(Number* num) {
+    // TODO add validation for negative input
+    Number *step = setNewNumber();
+    Number *one = setNumberFromChar((char *) ONE);
+
+    Number *powe = setNumberFromChar((char *) ONE);
+
+    Number *y = setNewNumber();
+    Number *z = divideNumbers(addNumbers(num, one), subtractNumbers(num, one));
+    Number *ret_num = setNewNumber();
+
+    step = divideNumbers(raiseByPow(subtractNumbers(num, one), 2), raiseByPow(addNumbers(num, one), 2));
+    debug("Step is: ");
+    printEntry(step);
+
+    int count = 0;
+    while (count < 3) {
+        debug("C1");
+        printEntry(z);
+        printEntry(step);
+        multiplyEquals(z, step);
+        debug("C2");
+//        setPrecision(z, 100);
+        assign(y, multiplyNumbers(divideNumbers(one, powe), z));
+        debug("C3");
+        plusEquals(ret_num, y);
+        debug("C4");
+        plusEquals(powe, setNumberFromChar((char *) "2.0"));
+
+        count++;
+    }
+    debug("C5");
+    multiplyEquals(ret_num, setNumberFromChar((char*)"2.0"));
+    return ret_num;
+}
+
+// this operation is irreversible!
+void setPrecision(Number* num, int precision) {
+    Number *ten = setNumberFromChar((char *) "10.0");
+    // TODO case when higher precision is added (?)
+    // TODO check precision for negative values and zero
+    // TODO wrap num->digits_whole in a variable
+    // TODO fixNumber might be needed
+    if (num->digits_whole >= precision) {
+        if (num->digits_whole > precision) {
+            int last_index = num->digits_whole - precision;
+            int rounded_index = last_index - 1;
+            if (num->whole_part[rounded_index] < 5) {
+                for (int i = rounded_index; i >= 0; i--) {
+                    num->whole_part[i] = 0;
+                }
+                // else if num->whole_part[rounded_index >= 5)
+            } else {
+                Number *roundingTens = raiseByPow(ten, rounded_index + 1);
+                Number *numberToBeSubtracted = setNewNumber();
+                assign(numberToBeSubtracted, num);
+                numberToBeSubtracted->digits_whole = rounded_index + 1;
+                Number *numberToAddWhenRounding = subtractNumbers(roundingTens, numberToBeSubtracted);
+                plusEquals(num, numberToAddWhenRounding);
+            }
+        }
+        // FIXME memory leak
+        num->digits_decimal = 1;
+        num->decimal_part[0] = 0;
+    } else if (num->digits_whole < precision) {
+        Number* ShiftedComma = multiplyNumbers(num, raiseByPow(ten, num->digits_decimal));
+        setPrecision(ShiftedComma, precision);
+        divideEquals(ShiftedComma, raiseByPow(ten, num->digits_decimal));
+        // TODO do without ShiftedComma variable
+        assign(num, ShiftedComma);
+    }
 }
 
 

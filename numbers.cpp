@@ -851,12 +851,12 @@ Number* multiply(Number* num1, Number* num2) {
     carry = 0;
 
 
-    debug("HERE");
-    for (int j = 0; j < 500; j++) {
-        printf("%d", a[203][j]);
-    }
-    printf("\n\n500: %d", a[203][500]);
-    printf("\n\n");
+//    debug("HERE");
+//    for (int j = 0; j < 500; j++) {
+//        printf("%d", a[203][j]);
+//    }
+//    printf("\n\n500: %d", a[203][500]);
+//    printf("\n\n");
 
 
 
@@ -978,9 +978,10 @@ Number* multiply(Number* num1, Number* num2) {
     debug("RES IS");
     printEntry(res);
 
-    free(n1);
+//    free(n1);
     debug("D6");
-    free(n2);
+    // FIXME corrupted size
+//    free(n2);
     debug("D7");
     printEntry(res);
     fixNumber(res);
@@ -1227,7 +1228,7 @@ Number* divide(Number* num1, Number* num2) {
             }
             // FIXME temporary guard, else the program stops running 
             // FIXME (gets stuck)
-            if (res->digits_decimal >= 204) {
+            if (res->digits_decimal >= 200) {
                 free(one);
                 free(ten);
                 free(zero_one);
@@ -1460,15 +1461,22 @@ Number* Log(Number* num) {
     printEntry(step);
 
     int count = 0;
-    while (count < 3) {
+    while (count < 80) {
+        if (count == 1) {
+            printf("\n\n********************************\n\n");
+        }
+        if (count == 2) {
+            printf("\n\n------------------------------------\n\n");
+        }
         debug("C1");
         printEntry(z);
         printEntry(step);
         multiplyEquals(z, step);
         debug("C2");
-//        setPrecision(z, 100);
+        printEntry(z);
         assign(y, multiplyNumbers(divideNumbers(one, powe), z));
         debug("C3");
+        printEntry(y);
         plusEquals(ret_num, y);
         debug("C4");
         plusEquals(powe, setNumberFromChar((char *) "2.0"));

@@ -743,10 +743,6 @@ Number* subtract(Number* num1, Number* num2) {
 
 Number* multiply(Number* num1, Number* num2) {
 
-    debug("NUM1");
-    printEntry(num1);
-    debug("NUM2");
-    printEntry(num2);
 
 
     // TODO use setNewNumber here
@@ -800,10 +796,6 @@ Number* multiply(Number* num1, Number* num2) {
     // TODO add this line
 //    n2->digits_whole--;
 
-    debug("N1");
-    printEntry(n1);
-    debug("N2");
-    printEntry(n2);
 
 
 
@@ -845,7 +837,6 @@ Number* multiply(Number* num1, Number* num2) {
         a[i][n1->digits_whole+pos] = carry;
         carry = 0;
     }
-    debug("D2");
 
     int result = 0;
     carry = 0;
@@ -863,8 +854,6 @@ Number* multiply(Number* num1, Number* num2) {
     TempNumber* res2 = (TempNumber*) calloc(1, sizeof(TempNumber));
     res2->digits_whole = 0;
 
-    debug("rdw: %d", res->digits_whole);
-    debug("n2dw: %d", n2->digits_whole);
     // add all partial products together
     for (int j = 0; j < res->digits_whole; j++) {
         for (int i = 0; i < n2->digits_whole; i++) {
@@ -877,17 +866,13 @@ Number* multiply(Number* num1, Number* num2) {
         res2->digits_whole++;
         result = 0;
     }
-    debug("D3 %d", decimal_numbers);
-    printEntry2(res2);
 
 /* NEW CODE */
 
     int whole_numbers = res2->digits_whole - decimal_numbers;
 
     if (decimal_numbers > 500) {
-        debug("IF");
         res->digits_decimal = 500;
-        debug("RES2dw %d", res2->digits_whole);
         for (int i = res2->digits_whole - 500 - (res2->digits_whole - decimal_numbers), j = 499; i < res2->digits_whole; i++, j--) {
             res->decimal_part[j] = res2->whole_part[i];
         }
@@ -897,7 +882,6 @@ Number* multiply(Number* num1, Number* num2) {
             res->whole_part[j] = res2->whole_part[i];
         }
     } else {
-        debug("ELSE");
         res->digits_whole = whole_numbers;
 
         for (int i = res2->digits_whole-1, j = whole_numbers - 1; i > res2->digits_whole - whole_numbers - 1; i--, j--) {
@@ -916,8 +900,6 @@ Number* multiply(Number* num1, Number* num2) {
 
 
 
-    debug("res");
-    printEntry(res);
 
 //    if (res2->digits_whole > 500) {
 //        res->digits_whole = 500;
@@ -944,13 +926,10 @@ Number* multiply(Number* num1, Number* num2) {
             //break;
         //}
     //}
-    debug("RESSSS");
-    printEntry(res);
 
     // move decimal dot to the required place
     // ie convert whole number to a decimal number again
 
-    debug("RWP0: %d", res->whole_part[0]);
 //
 //    res->digits_decimal = decimal_numbers;
 //    debug("DEC NR: %d", decimal_numbers);
@@ -966,27 +945,13 @@ Number* multiply(Number* num1, Number* num2) {
 //    }
 //    res->digits_whole -= decimal_numbers;
 
-    debug("n1dd %d", n1->digits_whole);
-    debug("n2dd %d", n2->digits_whole);
 
-    debug("D5");
 
-    debug("N1 IS");
-    printEntry(n1);
-    debug("N2 IS");
-    printEntry(n2);
-    debug("RES IS");
-    printEntry(res);
 
 //    free(n1);
-    debug("D6");
     // FIXME corrupted size
 //    free(n2);
-    debug("D7");
-    printEntry(res);
     fixNumber(res);
-    debug("D8");
-    printEntry(res);
     return res;
 
 }
@@ -1062,7 +1027,6 @@ void modulusEquals(Number* num1, Number* num2) {
 int pow(int number, int power) {
     int orig_number = number;
     for (int i = 0; i < power-1; i++) {
-        debug("here");
         number *= orig_number;
     }
     return number;
@@ -1457,33 +1421,17 @@ Number* Log(Number* num) {
     Number *ret_num = setNewNumber();
 
     step = divideNumbers(raiseByPow(subtractNumbers(num, one), 2), raiseByPow(addNumbers(num, one), 2));
-    debug("Step is: ");
-    printEntry(step);
 
     int count = 0;
-    while (count < 80) {
-        if (count == 1) {
-            printf("\n\n********************************\n\n");
-        }
-        if (count == 2) {
-            printf("\n\n------------------------------------\n\n");
-        }
-        debug("C1");
-        printEntry(z);
-        printEntry(step);
+    while (count < 300) {
+        debug("%d", count);
         multiplyEquals(z, step);
-        debug("C2");
-        printEntry(z);
         assign(y, multiplyNumbers(divideNumbers(one, powe), z));
-        debug("C3");
-        printEntry(y);
         plusEquals(ret_num, y);
-        debug("C4");
         plusEquals(powe, setNumberFromChar((char *) "2.0"));
 
         count++;
     }
-    debug("C5");
     multiplyEquals(ret_num, setNumberFromChar((char*)"2.0"));
     return ret_num;
 }

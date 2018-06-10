@@ -1362,7 +1362,7 @@ Number* Log(Number* num) {
     step = divideNumbers(raiseByPow(subtractNumbers(num, one), 2), raiseByPow(addNumbers(num, one), 2));
 
     int count = 0;
-    while (count < 100) {
+    while (count < 20) {
         debug("%d", count);
         multiplyEquals(z, step);
         assign(y, multiplyNumbers(divideNumbers(one, powe), z));
@@ -1377,17 +1377,22 @@ Number* Log(Number* num) {
 
 // this operation is irreversible!
 void setPrecision(Number* num, int precision) {
+    debug("INTRO");
     Number *ten = setNumberFromChar((char *) "10.0");
     // TODO case when higher precision is added (?)
     // TODO check precision for negative values and zero
     // TODO wrap num->digits_whole in a variable
     // TODO fixNumber might be needed
     if (num->digits_whole >= precision) {
+        debug("A1");
         if (num->digits_whole > precision) {
             int last_index = num->digits_whole - precision;
             int rounded_index = last_index - 1;
+            debug("RI %d", rounded_index);
             if (num->whole_part[rounded_index] < 5) {
+                debug("A2");
                 for (int i = rounded_index; i >= 0; i--) {
+                    debug("A3");
                     num->whole_part[i] = 0;
                 }
                 // else if num->whole_part[rounded_index >= 5)
@@ -1399,6 +1404,9 @@ void setPrecision(Number* num, int precision) {
                 Number *numberToAddWhenRounding = subtractNumbers(roundingTens, numberToBeSubtracted);
                 plusEquals(num, numberToAddWhenRounding);
             }
+        }
+        if (num->decimal_part[0] > 5) {
+            increment(num);
         }
         // FIXME memory leak
         num->digits_decimal = 1;

@@ -145,6 +145,7 @@ int main() {
     Number* num7 = setNumberFromChar((char*)"5.0");
     Number* res = Log(num7);
     debug("RES IS:");
+    // FIXME minus in front
     printEntry(res);
 //    assert(strcmp(numToChar(res), "1.609437912434100374600759333226187639525601354268517721912647891474178987707657764630133878093179611") == 0 && "Log test01 failed");
 

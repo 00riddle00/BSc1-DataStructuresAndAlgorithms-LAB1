@@ -743,8 +743,6 @@ Number* subtract(Number* num1, Number* num2) {
 
 Number* multiply(Number* num1, Number* num2) {
 
-
-
     // TODO use setNewNumber here
     // FIXME maybe this makes it crash
     Number* res = (Number*) calloc(1, sizeof(Number));
@@ -842,17 +840,9 @@ Number* multiply(Number* num1, Number* num2) {
     carry = 0;
 
 
-//    debug("HERE");
-//    for (int j = 0; j < 500; j++) {
-//        printf("%d", a[203][j]);
-//    }
-//    printf("\n\n500: %d", a[203][500]);
-//    printf("\n\n");
-
-
-
-    TempNumber* res2 = (TempNumber*) calloc(1, sizeof(TempNumber));
-    res2->digits_whole = 0;
+    // create new temp number which can hold 1000 digits as a whole part
+    TempNumber* temp = (TempNumber*) calloc(1, sizeof(TempNumber));
+    temp->digits_whole = 0;
 
     // add all partial products together
     for (int j = 0; j < res->digits_whole; j++) {
@@ -862,92 +852,41 @@ Number* multiply(Number* num1, Number* num2) {
 
         result += carry;
         carry = result / 10;
-        res2->whole_part[j] = result % 10;
-        res2->digits_whole++;
+        // populate the new temp number with the result
+        temp->whole_part[j] = result % 10;
+        temp->digits_whole++;
         result = 0;
     }
 
-/* NEW CODE */
 
-    int whole_numbers = res2->digits_whole - decimal_numbers;
+    // add decimal part and whole part from the temp number to the resulting number (res)
+    int whole_numbers = temp->digits_whole - decimal_numbers;
+    res->digits_whole = whole_numbers;
 
     if (decimal_numbers > 500) {
         res->digits_decimal = 500;
-        for (int i = res2->digits_whole - 500 - (res2->digits_whole - decimal_numbers), j = 499; i < res2->digits_whole; i++, j--) {
-            res->decimal_part[j] = res2->whole_part[i];
+
+        for (int i = temp->digits_whole - 500 - (temp->digits_whole - decimal_numbers), j = 499; i < temp->digits_whole; i++, j--) {
+            res->decimal_part[j] = temp->whole_part[i];
         }
 
-        res->digits_whole = whole_numbers;
-        for (int i = res2->digits_whole - 1, j = whole_numbers - 1; i > res2->digits_whole - decimal_numbers - 1; i--, j--) {
-            res->whole_part[j] = res2->whole_part[i];
+        for (int i = temp->digits_whole - 1, j = whole_numbers - 1; i > temp->digits_whole - decimal_numbers - 1; i--, j--) {
+            res->whole_part[j] = temp->whole_part[i];
         }
     } else {
-        res->digits_whole = whole_numbers;
+        res->digits_decimal = decimal_numbers;
 
-        for (int i = res2->digits_whole-1, j = whole_numbers - 1; i > res2->digits_whole - whole_numbers - 1; i--, j--) {
-            res->whole_part[j] = res2->whole_part[i];
+        for (int i = temp->digits_whole-1, j = whole_numbers - 1; i > temp->digits_whole - whole_numbers - 1; i--, j--) {
+            res->whole_part[j] = temp->whole_part[i];
         }
 
-        res->digits_decimal = decimal_numbers;
-        for (int i = res2->digits_whole-whole_numbers-1, j = 0; i >= 0; i--, j++) {
-            res->decimal_part[j] = res2->whole_part[i];
+        for (int i = temp->digits_whole-whole_numbers-1, j = 0; i >= 0; i--, j++) {
+            res->decimal_part[j] = temp->whole_part[i];
         }
 
     }
 
-
-
-
-
-
-
-//    if (res2->digits_whole > 500) {
-//        res->digits_whole = 500;
-//        for (int i = res2->digits_whole - 500, j = 0; i < res2->digits_whole; i++, j++) {
-//            res->whole_part[j] = res2->whole_part[i];
-//        }
-//    }
-//    int roundedDigit = res2->whole_part[res2->digits_whole - 500 - 1];
-//    if (roundedDigit >= 5) {
-//        plusEquals(res, setNumberFromChar((char*)ONE));
-//    }
-
-/* // NEW CODE */
-
-
-
-    
-    // TODO readd this?
-/*    // remove zeroes in the front of the resulting number*/
-    //for (int i = res->digits_whole-1; i >= 0; i--) {
-        //if (res->whole_part[i] == 0) {
-            //res->digits_whole--;
-        //} else {
-            //break;
-        //}
-    //}
-
-    // move decimal dot to the required place
-    // ie convert whole number to a decimal number again
-
-//
-//    res->digits_decimal = decimal_numbers;
-//    debug("DEC NR: %d", decimal_numbers);
-//    for (int i = 0; i < decimal_numbers; i++) {
-//        res->decimal_part[i] = res->whole_part[decimal_numbers - 1 - i];
-//    }
-//    debug("D4");
-//    printEntry(res);
-//
-//
-//    for (int i = 0; i < res->digits_whole; i++) {
-//        res->whole_part[i] = res->whole_part[decimal_numbers+i];
-//    }
-//    res->digits_whole -= decimal_numbers;
-
-
-
-
+    // TODO readd free statements
 //    free(n1);
     // FIXME corrupted size
 //    free(n2);
@@ -1423,7 +1362,7 @@ Number* Log(Number* num) {
     step = divideNumbers(raiseByPow(subtractNumbers(num, one), 2), raiseByPow(addNumbers(num, one), 2));
 
     int count = 0;
-    while (count < 300) {
+    while (count < 100) {
         debug("%d", count);
         multiplyEquals(z, step);
         assign(y, multiplyNumbers(divideNumbers(one, powe), z));

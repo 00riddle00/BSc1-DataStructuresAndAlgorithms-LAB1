@@ -617,6 +617,8 @@ Number* add(Number* num1, Number* num2, int negative) {
     // set sign
     res->negative = negative;
 
+    free(bigger);
+    free(smaller);
     fixNumber(res);
     return res;
 }
@@ -888,9 +890,10 @@ Number* multiply(Number* num1, Number* num2) {
     }
 
     // TODO readd free statements
-//    free(n1);
+    free(n1);
     // FIXME corrupted size
-//    free(n2);
+    free(temp);
+    free(n2);
     fixNumber(res);
     return res;
 
@@ -1161,6 +1164,7 @@ Number* divide(Number* num1, Number* num2) {
     free(one);
     free(ten);
     free(zero_one);
+    free(tmp);
     fixNumber(res);
     return res;
 }
@@ -1363,7 +1367,7 @@ Number* Log(Number* num) {
     step = divideNumbers(raiseByPow(subtractNumbers(num, one), 2), raiseByPow(addNumbers(num, one), 2));
 
     int count = 0;
-    while (count < 20) {
+    while (count < 280) {
         debug("%d", count);
         multiplyEquals(z, step);
         assign(y, multiplyNumbers(divideNumbers(one, powe), z));
@@ -1373,12 +1377,16 @@ Number* Log(Number* num) {
         count++;
     }
     multiplyEquals(ret_num, setNumberFromChar((char*)"2.0"));
+    free(step);
+    free(one);
+    free(powe);
+    free(y);
+    free(z);
     return ret_num;
 }
 
 
 void setMaxPrecision(Number* num, int precision) {
-    debug("inside set max");
     TempNumber *temp = (TempNumber *) calloc(1, sizeof(TempNumber));
     int whole_len = getWholeLen(num);
     int decimal_len = getDecimalLen(num);
@@ -1414,9 +1422,6 @@ void setMaxPrecision(Number* num, int precision) {
 
 // this operation is irreversible!
 void setPrecision(Number* num, int precision) {
-    debug("INSIDE");
-    debug("DW %d", num->digits_whole);
-    debug("DD %d", num->digits_decimal);
     // TODO rm magic numbers
     if (getWholeLen(num) + getDecimalLen(num) >= 500 && (getDecimalLen(num) != 0 && num->decimal_part[0] != 0)) {
         setMaxPrecision(num, precision);

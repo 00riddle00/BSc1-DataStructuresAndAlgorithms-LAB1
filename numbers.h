@@ -266,6 +266,9 @@ Number* raiseByPow(Number* num, int power);
 // TODO comment
 Number* Log(Number* num);
 
+// TODO comment
+Number* Sine(Number* num);
+
 // Declare table as a global variable
 extern Table* table;
 

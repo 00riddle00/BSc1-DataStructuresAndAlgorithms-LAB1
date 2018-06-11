@@ -1385,6 +1385,25 @@ Number* Log(Number* num) {
     return ret_num;
 }
 
+Number* Sine(Number* num) {
+    Number* step = setNewNumber();
+    int n = 1;
+
+    int change_sign = 0;
+    while (n < 10) {
+        if (change_sign) {
+            minusEquals(step, divide(raiseByPow(num, n), factorial(multiplyByInt(setNumberFromChar((char*)ONE), n))));
+            change_sign = 0;
+        } else {
+            plusEquals(step, divide(raiseByPow(num, n), factorial(multiplyByInt(setNumberFromChar((char*)ONE), n))));
+            change_sign = 1;
+        }
+        n += 2;
+    }
+    return step;
+
+}
+
 
 void setMaxPrecision(Number* num, int precision) {
     TempNumber *temp = (TempNumber *) calloc(1, sizeof(TempNumber));

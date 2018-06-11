@@ -142,17 +142,26 @@ int main() {
 //    res = raiseByPow(num6, 2);
 //    assert(strcmp(numToChar(res), "1.21") == 0 && "raiseByPow test01 failed");
 
-    Number* num7 = setNumberFromChar((char*)"5.0");
-    Number* res = Log(num7);
+//    Number* num7 = setNumberFromChar((char*)"5.0");
+//    Number* res = Log(num7);
 //     FIXME minus in front
-    res->negative = 0;
-    debug("RES IS:");
-    printEntry(res);
+//    res->negative = 0;
+//    debug("RES IS:");
+//    printEntry(res);
 //    debug("whole %d", res->digits_whole);
 //    debug("decimal %d", res->digits_decimal);
-    setPrecision(res, 100);
-    debug("RES:");
+//    setPrecision(res, 100);
+//    debug("RES:");
+//    printEntry(res);
+
+    Number* num8 = setNumberFromChar((char*)"20.0");
+    Number* res = Sine(num8);
+    debug("RES IS");
     printEntry(res);
+
+
+//        0.91294525072762765437609998384568230129793258370818995630512811476884891934907297604448004964046997
+
 
 //    Number* num7 = setNumberFromChar((char*)"6969131687242798353909465020576131687242798.3539094650205761316872427983539094650205761316872427983539042946502057613168724279835390946502057613168724279835390946502057613168724279835390946502057613168724279835351440329218106995884773662551440329218106995884773662551440329218106995884773662551440329218106995884773662551440329218106995884773662551440329218106995884773662551440329218106995884773662551440329218107035390946502057613168724279835390946502057613168724279835390946502057613168724279835390946553909465020576");
 //    setPrecision(num7, 500);

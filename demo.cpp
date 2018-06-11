@@ -13,10 +13,10 @@
 
 
 int main() {
-//    Number* num1 = setNumberFromChar((char*)"81234812384091238.8901234");
-//    Number* num2 = setNumberFromChar((char*)"-12380441238423.82431432");
-//
-//    Number* res;
+    Number* num1 = setNumberFromChar((char*)"512000000000.0");
+    Number* num2 = setNumberFromChar((char*)"362880.0");
+
+    Number* res;
 //
 //    /* testing arithmetic */
 //    res = addNumbers(num1, num2);
@@ -28,8 +28,8 @@ int main() {
 //    res = multiplyNumbers(num1, num2);
 //    assert(strcmp(numToChar(res), "-1005722821235625557767394406067.695067825187088") == 0 && "multiplyNumbers test01 failed");
 //
-//    res = divideNumbers(num1, num2);
-//    printEntry(res);
+    res = divideNumbers(num1, num2);
+    printEntry(res);
 //    assert(strcmp(numToChar(res), "-6561.54419860025807258480133651369799292598220471119087440522753152172937147050145087534158469354169467861073368962805080144763639103815994729925250725392659630057069975612925521735560029401045650694433091") == 0 && "divideNumbers test01 failed");
 //    /* // testing arithmetic */
 //
@@ -154,10 +154,10 @@ int main() {
 //    debug("RES:");
 //    printEntry(res);
 
-    Number* num8 = setNumberFromChar((char*)"20.0");
-    Number* res = Sine(num8);
-    debug("RES IS");
-    printEntry(res);
+//    Number* num8 = setNumberFromChar((char*)"20.0");
+//    Number* res = Sine(num8);
+//    debug("RES IS");
+//    printEntry(res);
 
 
 //        0.91294525072762765437609998384568230129793258370818995630512811476884891934907297604448004964046997

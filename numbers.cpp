@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <climits>
 
 // Header file with useful debugging macros
 #include "dbg.h"
@@ -1375,14 +1376,58 @@ Number* Log(Number* num) {
     return ret_num;
 }
 
+
+void setMaxPrecision(Number* num, int precision) {
+    debug("inside set max");
+    TempNumber *temp = (TempNumber *) calloc(1, sizeof(TempNumber));
+    int whole_len = getWholeLen(num);
+    int decimal_len = getDecimalLen(num);
+
+    temp->digits_whole = whole_len + decimal_len;
+
+    for (int i = 0; i < decimal_len; i++) {
+        temp->whole_part[decimal_len - 1 - i] = num->decimal_part[i];
+    }
+    for (int i = 0; i < whole_len; i++) {
+        temp->whole_part[decimal_len + i] = num->whole_part[i];
+    }
+
+    // TODO rm magic numbers
+    int rounded_index = temp->whole_part[temp->digits_whole - precision - 1];
+
+    num->digits_decimal = precision - whole_len;
+    for (int i = temp->digits_whole - whole_len-1, j = 0; i > temp->digits_whole - precision; i--, j++) {
+        num->decimal_part[j] = temp->whole_part[i];
+    }
+
+    if (rounded_index >= 5) {
+        Number* increment_val = setNewNumber();
+        increment_val->digits_decimal = num->digits_decimal;
+        increment_val->decimal_part[increment_val->digits_decimal-1] = 1;
+        plusEquals(num, increment_val);
+    }
+    debug("DW %d", num->digits_whole);
+    debug("DD %d", num->digits_decimal);
+}
+
+
+
 // this operation is irreversible!
 void setPrecision(Number* num, int precision) {
-    debug("INTRO");
+    debug("INSIDE");
+    debug("DW %d", num->digits_whole);
+    debug("DD %d", num->digits_decimal);
+    // TODO rm magic numbers
+    if (getWholeLen(num) + getDecimalLen(num) >= 500 && (getDecimalLen(num) != 0 && num->decimal_part[0] != 0)) {
+        setMaxPrecision(num, precision);
+        return;
+    }
     Number *ten = setNumberFromChar((char *) "10.0");
     // TODO case when higher precision is added (?)
     // TODO check precision for negative values and zero
     // TODO wrap num->digits_whole in a variable
     // TODO fixNumber might be needed
+    debug("DW %d", num->digits_whole);
     if (num->digits_whole >= precision) {
         debug("A1");
         if (num->digits_whole > precision) {
@@ -1403,6 +1448,7 @@ void setPrecision(Number* num, int precision) {
                 numberToBeSubtracted->digits_whole = rounded_index + 1;
                 Number *numberToAddWhenRounding = subtractNumbers(roundingTens, numberToBeSubtracted);
                 plusEquals(num, numberToAddWhenRounding);
+
             }
         }
         if (num->decimal_part[0] > 5) {
@@ -1412,13 +1458,21 @@ void setPrecision(Number* num, int precision) {
         num->digits_decimal = 1;
         num->decimal_part[0] = 0;
     } else if (num->digits_whole < precision) {
+        debug("whole2 %d", num->digits_whole);
+        debug("decimal2 %d", num->digits_decimal);
+        // TODO manually shifting comma?
         Number* ShiftedComma = multiplyNumbers(num, raiseByPow(ten, num->digits_decimal));
+        debug("SC");
+        printEntry(ShiftedComma);
+//        exit(1);
         setPrecision(ShiftedComma, precision);
         divideEquals(ShiftedComma, raiseByPow(ten, num->digits_decimal));
         // TODO do without ShiftedComma variable
         assign(num, ShiftedComma);
     }
+
 }
+
 
 
 

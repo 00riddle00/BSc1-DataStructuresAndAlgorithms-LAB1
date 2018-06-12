@@ -413,7 +413,7 @@ Number *addNumbers(Number* num1, Number* num2) {
         res = subtract(num1, num2);
     // first number is negative, second - positive
     } else if (sign1 && !sign2) {
-        res = subtract(num1, num2);
+        res = subtract(num2, num1);
     }
 
     return res;
@@ -1128,8 +1128,6 @@ Number* divide(Number* num1, Number* num2) {
                 counter *= 10;
             }
             minusEquals(tmp, temp2);
-            debug("TMP_after");
-            printEntry(tmp);
 
         }
         plusEquals(res, multiplyByInt(one, counter));
@@ -1474,16 +1472,36 @@ Number* Sine(Number* num) {
     int n = 1;
 
     int change_sign = 0;
-    while (n < 10) {
+    while (n < 8) {
         if (change_sign) {
+            debug("HERE");
+
+            if (n == 7) {
+                step->negative = 0;
+            }
+            printEntry(step);
+//            printEntry(divide(raiseByPow(num, n), factorial(multiplyByInt(setNumberFromChar((char*)ONE), n))));
             minusEquals(step, divide(raiseByPow(num, n), factorial(multiplyByInt(setNumberFromChar((char*)ONE), n))));
+            printEntry(step);
             change_sign = 0;
         } else {
+            if (n == 5) {
+                debug("STEPUKAS");
+                printEntry(step);
+                printEntry(raiseByPow(num, n));
+                printEntry(factorial(multiplyByInt(setNumberFromChar((char*)ONE), n)));
+                printEntry(divide(raiseByPow(num, n), factorial(multiplyByInt(setNumberFromChar((char*)ONE), n))));
+            }
             plusEquals(step, divide(raiseByPow(num, n), factorial(multiplyByInt(setNumberFromChar((char*)ONE), n))));
+            if (n == 5) {
+                debug("STEPUKAS2");
+                printEntry(step);
+            }
             change_sign = 1;
         }
         n += 2;
     }
+    exit(1);
     return step;
 
 }

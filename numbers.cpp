@@ -1097,10 +1097,6 @@ Number* divide(Number* num1, Number* num2) {
      // temp hack to speed it up
     int iter = 0;
     while (tmp->digits_whole > num2->digits_whole) {
-        if (iter == 3) {
-            break;
-        }
-//    if (tmp->digits_whole > num2->digits_whole && (num2->digits_whole > 1 || (num2->digits_whole == 1 && num2->whole_part[0] != 0))) {
         counter = 0;
         Number* multipl = setNewNumber();
         Number* temp2 = setNewNumber();
@@ -1120,22 +1116,30 @@ Number* divide(Number* num1, Number* num2) {
              multipl = setNumberFromDouble((double)mul,2,1);
          }
         temp2 = multiply(num2, multipl);
+         debug("TEMP2");
+         printEntry(temp2);
         counter += mul;
         diff_in_tens = tmp->digits_whole - temp2->digits_whole;
+        debug("DIT %d", diff_in_tens);
 
-        Number* temp3 = setNewNumber();
-        assign(temp3, temp2);
-        multiplyEquals(temp3, raiseByPow(ten, diff_in_tens));
+        if (diff_in_tens == 0) {
+            minusEquals(tmp, temp2);
+        } else {
+            Number *temp3 = setNewNumber();
+            assign(temp3, temp2);
+            multiplyEquals(temp3, raiseByPow(ten, diff_in_tens));
 
-         if (compareGreaterThan(temp3, tmp)) {
-             diff_in_tens--;
-         }
-         free(temp3);
-         multiplyEquals(temp2, raiseByPow(ten, diff_in_tens));
-         for (int i = 0; i < diff_in_tens; i++) {
-             counter *= 10;
-         }
-        minusEquals(tmp, temp2);
+            if (compareGreaterThan(temp3, tmp)) {
+                diff_in_tens--;
+            }
+            free(temp3);
+            multiplyEquals(temp2, raiseByPow(ten, diff_in_tens));
+            for (int i = 0; i < diff_in_tens; i++) {
+                counter *= 10;
+            }
+            minusEquals(tmp, temp2);
+        }
+
         plusEquals(res, multiplyByInt(one, counter));
 
         free(multipl);
@@ -1147,7 +1151,7 @@ Number* divide(Number* num1, Number* num2) {
         debug("TMP IS");
         printEntry(tmp);
     }
-    exit(1);
+//    exit(1);
 
 
     // run the long division loop

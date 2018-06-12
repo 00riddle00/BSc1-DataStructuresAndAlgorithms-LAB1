@@ -1106,21 +1106,16 @@ Number* divide(Number* num1, Number* num2) {
         int diff_in_tens;
 
           mult = (double)tmp->whole_part[tmp->digits_whole-1] / ((double)num2->whole_part[num2->digits_whole-1]+1);
-          debug("here %f", mult);
          mult *= 10;
          mul = (int)mult;
-        debug("here2 %d", mul);
          if (mul < 10) {
              multipl = setNumberFromDouble((double)mul,1,1);
          } else {
              multipl = setNumberFromDouble((double)mul,2,1);
          }
         temp2 = multiply(num2, multipl);
-         debug("TEMP2");
-         printEntry(temp2);
         counter += mul;
         diff_in_tens = tmp->digits_whole - temp2->digits_whole;
-        debug("DIT %d", diff_in_tens);
 
         if (diff_in_tens == 0) {
             minusEquals(tmp, temp2);
@@ -1146,38 +1141,12 @@ Number* divide(Number* num1, Number* num2) {
         free(ten);
         iter++;
     }
-    debug("RES");
-    printEntry(res);
-    debug("tmp");
-    printEntry(tmp);
-    debug("num2");
-    printEntry(num2);
     if (iter) {
         return addNumbers(res, divideNumbers(tmp, num2));
     }
-    //exit(1);
-
-    //exit(1);
     counter = 0;
-    debug("OUT OF WHILE LOOP");
-    debug("TMP IS");
-    printEntry(tmp);
-    debug("RESULT IS");
-    printEntry(res);
-    Number* temp_res = setNewNumber();
-    assign(temp_res, res);
-    res = setNewNumber();
-    debug("1::::%d", tmp->digits_decimal);
-    debug("2::::%d", tmp->digits_whole);
-    // run the long division loop
     while (1) {
-        debug("Inside while loop");
         tmp = subtract(tmp, num2);
-        debug("TMP NOW IS");
-        printEntry(tmp);
-        //if (counter == 3) {
-            //exit(1);
-        //}
         // if remainder is not yet divided into equal parts or does
         // not yet become negative, continue the division
         if ((tmp->digits_whole > 1 || tmp->whole_part[0] != 0) && !(tmp->negative)) {
@@ -1194,7 +1163,6 @@ Number* divide(Number* num1, Number* num2) {
             free(zero_one);
             return res;
         } else {
-            debug("ELSE IS HERE");
             // if the divisor (second number) is greater than the remainder,
             // multiply the remainder by ten and continue the division loop.
             if (counter == 0) {

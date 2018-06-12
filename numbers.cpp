@@ -462,9 +462,13 @@ Number* multiplyNumbers(Number* num1, Number* num2) {
 
 Number* divideNumbers(Number* num1, Number* num2) {
 
-    Number* res = divide(num1, num2);
     int sign1 = num1->negative;
     int sign2 = num2->negative;
+
+    num1->negative = 0;
+    num2->negative = 0;
+
+    Number* res = divide(num1, num2);
 
     // both numbers positive
     if (!sign1 && !sign2) {
@@ -1097,7 +1101,11 @@ Number* divide(Number* num1, Number* num2) {
      // temp hack to speed it up
     int iter = 0;
     while (tmp->digits_whole > num2->digits_whole) {
+        debug("While");
         counter = 0;
+//        if (iter == 10){
+//            exit(1);
+//        }
         Number* multipl = setNewNumber();
         Number* temp2 = setNewNumber();
         Number *ten = setNumberFromChar((char *) "10.0");
@@ -1113,9 +1121,13 @@ Number* divide(Number* num1, Number* num2) {
          } else {
              multipl = setNumberFromDouble((double)mul,2,1);
          }
+         debug("MULT %d", mul);
+         printEntry(multipl);
         temp2 = multiply(num2, multipl);
+        printEntry(temp2);
         counter += mul;
         diff_in_tens = tmp->digits_whole - temp2->digits_whole;
+        debug("DIT %d", diff_in_tens);
 
         if (diff_in_tens == 0) {
             minusEquals(tmp, temp2);
@@ -1125,10 +1137,15 @@ Number* divide(Number* num1, Number* num2) {
             multiplyEquals(temp3, raiseByPow(ten, diff_in_tens));
 
             if (compareGreaterThan(temp3, tmp)) {
+                debug("cGT");
                 diff_in_tens--;
             }
             free(temp3);
+            debug("RAISED BY POW %d", diff_in_tens);
+            printEntry(raiseByPow(ten, diff_in_tens));
             multiplyEquals(temp2, raiseByPow(ten, diff_in_tens));
+            debug("TEMP@");
+            printEntry(temp2);
             for (int i = 0; i < diff_in_tens; i++) {
                 counter *= 10;
             }
@@ -1136,13 +1153,21 @@ Number* divide(Number* num1, Number* num2) {
         }
         plusEquals(res, multiplyByInt(one, counter));
 
+        debug("tmp");
+        printEntry(tmp);
         free(multipl);
         free(temp2);
         free(ten);
         iter++;
+        debug("RESRESRESRES");
+        printEntry(res);
     }
     if (iter) {
-        return addNumbers(res, divideNumbers(tmp, num2));
+        debug("MAIN");
+        printEntry(res);
+        printEntry(divide(tmp, num2));
+        exit(1);
+//        return addNumbers(res, divide(tmp, num2));
     }
     counter = 0;
     while (1) {
@@ -1392,6 +1417,10 @@ Number* nextPrime(Number* num) {
 
 
 Number* raiseByPow(Number* num, int power) {
+    if (power == 0) {
+        Number* one = setNumberFromChar((char*)ONE);
+        return one;
+    }
     Number* ret_val = setNewNumber();
     assign(ret_val, num);
 

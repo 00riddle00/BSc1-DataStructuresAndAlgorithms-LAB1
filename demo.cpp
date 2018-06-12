@@ -13,16 +13,31 @@
 
 
 int main() {
-    Number* num1 = setNumberFromChar((char*)"512000000000.0");
-//    Number* num1 = setNumberFromChar((char*)"995840.0");
-//    Number* num1 = setNumberFromChar((char*)"5350400.0");
 
-//    Number* num1 = setNumberFromChar((char*)"76544000000.0");
-    Number* num2 = setNumberFromChar((char*)"362880.0");
+    Number* num1 = setNumberFromChar((char*)"81234812384091238.8901234");
+//    Number* num1 = setNumberFromChar((char*)"142922272415189.6313164");
+
+    Number* num2 = setNumberFromChar((char*)"-12380441238423.82431432");
 
     Number* res;
+
+/* FAIL teritory */
 //
-//    /* testing arithmetic */
+//    Number* num1 = setNumberFromChar((char*)"512000000000.0");
+//    Number* num1 = setNumberFromChar((char*)"995840.0");
+//    Number* num1 = setNumberFromChar((char*)"5350400.0");
+//
+//    Number* num1 = setNumberFromChar((char*)"76544000000.0");
+//    Number* num2 = setNumberFromChar((char*)"362880.0");
+//
+//    Number* res = divideNumbers(num1, num2);
+//    debug("RES IS");
+//    printEntry(res);
+//
+/* // FAIL teritory */
+
+
+    /* testing arithmetic */
 //    res = addNumbers(num1, num2);
 //    assert(strcmp(numToChar(res), "81222431942852815.06580908") == 0 && "addNumbers test01 failed");
 //
@@ -33,10 +48,10 @@ int main() {
 //    assert(strcmp(numToChar(res), "-1005722821235625557767394406067.695067825187088") == 0 && "multiplyNumbers test01 failed");
 //
     res = divideNumbers(num1, num2);
-    debug("RES IS");
+    debug("RES");
     printEntry(res);
-//    assert(strcmp(numToChar(res), "-6561.54419860025807258480133651369799292598220471119087440522753152172937147050145087534158469354169467861073368962805080144763639103815994729925250725392659630057069975612925521735560029401045650694433091") == 0 && "divideNumbers test01 failed");
-//    /* // testing arithmetic */
+    assert(strcmp(numToChar(res), "-6561.54419860025807258480133651369799292598220471119087440522753152172937147050145087534158469354169467861073368962805080144763639103815994729925250725392659630057069975612925521735560029401045650694433091") == 0 && "divideNumbers test01 failed");
+    /* // testing arithmetic */
 //
 //    /* testing modulus  (all possible combinations the quotient of two positive/negative numbers */
 //    res = modulus(setNumberFromChar((char*)"-20.0"), setNumberFromChar((char*)"-7.0"));

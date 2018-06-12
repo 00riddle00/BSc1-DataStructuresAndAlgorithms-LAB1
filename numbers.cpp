@@ -637,6 +637,16 @@ Number* subtract(Number* num1, Number* num2) {
     // compare the two numbers
     int rs = compare(num1, num2);
 
+    debug("-------------entries--------------");
+    debug("n1ng %d", num1->negative);
+    debug("n1dw %d", num1->digits_whole);
+    debug("n1dd %d", num1->digits_decimal);
+    printEntry(num1);
+    debug("n2ng %d", num2->negative);
+    debug("n2dw %d", num2->digits_whole);
+    debug("n2dd %d", num2->digits_decimal);
+    printEntry(num2);
+
     Number* first;
     Number* second;
 
@@ -668,22 +678,45 @@ Number* subtract(Number* num1, Number* num2) {
     // more decimal digits
     res->digits_decimal = (first->digits_decimal >= second->digits_decimal) ? first->digits_decimal : second->digits_decimal;
 
+    // TODO is first number really bigger?
     // copy decimal digits to the result
     for (int i = 0; i < res->digits_decimal; i++) {
         res->decimal_part[i] = first->decimal_part[i];
     }
 
-    // set whole digits of the result to that the bigger number's 
+    // TODO is first number really bigger?
+    // set whole digits of the result to that the bigger number's
     res->digits_whole = first->digits_whole;
     for (int i = 0; i < res->digits_whole; i++) {
         res->whole_part[i] = first->whole_part[i];
     }
 
+    if (second->digits_decimal < first->digits_decimal) {
+        int dd = second->digits_decimal;
+        second->digits_decimal = first->digits_decimal;
+        for (int i = dd; i <= first->digits_decimal-1; i++) {
+            second->decimal_part[i] = 0;
+        }
+    }
+
+
     // set the sign of the result
     res->negative = negative;
 
-    
-    /* actual subraction starts   */
+    debug("RES CHECKPOINT1");
+    printEntry(res);
+    debug("FIRST/SECOND");
+
+    debug("fi ng %d", first->negative);
+    debug("fi dw %d", first->digits_whole);
+    debug("fi dd %d", first->digits_decimal);
+    printEntry(first);
+    debug("se ng %d", second->negative);
+    debug("se dw %d", second->digits_whole);
+    debug("se dd %d", second->digits_decimal);
+    printEntry(second);
+
+    /* actual subtraction starts   */
     
     // subtract decimal digits
     for (int i = res->digits_decimal - 1; i >= 0; i--) {
@@ -720,6 +753,8 @@ Number* subtract(Number* num1, Number* num2) {
             res->decimal_part[i] = result;
         }
     }
+    debug("RES CHECKPOINT2");
+    printEntry(res);
 
     // subtract whole digits
     for (int i = 0; i < second->digits_whole; i++) {
@@ -740,6 +775,8 @@ Number* subtract(Number* num1, Number* num2) {
             res->whole_part[i] = result;
         }
     }
+    debug("THIS IS RES");
+    printEntry(res);
 
     fixNumber(res);
     return res;
@@ -1108,6 +1145,7 @@ Number* divide(Number* num1, Number* num2) {
         debug("DIT %d", diff_in_tens);
 
         if (diff_in_tens == 0) {
+            debug("HERE");
             minusEquals(tmp, temp2);
         } else {
             Number *temp3 = setNewNumber();
@@ -1127,7 +1165,16 @@ Number* divide(Number* num1, Number* num2) {
             for (int i = 0; i < diff_in_tens; i++) {
                 counter *= 10;
             }
-            minusEquals(tmp, temp2);
+            debug("TMP");
+            printEntry(tmp);
+            debug("TEMP2");
+            printEntry(temp2);
+            debug("COUNTER %d", counter);
+            tmp = subtractNumbers(tmp, temp2);
+//            minusEquals(tmp, temp2);
+            debug("TMP_after");
+            printEntry(tmp);
+
         }
         plusEquals(res, multiplyByInt(one, counter));
 
@@ -1196,7 +1243,7 @@ Number* divide(Number* num1, Number* num2) {
         // not yet become negative, continue the division
         if ((tmp->digits_whole > 1 || tmp->whole_part[0] != 0) && !(tmp->negative)) {
             debug("HEREEEEE");
-            exit(1);
+//            exit(1);
             res = add(res, one, 0);
             counter++;
             continue;

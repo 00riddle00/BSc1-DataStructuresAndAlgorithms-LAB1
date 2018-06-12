@@ -15,11 +15,14 @@
 int main() {
 
     Number* num1 = setNumberFromChar((char*)"81234812384091238.8901234");
+
 //    Number* num1 = setNumberFromChar((char*)"142922272415189.6313164");
 
     Number* num2 = setNumberFromChar((char*)"-12380441238423.82431432");
 
     Number* res;
+
+
 
 /* FAIL teritory */
 //
@@ -30,9 +33,15 @@ int main() {
 //    Number* num1 = setNumberFromChar((char*)"76544000000.0");
 //    Number* num2 = setNumberFromChar((char*)"362880.0");
 //
-//    Number* res = divideNumbers(num1, num2);
-//    debug("RES IS");
-//    printEntry(res);
+
+    Number* num3 = setNumberFromChar((char*)"81234812384091238.8901234");
+    Number* num4 = setNumberFromChar((char*)"49521764953695297.25728");
+
+
+    res = subtractNumbers(num3, num4);
+    debug("RES IS");
+    printEntry(res);
+    assert(strcmp(numToChar(res), "31713047430395941.6328434") == 0 && "subtractNumbers test01 failed");
 //
 /* // FAIL teritory */
 

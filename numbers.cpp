@@ -1050,24 +1050,6 @@ Number* multiplyByInt(Number* num1, int integer) {
 // FIXME hence the temporary guard if condition is added to stop 
 // FIXME division after the resulting number reaches 35 digits.
 Number* divide(Number* num1, Number* num2) {
-    int quotient;
-
-    int rs = compare(num1, num2);
-
-    // if first is greater, the quotient will 
-    // be greater than 1
-    if (rs == 1) {
-        quotient = 1;
-    // if first is smaller than second, 
-    // the quotient will be less than 1
-    } else if (rs == 2) {
-        quotient = 0;
-    // else if numbers are equal, return one 
-    } else if (rs == 3) {
-        // initalize Number with the value of one
-        Number* one = setNumberFromChar((char*) ONE);
-        return one;
-    }
 
     Number* res = setNewNumber();
 
@@ -1085,13 +1067,9 @@ Number* divide(Number* num1, Number* num2) {
     //tmp = num1;
 
     // set the remainder as the dividend at first
-    Number* remainder = num1;
+//    Number* remainder = num1;
 
-    if (!quotient) {
-        one = multiply(one, zero_one);
-        tmp = multiply(tmp, ten);
-        remainder = multiply(remainder, ten);
-    }
+
 
     // sets how many times the divisor is subtracted from remainder
     // ie sets the whole number = remainder / divisor
@@ -1165,16 +1143,60 @@ Number* divide(Number* num1, Number* num2) {
     if (iter) {
         debug("MAIN");
         printEntry(res);
-        printEntry(divide(tmp, num2));
-        exit(1);
+//        printEntry(divide(tmp, num2));
+//        exit(1);
 //        return addNumbers(res, divide(tmp, num2));
     }
+
+
     counter = 0;
+
+    int quotient;
+
+    int rs = compare(tmp, num2);
+
+    // if first is greater, the quotient will
+    // be greater than 1
+    if (rs == 1) {
+        quotient = 1;
+    // if first is smaller than second,
+    // the quotient will be less than 1
+    } else if (rs == 2) {
+        quotient = 0;
+    // else if numbers are equal, return one
+    } else if (rs == 3) {
+        // initalize Number with the value of one
+        Number* one = setNumberFromChar((char*) ONE);
+//        return one;
+        return addNumbers(res, one);
+    }
+
+
+    Number* remainder = setNewNumber();
+    assign(remainder, tmp);
+
+    if (!quotient) {
+        one = multiply(one, zero_one);
+        tmp = multiply(tmp, ten);
+        remainder = multiply(remainder, ten);
+    }
+
+
+
+    debug("QQQQQQ %d", quotient);
+    printEntry(tmp);
+    debug("RES");
+    printEntry(res);
+    printEntry(num2);
+
     while (1) {
         tmp = subtract(tmp, num2);
+        debug("WHILE SUBTRACT");
         // if remainder is not yet divided into equal parts or does
         // not yet become negative, continue the division
         if ((tmp->digits_whole > 1 || tmp->whole_part[0] != 0) && !(tmp->negative)) {
+            debug("HEREEEEE");
+            exit(1);
             res = add(res, one, 0);
             counter++;
             continue;
@@ -1188,6 +1210,7 @@ Number* divide(Number* num1, Number* num2) {
             free(zero_one);
             return res;
         } else {
+            debug("ELSE IS HERE");
             // if the divisor (second number) is greater than the remainder,
             // multiply the remainder by ten and continue the division loop.
             if (counter == 0) {

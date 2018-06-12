@@ -1092,6 +1092,47 @@ Number* divide(Number* num1, Number* num2) {
     // sets how many times the divisor is subtracted from remainder
     // ie sets the whole number = remainder / divisor
     int counter = 0;
+//
+    Number* multipl = setNewNumber();
+    Number* temp2 = setNewNumber();
+
+     // temp hack to speed it up
+    if (tmp->digits_whole > num2->digits_whole && (num2->digits_whole > 1 || (num2->digits_whole == 1 && num2->whole_part[0] != 0))) {
+//        int digit_diff = tmp->digits_whole - num2->digits_whole;
+         double mult = (double)tmp->whole_part[tmp->digits_whole-1] / ((double)num2->whole_part[num2->digits_whole-1]+1);
+         mult *= 10;
+         int mul = (int)mult;
+         debug("MULT %d", mul);
+         if (mul < 10) {
+             multipl = setNumberFromDouble((double)mul,1,1);
+         } else {
+             multipl = setNumberFromDouble((double)mul,2,1);
+         }
+         debug("multipl");
+         printEntry(multipl);
+         Number *ten = setNumberFromChar((char *) "10.0");
+        temp2 = multiply(num2, multipl);
+        counter += mul;
+        debug("temp2");
+        printEntry(temp2);
+        int diff_in_tens = tmp->digits_whole - temp2->digits_whole;
+         multiplyEquals(temp2, raiseByPow(ten, diff_in_tens));
+        debug("temp2");
+        printEntry(temp2);
+         for (int i = 0; i < diff_in_tens; i++) {
+             debug("HJERE");
+             counter *= 10;
+         }
+         debug("counter %d", counter);
+
+        minusEquals(tmp, temp2);
+        printEntry(tmp);
+        assign(res, one);
+        res = multiplyByInt(res, counter);
+        debug("RES");
+        printEntry(res);
+    }
+
 
     // run the long division loop
     while (1) {
@@ -1136,6 +1177,7 @@ Number* divide(Number* num1, Number* num2) {
             // FIXME temporary guard, else the program stops running 
             // FIXME (gets stuck)
             if (res->digits_decimal >= 200) {
+                debug("More than");
                 free(one);
                 free(ten);
                 free(zero_one);

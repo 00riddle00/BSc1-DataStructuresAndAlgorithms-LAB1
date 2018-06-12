@@ -1151,7 +1151,7 @@ Number* divide(Number* num1, Number* num2) {
         debug("TMP IS");
         printEntry(tmp);
     }
-//    exit(1);
+    exit(1);
 
 
     // run the long division loop

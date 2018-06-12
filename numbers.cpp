@@ -637,16 +637,6 @@ Number* subtract(Number* num1, Number* num2) {
     // compare the two numbers
     int rs = compare(num1, num2);
 
-    debug("-------------entries--------------");
-    debug("n1ng %d", num1->negative);
-    debug("n1dw %d", num1->digits_whole);
-    debug("n1dd %d", num1->digits_decimal);
-    printEntry(num1);
-    debug("n2ng %d", num2->negative);
-    debug("n2dw %d", num2->digits_whole);
-    debug("n2dd %d", num2->digits_decimal);
-    printEntry(num2);
-
     Number* first;
     Number* second;
 
@@ -703,19 +693,6 @@ Number* subtract(Number* num1, Number* num2) {
     // set the sign of the result
     res->negative = negative;
 
-    debug("RES CHECKPOINT1");
-    printEntry(res);
-    debug("FIRST/SECOND");
-
-    debug("fi ng %d", first->negative);
-    debug("fi dw %d", first->digits_whole);
-    debug("fi dd %d", first->digits_decimal);
-    printEntry(first);
-    debug("se ng %d", second->negative);
-    debug("se dw %d", second->digits_whole);
-    debug("se dd %d", second->digits_decimal);
-    printEntry(second);
-
     /* actual subtraction starts   */
     
     // subtract decimal digits
@@ -753,8 +730,6 @@ Number* subtract(Number* num1, Number* num2) {
             res->decimal_part[i] = result;
         }
     }
-    debug("RES CHECKPOINT2");
-    printEntry(res);
 
     // subtract whole digits
     for (int i = 0; i < second->digits_whole; i++) {
@@ -775,8 +750,6 @@ Number* subtract(Number* num1, Number* num2) {
             res->whole_part[i] = result;
         }
     }
-    debug("THIS IS RES");
-    printEntry(res);
 
     fixNumber(res);
     return res;
@@ -1116,7 +1089,6 @@ Number* divide(Number* num1, Number* num2) {
      // temp hack to speed it up
     int iter = 0;
     while (tmp->digits_whole > num2->digits_whole) {
-        debug("While");
         counter = 0;
 //        if (iter == 10){
 //            exit(1);
@@ -1136,16 +1108,11 @@ Number* divide(Number* num1, Number* num2) {
          } else {
              multipl = setNumberFromDouble((double)mul,2,1);
          }
-         debug("MULT %d", mul);
-         printEntry(multipl);
         temp2 = multiply(num2, multipl);
-        printEntry(temp2);
         counter += mul;
         diff_in_tens = tmp->digits_whole - temp2->digits_whole;
-        debug("DIT %d", diff_in_tens);
 
         if (diff_in_tens == 0) {
-            debug("HERE");
             minusEquals(tmp, temp2);
         } else {
             Number *temp3 = setNewNumber();
@@ -1153,48 +1120,25 @@ Number* divide(Number* num1, Number* num2) {
             multiplyEquals(temp3, raiseByPow(ten, diff_in_tens));
 
             if (compareGreaterThan(temp3, tmp)) {
-                debug("cGT");
                 diff_in_tens--;
             }
             free(temp3);
-            debug("RAISED BY POW %d", diff_in_tens);
-            printEntry(raiseByPow(ten, diff_in_tens));
             multiplyEquals(temp2, raiseByPow(ten, diff_in_tens));
-            debug("TEMP@");
-            printEntry(temp2);
             for (int i = 0; i < diff_in_tens; i++) {
                 counter *= 10;
             }
-            debug("TMP");
-            printEntry(tmp);
-            debug("TEMP2");
-            printEntry(temp2);
-            debug("COUNTER %d", counter);
-            tmp = subtractNumbers(tmp, temp2);
-//            minusEquals(tmp, temp2);
+            minusEquals(tmp, temp2);
             debug("TMP_after");
             printEntry(tmp);
 
         }
         plusEquals(res, multiplyByInt(one, counter));
 
-        debug("tmp");
-        printEntry(tmp);
         free(multipl);
         free(temp2);
         free(ten);
         iter++;
-        debug("RESRESRESRES");
-        printEntry(res);
     }
-    if (iter) {
-        debug("MAIN");
-        printEntry(res);
-//        printEntry(divide(tmp, num2));
-//        exit(1);
-//        return addNumbers(res, divide(tmp, num2));
-    }
-
 
     counter = 0;
 
@@ -1230,20 +1174,11 @@ Number* divide(Number* num1, Number* num2) {
 
 
 
-    debug("QQQQQQ %d", quotient);
-    printEntry(tmp);
-    debug("RES");
-    printEntry(res);
-    printEntry(num2);
-
     while (1) {
         tmp = subtract(tmp, num2);
-        debug("WHILE SUBTRACT");
         // if remainder is not yet divided into equal parts or does
         // not yet become negative, continue the division
         if ((tmp->digits_whole > 1 || tmp->whole_part[0] != 0) && !(tmp->negative)) {
-            debug("HEREEEEE");
-//            exit(1);
             res = add(res, one, 0);
             counter++;
             continue;
@@ -1257,7 +1192,6 @@ Number* divide(Number* num1, Number* num2) {
             free(zero_one);
             return res;
         } else {
-            debug("ELSE IS HERE");
             // if the divisor (second number) is greater than the remainder,
             // multiply the remainder by ten and continue the division loop.
             if (counter == 0) {
@@ -1583,8 +1517,6 @@ void setMaxPrecision(Number* num, int precision) {
         increment_val->decimal_part[increment_val->digits_decimal-1] = 1;
         plusEquals(num, increment_val);
     }
-    debug("DW %d", num->digits_whole);
-    debug("DD %d", num->digits_decimal);
 }
 
 

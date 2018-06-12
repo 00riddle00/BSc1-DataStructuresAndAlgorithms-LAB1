@@ -1093,45 +1093,61 @@ Number* divide(Number* num1, Number* num2) {
     // ie sets the whole number = remainder / divisor
     int counter = 0;
 //
-    Number* multipl = setNewNumber();
-    Number* temp2 = setNewNumber();
 
      // temp hack to speed it up
-    if (tmp->digits_whole > num2->digits_whole && (num2->digits_whole > 1 || (num2->digits_whole == 1 && num2->whole_part[0] != 0))) {
-//        int digit_diff = tmp->digits_whole - num2->digits_whole;
-         double mult = (double)tmp->whole_part[tmp->digits_whole-1] / ((double)num2->whole_part[num2->digits_whole-1]+1);
+    int iter = 0;
+    while (tmp->digits_whole > num2->digits_whole) {
+        if (iter == 3) {
+            break;
+        }
+//    if (tmp->digits_whole > num2->digits_whole && (num2->digits_whole > 1 || (num2->digits_whole == 1 && num2->whole_part[0] != 0))) {
+        counter = 0;
+        Number* multipl = setNewNumber();
+        Number* temp2 = setNewNumber();
+        Number *ten = setNumberFromChar((char *) "10.0");
+        double mult;
+        int mul;
+        int diff_in_tens;
+
+          mult = (double)tmp->whole_part[tmp->digits_whole-1] / ((double)num2->whole_part[num2->digits_whole-1]+1);
+          debug("here %f", mult);
          mult *= 10;
-         int mul = (int)mult;
-         debug("MULT %d", mul);
+         mul = (int)mult;
+        debug("here2 %d", mul);
          if (mul < 10) {
              multipl = setNumberFromDouble((double)mul,1,1);
          } else {
              multipl = setNumberFromDouble((double)mul,2,1);
          }
-         debug("multipl");
-         printEntry(multipl);
-         Number *ten = setNumberFromChar((char *) "10.0");
         temp2 = multiply(num2, multipl);
         counter += mul;
-        debug("temp2");
-        printEntry(temp2);
-        int diff_in_tens = tmp->digits_whole - temp2->digits_whole;
+        diff_in_tens = tmp->digits_whole - temp2->digits_whole;
+
+        Number* temp3 = setNewNumber();
+        assign(temp3, temp2);
+        multiplyEquals(temp3, raiseByPow(ten, diff_in_tens));
+
+         if (compareGreaterThan(temp3, tmp)) {
+             diff_in_tens--;
+         }
+         free(temp3);
          multiplyEquals(temp2, raiseByPow(ten, diff_in_tens));
-        debug("temp2");
-        printEntry(temp2);
          for (int i = 0; i < diff_in_tens; i++) {
-             debug("HJERE");
              counter *= 10;
          }
-         debug("counter %d", counter);
-
         minusEquals(tmp, temp2);
-        printEntry(tmp);
-        assign(res, one);
-        res = multiplyByInt(res, counter);
-        debug("RES");
+        plusEquals(res, multiplyByInt(one, counter));
+
+        free(multipl);
+        free(temp2);
+        free(ten);
+        iter++;
+        debug("RESULT IS");
         printEntry(res);
+        debug("TMP IS");
+        printEntry(tmp);
     }
+    exit(1);
 
 
     // run the long division loop
@@ -1177,7 +1193,6 @@ Number* divide(Number* num1, Number* num2) {
             // FIXME temporary guard, else the program stops running 
             // FIXME (gets stuck)
             if (res->digits_decimal >= 200) {
-                debug("More than");
                 free(one);
                 free(ten);
                 free(zero_one);

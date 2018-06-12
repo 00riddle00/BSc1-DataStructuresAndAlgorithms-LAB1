@@ -13,7 +13,9 @@
 
 
 int main() {
-    Number* num1 = setNumberFromChar((char*)"512000000000.0");
+//    Number* num1 = setNumberFromChar((char*)"512000000000.0");
+    Number* num1 = setNumberFromChar((char*)"5350400.0");
+
 //    Number* num1 = setNumberFromChar((char*)"76544000000.0");
     Number* num2 = setNumberFromChar((char*)"362880.0");
 

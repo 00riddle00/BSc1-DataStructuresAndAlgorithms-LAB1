@@ -1472,36 +1472,17 @@ Number* Sine(Number* num) {
     int n = 1;
 
     int change_sign = 0;
-    while (n < 8) {
+    while (n <= 280) {
+        debug("%d", n);
         if (change_sign) {
-            debug("HERE");
-
-            if (n == 7) {
-                step->negative = 0;
-            }
-            printEntry(step);
-//            printEntry(divide(raiseByPow(num, n), factorial(multiplyByInt(setNumberFromChar((char*)ONE), n))));
             minusEquals(step, divide(raiseByPow(num, n), factorial(multiplyByInt(setNumberFromChar((char*)ONE), n))));
-            printEntry(step);
             change_sign = 0;
         } else {
-            if (n == 5) {
-                debug("STEPUKAS");
-                printEntry(step);
-                printEntry(raiseByPow(num, n));
-                printEntry(factorial(multiplyByInt(setNumberFromChar((char*)ONE), n)));
-                printEntry(divide(raiseByPow(num, n), factorial(multiplyByInt(setNumberFromChar((char*)ONE), n))));
-            }
             plusEquals(step, divide(raiseByPow(num, n), factorial(multiplyByInt(setNumberFromChar((char*)ONE), n))));
-            if (n == 5) {
-                debug("STEPUKAS2");
-                printEntry(step);
-            }
             change_sign = 1;
         }
         n += 2;
     }
-    exit(1);
     return step;
 
 }

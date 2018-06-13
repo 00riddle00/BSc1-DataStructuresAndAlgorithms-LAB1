@@ -1504,7 +1504,7 @@ Number* Sine(Number* num) {
 
     int change_sign = 0;
     while (n <= 200) {
-        printf("MySine: %d\n", n);
+        //printf("MySine: %d\n", n);
         if (change_sign) {
             minusEquals(step, divide(raiseByPow(num, n), factorial(multiplyByInt(setNumberFromChar((char*)ONE), n))));
             change_sign = 0;

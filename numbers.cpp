@@ -1494,7 +1494,6 @@ Number* Sine(Number* num) {
         n += 2;
     }
     return step;
-
 }
 
 

@@ -1198,7 +1198,8 @@ Number* divide(Number* num1, Number* num2) {
             free(one);
             free(ten);
             free(zero_one);
-//            free(tmp);
+            // FIXME memory crash if these lines are added
+            free(tmp);
 //            free(remainder);
             return res;
         } else {
@@ -1229,8 +1230,9 @@ Number* divide(Number* num1, Number* num2) {
                 free(one);
                 free(ten);
                 free(zero_one);
+                // FIXME memory crash if these lines are added
 //                free(remainder);
-//                free(tmp);
+                free(tmp);
                 fixNumber(res);
                 return res;
             }

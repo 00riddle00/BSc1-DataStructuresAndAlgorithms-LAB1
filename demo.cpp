@@ -19,15 +19,6 @@ int main() {
 
     Number* res;
 
-//    Number* num100 = setNumberFromChar((char*)"-1313.33333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333");
-//    Number* num200 = setNumberFromChar((char*)"26666.66666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666");
-//    res = addNumbers(num100, num200);
-//    debug("RES IS");
-//    printEntry(res);
-//    exit(1);
-
-
-
     /* testing arithmetic */
     res = addNumbers(num1, num2);
     assert(strcmp(numToChar(res), "81222431942852815.06580908") == 0 && "addNumbers test01 failed");
@@ -58,6 +49,7 @@ int main() {
     res = modulus(setNumberFromChar((char*)"-16.0"), setNumberFromChar((char*)"3.0"));
     assert(strcmp(numToChar(res), "2.0") == 0 && "modulus test05 failed");
 
+    // FIXME failling tests
 //    res = modulus(setNumberFromChar((char*)"2.0"), setNumberFromChar((char*)"-19.0"));
 //    assert(strcmp(numToChar(res), "-17.0") == 0 && "modulus test06 failed");
 
@@ -139,6 +131,7 @@ int main() {
     assert(strcmp(numToChar(num3), "1.3") == 0 && "modulusEquals test01 failed");
     /* // testing additional functions */
 
+    /* live tests */
     Number* num4 = setNumberFromChar((char*)"6.0");
     res = factorial(num4);
     assert(strcmp(numToChar(res), "720.0") == 0 && "factorial test01 failed");
@@ -151,17 +144,11 @@ int main() {
     res = raiseByPow(num6, 2);
     assert(strcmp(numToChar(res), "1.21") == 0 && "raiseByPow test01 failed");
 
-    Number* num7 = setNumberFromChar((char*)"5.0");
-    res = Log(num7);
-//     FIXME minus in front
-    res->negative = 0;
-    debug("RES IS:");
-    printEntry(res);
-    debug("whole %d", res->digits_whole);
-    debug("decimal %d", res->digits_decimal);
-    setPrecision(res, 100);
-    debug("RES:");
-    printEntry(res);
+//    Number* num7 = setNumberFromChar((char*)"5.0");
+//    res = Log(num7);
+//    setPrecision(res, 100);
+//    assert(strcmp(numToChar(res), "1.609437912434100374600759333226187639525601354268517721912647891474178987707657764630133878093179611") == 0 && "Sine test01 failed");
+    /* // live tests */
 
     Number* num8 = setNumberFromChar((char*)"20.0");
     res = Sine(num8);

@@ -1385,7 +1385,6 @@ Number* factorial(Number* num) {
 }
 
 int isPrime(Number* num) {
-    printEntry(num);
     if (compareEqual(num, setNumberFromChar((char*)"2.0"))) {
         return 1;
     }
@@ -1405,12 +1404,10 @@ Number* nextPrime(Number* num) {
         return setNumberFromChar((char *) "2.0");
     } else {
         num = getFloorNumber(num);
-        printEntry(num);
         Number *diff = setNumberFromChar((char *) ONE);
 
         while (!isPrime(addNumbers(num, diff))) {
             plusEquals(diff, setNumberFromChar((char *) ONE));
-            printEntry(diff);
         }
 
         return addNumbers(num, diff);

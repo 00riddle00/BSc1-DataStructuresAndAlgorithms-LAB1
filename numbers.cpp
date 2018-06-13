@@ -1503,8 +1503,8 @@ Number* Sine(Number* num) {
     int n = 1;
 
     int change_sign = 0;
-    while (n <= 280) {
-//        printf("MySine: %d\n", n);
+    while (n <= 200) {
+        printf("MySine: %d\n", n);
         if (change_sign) {
             minusEquals(step, divide(raiseByPow(num, n), factorial(multiplyByInt(setNumberFromChar((char*)ONE), n))));
             change_sign = 0;

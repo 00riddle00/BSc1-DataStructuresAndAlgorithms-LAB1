@@ -146,6 +146,9 @@ Number* setNumberFromChar(char* numArray);
 // ::return::  a resulting Number
 Number* setNumberFromDouble(long double number, int whole_digits, int decimal_digits);
 
+// TODO add description
+Number* setNumberFromDoubleUltimate(double number);
+
 // assign one number (might be existing already with a certain value)
 // to another
 // ::params:: num1 - Number struct to which assignment is made

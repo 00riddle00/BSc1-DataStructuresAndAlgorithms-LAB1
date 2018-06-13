@@ -39,23 +39,6 @@ void saveNumber(Number* number) {
     table->size++;
 }
 
-void printEntry2(TempNumber* number) {
-
-        if (number->negative) {
-            printf("-");
-        }
-
-        for (int i = number->digits_whole - 1; i >= 0; i--) {
-            printf("%d", number->whole_part[i]);
-        }
-        printf(".");
-
-        for (int i = 0; i < number->digits_decimal; i++) {
-            printf("%d", number->decimal_part[i]);
-        }
-        printf("\n");
-}
-
 void printEntry(Number* number) {
 
         if (number->negative) {
@@ -100,6 +83,44 @@ char* numToChar(Number* number) {
         }
         return numArray;
 }
+
+Number* setNumberFromDouble(long double number, int whole_digits, int decimal_digits) {
+
+    char charray[DIGITS];
+
+    sprintf(charray, "%*.*Lf", whole_digits, decimal_digits, number);
+
+    return setNumberFromChar(charray);
+}
+
+
+Number* setNumberFromDoubleUltimate(double number) {
+
+    char charray[2*16];
+
+    double temp = number;
+
+    int whole_digits = 0;
+    while (temp > 1) {
+        temp /= 10;
+        whole_digits++;
+    }
+    debug("whole d: %d", whole_digits);
+
+    sprintf(charray, "%*.*f", whole_digits, 16-whole_digits, number);
+    Number* res = setNumberFromChar(charray);
+    debug("HERE");
+    fixNumber(res);
+    return res;
+}
+
+Number* setNumberFromInt(int number, int whole_digits, int decimal_digits) {
+
+    // TODO write code
+    Number* num = setNewNumber();
+    return num;
+}
+
 
 
 void getNumberChar(char* message, char* output)
@@ -216,15 +237,6 @@ Number* setNumberFromChar(char* numArray) {
     return number;
 }
 
-
-Number* setNumberFromDouble(long double number, int whole_digits, int decimal_digits) {
-
-    char charray[DIGITS];
-
-    sprintf(charray, "%*.*Lf", whole_digits, decimal_digits, number);
-
-    return setNumberFromChar(charray);
-}
 
 
 

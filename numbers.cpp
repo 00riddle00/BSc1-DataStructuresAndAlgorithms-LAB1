@@ -495,11 +495,11 @@ Number* add(Number* num1, Number* num2, int negative) {
     //Number* smaller = num2;
 
     if (bigger->digits_decimal < smaller->digits_decimal) {
-        Number temp = *bigger;
-        *bigger = *smaller;
-        *smaller = temp;
-        //assign(bigger, num2);
-        //assign(smaller, num1);
+        Number* temp = setNewNumber();
+        assign(temp, smaller);
+        assign(smaller, bigger);
+        assign(bigger, temp);
+        free(temp);
     }
 
     // create result Number and populate it with decimal digits 
@@ -540,9 +540,12 @@ Number* add(Number* num1, Number* num2, int negative) {
 
     // select number with bigger amount of whole part digits
     if (bigger->digits_whole < smaller->digits_whole) {
-        Number temp = *bigger;
-        *bigger = *smaller;
-        *smaller = temp;
+        // FIXME Number is saved on stack
+        Number* temp = setNewNumber();
+        assign(temp, smaller);
+        assign(smaller, bigger);
+        assign(bigger, temp);
+        free(temp);
     }
 
     // copy whole_part to the result struct
@@ -637,8 +640,8 @@ Number* subtract(Number* num1, Number* num2) {
     // compare the two numbers
     int rs = compare(num1, num2);
 
-    Number* first;
-    Number* second;
+    Number* first = setNewNumber();
+    Number* second = setNewNumber();
 
     Number* res = setNewNumber();
 
@@ -647,20 +650,22 @@ Number* subtract(Number* num1, Number* num2) {
     if (rs == 1) {
         negative = 0;
 
-        first = num1;
-        second = num2;
+        assign(first, num1);
+        assign(second, num2);
 
     // if first is less than second, 
     // subtract first number from the second
     } else if (rs == 2) {
         negative = 1;
 
-        first = num2;
-        second = num1;
+        assign(first, num2);
+        assign(second, num1);
 
     // else if numbers are equal, return zero 
     // (zeroth Number struct)
     } else if (rs == 3) {
+        free(first);
+        free(second);
         return res;
     }
 
@@ -751,6 +756,8 @@ Number* subtract(Number* num1, Number* num2) {
         }
     }
 
+    free(first);
+    free(second);
     fixNumber(res);
     return res;
 }
@@ -1157,6 +1164,10 @@ Number* divide(Number* num1, Number* num2) {
         // initalize Number with the value of one
         Number* one = setNumberFromChar((char*) ONE);
 //        return one;
+        free(one);
+        // FIXME double free
+        free(ten);
+        free(zero_one);
         return addNumbers(res, one);
     }
 
@@ -1188,6 +1199,8 @@ Number* divide(Number* num1, Number* num2) {
             free(one);
             free(ten);
             free(zero_one);
+            free(tmp);
+            free(remainder);
             return res;
         } else {
             // if the divisor (second number) is greater than the remainder,
@@ -1217,6 +1230,8 @@ Number* divide(Number* num1, Number* num2) {
                 free(one);
                 free(ten);
                 free(zero_one);
+                free(tmp);
+                free(remainder);
                 fixNumber(res);
                 return res;
             }
@@ -1239,10 +1254,12 @@ Number* divide(Number* num1, Number* num2) {
         }
     }
 
+    // FIXME unreachable code?
     free(one);
     free(ten);
     free(zero_one);
     free(tmp);
+    free(remainder);
     fixNumber(res);
     return res;
 }
@@ -1429,6 +1446,7 @@ Number* raiseByPow(Number* num, int power) {
     for (int i = 0; i < power-1; i++) {
         multiplyEquals(ret_val, orig_num);
     }
+    free(orig_num);
     return ret_val;
 }
 

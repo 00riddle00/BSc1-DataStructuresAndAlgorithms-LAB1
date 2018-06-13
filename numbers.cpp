@@ -1198,6 +1198,8 @@ Number* divide(Number* num1, Number* num2) {
             free(one);
             free(ten);
             free(zero_one);
+            free(tmp);
+            free(remainder);
             return res;
         } else {
             // if the divisor (second number) is greater than the remainder,

@@ -650,7 +650,7 @@ Number* subtract(Number* num1, Number* num2) {
         negative = 0;
 
         assign(first, num1);
-        assign(first, num2);
+        assign(second, num2);
 
     // if first is less than second, 
     // subtract first number from the second
@@ -658,7 +658,7 @@ Number* subtract(Number* num1, Number* num2) {
         negative = 1;
 
         assign(first, num2);
-        assign(first, num1);
+        assign(second, num1);
 
     // else if numbers are equal, return zero 
     // (zeroth Number struct)

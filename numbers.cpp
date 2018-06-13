@@ -1244,14 +1244,6 @@ Number* divide(Number* num1, Number* num2) {
 
         }
     }
-
-    // FIXME unreachable code?
-    free(one);
-    free(ten);
-    free(zero_one);
-    free(tmp);
-    fixNumber(res);
-    return res;
 }
 
 

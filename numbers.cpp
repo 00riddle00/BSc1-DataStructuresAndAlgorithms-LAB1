@@ -1389,7 +1389,6 @@ Number* factorial(Number* num) {
     assign(ret_num, num);
 
     for (int i = 1; i < numToInt-1; i++) {
-        debug("%d", i);
         diff = multiplyByInt(one, i);
         multiplyEquals(ret_num, subtractNumbers(num, diff));
     }

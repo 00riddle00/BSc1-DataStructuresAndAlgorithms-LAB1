@@ -71,13 +71,13 @@ myType myPow(double d, int p){
 }
 myType myLog(double d){
 	/* YOUR CODE HERE */
-    Number* res = Log(setNumberFromDouble(d));
+    myType res = Log(setNumberFromDouble(d));
     setPrecision(res, -100);
     return res;
 }
 myType mySin(double d){
 	/* YOUR CODE HERE */
-	Number* res = Sine(setNumberFromDouble(d));
+	myType res = Sine(setNumberFromDouble(d));
 	setPrecision(res, -100);
 	return res;
 }

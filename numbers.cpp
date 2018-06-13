@@ -495,11 +495,11 @@ Number* add(Number* num1, Number* num2, int negative) {
     //Number* smaller = num2;
 
     if (bigger->digits_decimal < smaller->digits_decimal) {
-        Number temp = *bigger;
-        *bigger = *smaller;
-        *smaller = temp;
-        //assign(bigger, num2);
-        //assign(smaller, num1);
+        Number* temp = setNewNumber();
+        assign(temp, smaller);
+        assign(smaller, bigger);
+        assign(bigger, temp);
+        free(temp);
     }
 
     // create result Number and populate it with decimal digits 
@@ -540,9 +540,11 @@ Number* add(Number* num1, Number* num2, int negative) {
 
     // select number with bigger amount of whole part digits
     if (bigger->digits_whole < smaller->digits_whole) {
-        Number temp = *bigger;
-        *bigger = *smaller;
-        *smaller = temp;
+        Number* temp = setNewNumber();
+        assign(temp, smaller);
+        assign(smaller, bigger);
+        assign(bigger, temp);
+        free(temp);
     }
 
     // copy whole_part to the result struct

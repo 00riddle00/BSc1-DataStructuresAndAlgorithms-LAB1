@@ -148,17 +148,17 @@ int main() {
     debug("raiseByPow ok");
     /* // live tests */
 
-//    Number* num7 = setNumberFromChar((char*)"5.0");
-//    res = Log(num7);
-//    setPrecision(res, 100);
-//    assert(strcmp(numToChar(res), "1.609437912434100374600759333226187639525601354268517721912647891474178987707657764630133878093179611") == 0 && "Sine test01 failed");
-//    debug("Log ok");
-//
-    Number* num8 = setNumberFromChar((char*)"20.0");
-    res = Sine(num8);
+    Number* num7 = setNumberFromChar((char*)"5.0");
+    res = Log(num7);
     setPrecision(res, 100);
-    assert(strcmp(numToChar(res), "0.9129452507276276543760999838456823012979325837081899563051281147688489193490729760444800496404699762") == 0 && "Sine test01 failed");
-    debug("Sine ok");
+    assert(strcmp(numToChar(res), "1.609437912434100374600759333226187639525601354268517721912647891474178987707657764630133878093179611") == 0 && "Sine test01 failed");
+    debug("Log ok");
+//
+//    Number* num8 = setNumberFromChar((char*)"20.0");
+//    res = Sine(num8);
+//    setPrecision(res, 100);
+//    assert(strcmp(numToChar(res), "0.9129452507276276543760999838456823012979325837081899563051281147688489193490729760444800496404699762") == 0 && "Sine test01 failed");
+//    debug("Sine ok");
 
 
 

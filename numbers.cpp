@@ -1467,9 +1467,13 @@ Number* Log(Number* num) {
     while (count < 280) {
         debug("%d", count);
         multiplyEquals(z, step);
+        debug("F1");
         assign(y, multiplyNumbers(divideNumbers(one, powe), z));
+        debug("F2");
         plusEquals(ret_num, y);
+        debug("F3");
         plusEquals(powe, setNumberFromChar((char *) "2.0"));
+        debug("F4");
 
         count++;
     }

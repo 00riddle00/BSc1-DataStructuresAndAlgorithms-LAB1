@@ -160,7 +160,7 @@ int main() {
     res = Sine(num05);
     setPrecision(res, -100);
     assert(strcmp(numToChar(res), "0.9129452507276276543760999838456823012979325837081899563051281147688489193490729760444800496404699762") == 0 && "Sine test01 failed");
-    debug("Sine passed");
+    printf("Sine passed\n");
 
     printf("//---------PREPARING FOR LIVE TESTS-----------\n");
     printf("[All tests have passed successfully]\n");

@@ -1245,6 +1245,7 @@ Number* divide(Number* num1, Number* num2) {
         }
     }
 
+    // FIXME unreachable code?
     free(one);
     free(ten);
     free(zero_one);
@@ -1435,6 +1436,7 @@ Number* raiseByPow(Number* num, int power) {
     for (int i = 0; i < power-1; i++) {
         multiplyEquals(ret_val, orig_num);
     }
+    free(orig_num);
     return ret_val;
 }
 

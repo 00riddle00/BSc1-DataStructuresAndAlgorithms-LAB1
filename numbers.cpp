@@ -130,8 +130,19 @@ Number* setNewNumber() {
 
     return num;
 }
- 
 
+char* convertNumberToChar(Number* num) {
+    int char_len = num->digits_whole + num->digits_decimal;
+    char* res = (char*) malloc((char_len+1) * sizeof(char));
+    for (int i = 0; i < num->digits_whole; i++) {
+        res[i] = (char) (num->whole_part[num->digits_whole-1-i] + '0');
+    }
+    res[num->digits_whole] = '.';
+    for (int i = num->digits_whole + 1, j = 0; i <= num->digits_whole + num->digits_decimal; i++, j++) {
+        res[i] = (char) (num->decimal_part[j] + '0');
+    }
+    return res;
+}
 
 
 Number* setNumberFromChar(char* numArray) {

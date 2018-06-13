@@ -130,6 +130,10 @@ void getNumberChar(char* message, char* output);
 // ::return:: a Number initialized to zero
 Number* setNewNumber();
 
+
+// TODO add description
+char* convertNumberToChar(Number* num);
+
 // set a number from char arry
 // ::params:: numArray - given char array
 // ::return::  a Number parsed from the char array

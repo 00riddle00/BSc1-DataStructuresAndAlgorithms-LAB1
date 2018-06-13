@@ -6,9 +6,9 @@
 
 
 // other includes and definitions
+/* YOUR CODE HERE */
 #include "numbers.h"
 
-/* YOUR CODE HERE */
 
 using namespace std;
 
@@ -17,16 +17,18 @@ typedef Number* myType;
 
 // convert from string to myType
 myType convert(string s){
-    return setNumberFromChar((char*)s.c_str());
 	/* YOUR CODE HERE */
+    return setNumberFromChar((char*)s.c_str());
 }
 // convert from myType to string
-string toStr(myType m){							
+string toStr(myType m){
 	/* YOUR CODE HERE */
+	char* num = convertNumberToChar(m);
+	return string(num);
 }
 
 // compute a factorial
-myType myFactorial(int n); 	
+myType myFactorial(int n);
 
 // finds the next prime, bigger than n					
 myType myPrime(myType n); 	
@@ -59,7 +61,8 @@ myType myFactorial(int n){
 	/* YOUR CODE HERE */
 }
 myType myPrime(myType n){
-	/* YOUR CODE HERE */	
+	/* YOUR CODE HERE */
+    return nextPrime(n);
 }
 myType myPow(double d, int p){
 	/* YOUR CODE HERE */
@@ -89,13 +92,6 @@ void mySort(myType *data, int n){
 /* DO NOT MODIFY CODE BELOW */
 
 int main(){
-	myType num1 = setNumberFromChar((char *) "81234812384091238.8901234");
-    myType num2 = setNumberFromChar((char *) "-12380441238423.82431432");
-
-    myType res;
-	res = addNumbers(num1, num2);
-	printEntry(res);
-
 	while(1){
 		int x = -1;
 		cin >> x;	

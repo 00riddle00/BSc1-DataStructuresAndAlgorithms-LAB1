@@ -1163,7 +1163,11 @@ Number* divide(Number* num1, Number* num2) {
         // initalize Number with the value of one
         Number* one = setNumberFromChar((char*) ONE);
 //        return one;
-        return addNumbers(res, one);
+        free(ten);
+        free(zero_one);
+        plusEquals(res, one);
+        free(one);
+        return res;
     }
 
 

@@ -540,7 +540,6 @@ Number* add(Number* num1, Number* num2, int negative) {
 
     // select number with bigger amount of whole part digits
     if (bigger->digits_whole < smaller->digits_whole) {
-        // FIXME Number is saved on stack
         Number* temp = setNewNumber();
         assign(temp, smaller);
         assign(smaller, bigger);
@@ -653,7 +652,7 @@ Number* subtract(Number* num1, Number* num2) {
         assign(first, num1);
         assign(second, num2);
 
-    // if first is less than second, 
+    // if first is less than second,
     // subtract first number from the second
     } else if (rs == 2) {
         negative = 1;
@@ -1164,11 +1163,11 @@ Number* divide(Number* num1, Number* num2) {
         // initalize Number with the value of one
         Number* one = setNumberFromChar((char*) ONE);
 //        return one;
-        free(one);
-        // FIXME double free
         free(ten);
         free(zero_one);
-        return addNumbers(res, one);
+        plusEquals(res, one);
+        free(one);
+        return res;
     }
 
 
@@ -1200,7 +1199,8 @@ Number* divide(Number* num1, Number* num2) {
             free(ten);
             free(zero_one);
             free(tmp);
-            free(remainder);
+            // FIXME memory crash if this line is added
+//            free(remainder);
             return res;
         } else {
             // if the divisor (second number) is greater than the remainder,
@@ -1230,8 +1230,9 @@ Number* divide(Number* num1, Number* num2) {
                 free(one);
                 free(ten);
                 free(zero_one);
+                // FIXME memory crash if this lines is added
+//                free(remainder);
                 free(tmp);
-                free(remainder);
                 fixNumber(res);
                 return res;
             }
@@ -1253,15 +1254,6 @@ Number* divide(Number* num1, Number* num2) {
 
         }
     }
-
-    // FIXME unreachable code?
-    free(one);
-    free(ten);
-    free(zero_one);
-    free(tmp);
-    free(remainder);
-    fixNumber(res);
-    return res;
 }
 
 

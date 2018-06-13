@@ -59,7 +59,7 @@ void mySort(myType *data, int n);
 
 myType myFactorial(int n){
 	/* YOUR CODE HERE */
-	return factorial(setNumberFromInt(n));
+    return factorial(setNumberFromInt(n));
 }
 myType myPrime(myType n){
 	/* YOUR CODE HERE */
@@ -67,19 +67,19 @@ myType myPrime(myType n){
 }
 myType myPow(double d, int p){
 	/* YOUR CODE HERE */
-    return raiseByPow(setNumberFromDouble(d), p);
+	return raiseByPow(setNumberFromDouble(d), p);
 }
 myType myLog(double d){
 	/* YOUR CODE HERE */
-	Number* res = Log(setNumberFromDouble(d));
-	setPrecision(res, -100);
-	return res;
+    myType res = Log(setNumberFromDouble(d));
+    setPrecision(res, -100);
+    return res;
 }
 myType mySin(double d){
-	Number* res = Sine(setNumberFromDouble(d));
+	/* YOUR CODE HERE */
+	myType res = Sine(setNumberFromDouble(d));
 	setPrecision(res, -100);
 	return res;
-	/* YOUR CODE HERE */
 }
 myType mySqrt(double d){
 	/* YOUR CODE HERE */

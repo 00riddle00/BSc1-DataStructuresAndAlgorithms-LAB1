@@ -1396,13 +1396,14 @@ Number* factorial(Number* num) {
 }
 
 int isPrime(Number* num) {
-    if (compareEqual(num, setNumberFromChar((char*)"2.0"))) {
+    Number* two = setNumberFromChar((char*)"2.0");
+    if (compareEqual(num, two)) {
         return 1;
     }
-    if (isZero(modulus(num, setNumberFromChar((char *) "2.0")))) {
+    if (isZero(modulus(num, two))) {
         return 0;
     }
-    for (Number*i = setNumberFromChar((char *) "3.0"); compareLessThanOrEqual(multiplyNumbers(i, i), num); plusEquals(i, setNumberFromChar((char *) "2.0"))) {
+    for (Number*i = setNumberFromChar((char *) "3.0"); compareLessThanOrEqual(multiplyNumbers(i, i), num); plusEquals(i, two)) {
         if (isZero(modulus(num, i))) {
             return 0;
         }
@@ -1459,15 +1460,11 @@ Number* Log(Number* num) {
 
     int count = 0;
     while (count < 280) {
-        debug("%d", count);
+//        debug("%d", count);
         multiplyEquals(z, step);
-        debug("F1");
         assign(y, multiplyNumbers(divideNumbers(one, powe), z));
-        debug("F2");
         plusEquals(ret_num, y);
-        debug("F3");
         plusEquals(powe, setNumberFromChar((char *) "2.0"));
-        debug("F4");
 
         count++;
     }

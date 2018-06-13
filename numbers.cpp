@@ -84,19 +84,8 @@ char* numToChar(Number* number) {
         return numArray;
 }
 
-Number* setNumberFromDouble(long double number, int whole_digits, int decimal_digits) {
-
-    char charray[DIGITS];
-
-    sprintf(charray, "%*.*Lf", whole_digits, decimal_digits, number);
-
-    return setNumberFromChar(charray);
-}
-
-
-Number* setNumberFromDoubleUltimate(double number) {
-
-    char charray[2*16];
+Number* setNumberFromDouble(double number) {
+    char charray[2*16+1];
 
     double temp = number;
 
@@ -105,20 +94,30 @@ Number* setNumberFromDoubleUltimate(double number) {
         temp /= 10;
         whole_digits++;
     }
-    debug("whole d: %d", whole_digits);
 
     sprintf(charray, "%*.*f", whole_digits, 16-whole_digits, number);
+
     Number* res = setNumberFromChar(charray);
-    debug("HERE");
     fixNumber(res);
+    if (number < 0) {
+        res->negative = 1;
+    }
     return res;
 }
 
-Number* setNumberFromInt(int number, int whole_digits, int decimal_digits) {
+Number* setNumberFromInt(int number) {
+    char charray[10+2];
 
-    // TODO write code
-    Number* num = setNewNumber();
-    return num;
+    sprintf(charray, "%010d", number);
+    charray[10] = '.';
+    charray[11] = '0';
+
+    Number* res = setNumberFromChar(charray);
+    fixNumber(res);
+    if (number < 0) {
+        res->negative = 1;
+    }
+    return res;
 }
 
 
@@ -1136,9 +1135,9 @@ Number* divide(Number* num1, Number* num2) {
          mult *= 10;
          mul = (int)mult;
          if (mul < 10) {
-             multipl = setNumberFromDouble((double)mul,1,1);
+             multipl = setNumberFromDouble((double)mul);
          } else {
-             multipl = setNumberFromDouble((double)mul,2,1);
+             multipl = setNumberFromDouble((double)mul);
          }
         temp2 = multiply(num2, multipl);
         counter += mul;

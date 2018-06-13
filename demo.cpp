@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <climits>
 
 // Header file with useful debugging macros
 #include "dbg.h"
@@ -19,12 +20,6 @@ int main() {
 
     Number *res;
 
-    res = setNumberFromDoubleUltimate(1234.5678);
-    debug("RES IS");
-    printEntry(res);
-
-
-    exit(1);
     /* testing arithmetic */
     res = addNumbers(num1, num2);
     assert(strcmp(numToChar(res), "81222431942852815.06580908") == 0 && "addNumbers test01 failed");

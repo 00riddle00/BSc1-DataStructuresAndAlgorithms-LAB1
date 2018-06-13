@@ -144,10 +144,11 @@ Number* setNumberFromChar(char* numArray);
 // ::params:: whole_digits - how many whole digits a number has
 // ::params:: decimal_digits - how many decimal digits a number has
 // ::return::  a resulting Number
-Number* setNumberFromDouble(long double number, int whole_digits, int decimal_digits);
+// TODO add description
+Number* setNumberFromDouble(double number);
 
 // TODO add description
-Number* setNumberFromDoubleUltimate(double number);
+Number* setNumberFromInt(int number);
 
 // assign one number (might be existing already with a certain value)
 // to another

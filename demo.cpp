@@ -151,17 +151,18 @@ int main() {
 
     Number *num04 = setNumberFromChar((char *) "5.0");
     res = Log(num04);
-    setPrecision(res, 100);
-    assert(strcmp(numToChar(res), "1.609437912434100374600759333226187639525601354268517721912647891474178987707657764630133878093179611") == 0 && "Log test01 failed");
+    setPrecision(res, -100);
+    assert(strcmp(numToChar(res), "1.6094379124341003746007593332261876395256013542685177219126478914741789877076577646301338780931796108") == 0 && "Log test01 failed");
     printf("Log passed\n");
 
-    printf("//---------PREPARING FOR LIVE TESTS-----------\n");
-    /* // live tests */
-
+    // FIXME times out (works with 10GB+ RAM)
 //    Number *num05 = setNumberFromChar((char *) "20.0");
 //    res = Sine(num05);
-//    setPrecision(res, 100);
+//    setPrecision(res, -100);
 //    assert(strcmp(numToChar(res), "0.9129452507276276543760999838456823012979325837081899563051281147688489193490729760444800496404699762") == 0 && "Sine test01 failed");
 //    debug("Sine passed");
 
+    printf("//---------PREPARING FOR LIVE TESTS-----------\n");
+    printf("[All tests have passed successfully]\n");
+    /* // live tests */
 }

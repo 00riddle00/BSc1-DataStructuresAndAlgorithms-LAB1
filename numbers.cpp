@@ -1459,8 +1459,8 @@ Number* Log(Number* num) {
     step = divideNumbers(raiseByPow(subtractNumbers(num, one), 2), raiseByPow(addNumbers(num, one), 2));
 
     int count = 0;
-    while (count < 280) {
-//        debug("%d", count);
+    while (count < 290) {
+        printf("MyLog: %d\n", count);
         multiplyEquals(z, step);
         assign(y, multiplyNumbers(divideNumbers(one, powe), z));
         plusEquals(ret_num, y);
@@ -1531,7 +1531,27 @@ void setMaxPrecision(Number* num, int precision) {
 
 
 // this operation is irreversible!
+// negative precision means how many numbers after the comma there will be,
+// without altering the precision of the whole part. The remaining free space
+// is filled with zeroes
 void setPrecision(Number* num, int precision) {
+
+    if (precision < 0) {
+        precision = -precision;
+        int dec_num = num->digits_decimal;
+        if (dec_num == precision) {
+            return;
+        } else if (dec_num > precision) {
+            setPrecision(num, num->digits_whole + precision);
+            return;
+        } else {
+            for(int i = num->digits_decimal; i < precision; i++) {
+                num->decimal_part[i] = 0;
+            }
+            num->digits_decimal = precision;
+        }
+    }
+
     // TODO rm magic numbers
     if (getWholeLen(num) + getDecimalLen(num) >= 500 && (getDecimalLen(num) != 0 && num->decimal_part[0] != 0)) {
         setMaxPrecision(num, precision);

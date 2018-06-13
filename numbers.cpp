@@ -470,6 +470,9 @@ Number* divideNumbers(Number* num1, Number* num2) {
 
     Number* res = divide(num1, num2);
 
+    num1->negative = sign1;
+    num2->negative = sign2;
+
     // both numbers positive
     if (!sign1 && !sign2) {
         res->negative = 0;
@@ -1349,13 +1352,12 @@ Number* modulus(Number* num1, Number* num2) {
             // if num1 > 0
             if (!num1->negative) {
                 // if |num1| < |num2|
-                if (cmp_abs == 0) {
+                if (cmp_abs == 2) {
                     return addNumbers(num1, num2);
                 // else if |num1| > |num2|
                 } else {
                     Number *one = setNumberFromChar((char *) ONE);
-                    Number *ret_num = addNumbers(multiplyNumbers(getFloorNumber(addNumbers(getAbsoluteValue(divideNumbers(num1, num2)), one)), num2), num1);
-                    ret_num->negative = 1;
+                    Number *ret_num = addNumbers(multiplyNumbers(addNumbers(getFloorNumber(getAbsoluteValue(divideNumbers(num1, num2))), one), num2), num1);
                     return ret_num;
                 }
             }

@@ -652,7 +652,7 @@ Number* subtract(Number* num1, Number* num2) {
         assign(first, num1);
         assign(second, num2);
 
-    // if first is less than second, 
+    // if first is less than second,
     // subtract first number from the second
     } else if (rs == 2) {
         negative = 1;
@@ -663,6 +663,8 @@ Number* subtract(Number* num1, Number* num2) {
     // else if numbers are equal, return zero 
     // (zeroth Number struct)
     } else if (rs == 3) {
+        free(first);
+        free(second);
         return res;
     }
 
@@ -753,6 +755,8 @@ Number* subtract(Number* num1, Number* num2) {
         }
     }
 
+    free(first);
+    free(second);
     fixNumber(res);
     return res;
 }

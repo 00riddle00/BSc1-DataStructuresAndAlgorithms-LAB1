@@ -1529,17 +1529,12 @@ void setPrecision(Number* num, int precision) {
     // TODO check precision for negative values and zero
     // TODO wrap num->digits_whole in a variable
     // TODO fixNumber might be needed
-    debug("DW %d", num->digits_whole);
     if (num->digits_whole >= precision) {
-        debug("A1");
         if (num->digits_whole > precision) {
             int last_index = num->digits_whole - precision;
             int rounded_index = last_index - 1;
-            debug("RI %d", rounded_index);
             if (num->whole_part[rounded_index] < 5) {
-                debug("A2");
                 for (int i = rounded_index; i >= 0; i--) {
-                    debug("A3");
                     num->whole_part[i] = 0;
                 }
                 // else if num->whole_part[rounded_index >= 5)
@@ -1560,12 +1555,8 @@ void setPrecision(Number* num, int precision) {
         num->digits_decimal = 1;
         num->decimal_part[0] = 0;
     } else if (num->digits_whole < precision) {
-        debug("whole2 %d", num->digits_whole);
-        debug("decimal2 %d", num->digits_decimal);
         // TODO manually shifting comma?
         Number* ShiftedComma = multiplyNumbers(num, raiseByPow(ten, num->digits_decimal));
-        debug("SC");
-        printEntry(ShiftedComma);
 //        exit(1);
         setPrecision(ShiftedComma, precision);
         divideEquals(ShiftedComma, raiseByPow(ten, num->digits_decimal));

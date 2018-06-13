@@ -639,8 +639,8 @@ Number* subtract(Number* num1, Number* num2) {
     // compare the two numbers
     int rs = compare(num1, num2);
 
-    Number* first;
-    Number* second;
+    Number* first = setNewNumber();
+    Number* second = setNewNumber();
 
     Number* res = setNewNumber();
 
@@ -649,16 +649,16 @@ Number* subtract(Number* num1, Number* num2) {
     if (rs == 1) {
         negative = 0;
 
-        first = num1;
-        second = num2;
+        assign(first, num1);
+        assign(first, num2);
 
     // if first is less than second, 
     // subtract first number from the second
     } else if (rs == 2) {
         negative = 1;
 
-        first = num2;
-        second = num1;
+        assign(first, num2);
+        assign(first, num1);
 
     // else if numbers are equal, return zero 
     // (zeroth Number struct)

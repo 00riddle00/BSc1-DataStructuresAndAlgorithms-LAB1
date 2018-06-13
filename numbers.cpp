@@ -9,7 +9,7 @@
 #include <climits>
 
 // Header file with useful debugging macros
-#include "dbg.h"
+//#include "dbg.h"
 #include "numbers.h"
 
 // Define table as a global variable

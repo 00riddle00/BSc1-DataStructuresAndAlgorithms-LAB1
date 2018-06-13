@@ -1229,8 +1229,8 @@ Number* divide(Number* num1, Number* num2) {
                 free(one);
                 free(ten);
                 free(zero_one);
-                free(remainder);
-                free(tmp);
+//                free(remainder);
+//                free(tmp);
                 fixNumber(res);
                 return res;
             }

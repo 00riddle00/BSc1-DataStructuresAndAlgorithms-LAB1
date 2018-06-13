@@ -1542,8 +1542,13 @@ void setPrecision(Number* num, int precision) {
         if (dec_num == precision) {
             return;
         } else if (dec_num > precision) {
-            setPrecision(num, num->digits_whole + precision);
-            return;
+            if (num->digits_whole == 1 && num->whole_part[0] == 0) {
+                setPrecision(num, num->digits_whole + precision - 1);
+                return;
+            } else {
+                setPrecision(num, num->digits_whole + precision);
+                return;
+            }
         } else {
             for(int i = num->digits_decimal; i < precision; i++) {
                 num->decimal_part[i] = 0;

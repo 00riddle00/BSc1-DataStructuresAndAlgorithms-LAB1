@@ -1460,7 +1460,7 @@ Number* Log(Number* num) {
 
     int count = 0;
     while (count < 290) {
-        printf("MyLog: %d\n", count);
+//        printf("MyLog: %d\n", count);
         multiplyEquals(z, step);
         assign(y, multiplyNumbers(divideNumbers(one, powe), z));
         plusEquals(ret_num, y);
@@ -1483,7 +1483,7 @@ Number* Sine(Number* num) {
 
     int change_sign = 0;
     while (n <= 280) {
-        debug("%d", n);
+//        printf("MySine: %d\n", n);
         if (change_sign) {
             minusEquals(step, divide(raiseByPow(num, n), factorial(multiplyByInt(setNumberFromChar((char*)ONE), n))));
             change_sign = 0;

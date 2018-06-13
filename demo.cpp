@@ -148,6 +148,13 @@ int main() {
     debug("raiseByPow ok");
     /* // live tests */
 
+    Number *num7 = setNumberFromChar((char *) "100.0");
+    res = factorial(num7);
+    printEntry(res);
+//    assert(strcmp(numToChar(res), "720.0") == 0 && "factorial test01 failed");
+//    debug("factorial ok");
+
+
 //    Number *num7 = setNumberFromChar((char *) "5.0");
 //    res = Log(num7);
 //    setPrecision(res, 100);

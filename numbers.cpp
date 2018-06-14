@@ -1537,11 +1537,11 @@ Number* Log(Number* num) {
     step = divideNumbers(raiseByPow(subtractNumbers(num, one), 2), raiseByPow(addNumbers(num, one), 2));
 
     int count = 0;
-    while (count < 100) {
+    while (count < 290) {
         debug("inside while");
 //        printf("MyLog: %d\n", count);
         debug("1");
-        multiplyEquals(z, step);
+//        multiplyEquals(z, step);
         debug("2");
 //        assign(y, multiplyNumbers(divideNumbers(one, powe), z));
         debug("3");

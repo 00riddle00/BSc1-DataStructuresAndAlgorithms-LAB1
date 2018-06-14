@@ -84,41 +84,83 @@ char* numToChar(Number* number) {
 }
 
 Number* setNumberFromDouble(double number) {
-    char charray[2*16+1];
+    int negative = 0;
+
+    if (number < 0) {
+        negative = 1;
+        number = - number;
+    }
 
     double temp = number;
 
+    char charray[2*16+1+1];
+
     int whole_digits = 0;
-    while (temp > 1) {
+    while (temp >= 1) {
         temp /= 10;
         whole_digits++;
     }
 
-    sprintf(charray, "%*.*f", whole_digits, 16-whole_digits, number);
+    // TODO what if the number is out of bounds of the charray
+    if (whole_digits > 16) {
+        sprintf(charray, "%*.1f\0", whole_digits, number);
+    } else {
+        sprintf(charray, "%*.*f\0", whole_digits, 16-whole_digits, number);
+    }
 
+//     TODO rm this debugging code
+//    int i = 0;
+//    while (charray[i] != '\0') {
+//        printf("%c", charray[i]);
+//        i++;
+//    }
+//    printf("\n");
+//
     Number* res = setNumberFromChar(charray);
     fixNumber(res);
-    if (number < 0) {
-        res->negative = 1;
+    if (whole_digits > 16) {
+        setPrecision(res, 16);
     }
+    res->negative = negative;
     return res;
 }
 
 Number* setNumberFromInt(int number) {
-    char charray[10+2];
 
-    sprintf(charray, "%010d", number);
-    charray[10] = '.';
-    charray[11] = '0';
+    int negative = 0;
+
+    if (number < 0) {
+        negative = 1;
+        number = -number;
+    }
+    int temp = number;
+
+    int whole_digits = 0;
+
+    while (temp >= 1) {
+        temp /= 10;
+        whole_digits++;
+    }
+
+    int size = whole_digits + 2;
+    char charray[size+1];
+
+    sprintf(charray, "%0*d.0\0", whole_digits, number);
+
+    // TODO rm this debugging code
+    //int i = 0;
+    //while (charray[i] != '\0') {
+        //printf("%c", charray[i]);
+        //i++;
+    //}
+    //printf("\n");
+    //
 
     Number* res = setNumberFromChar(charray);
     fixNumber(res);
-    if (number < 0) {
-        res->negative = 1;
-    }
+    res->negative = negative;
     return res;
 }
-
 
 
 void getNumberChar(char* message, char* output)
@@ -1401,18 +1443,31 @@ Number* modulus(Number* num1, Number* num2) {
 
 /* functions to be tested */
 Number* factorial(Number* num) {
-    int numToInt = toInt(num);
 
     Number* one = setNumberFromChar((char*) ONE);
+
+    if (isZero(num)) {
+        return one;
+    }
+
+    int negative = num->negative;
+    num->negative = 0;
     Number* ret_num = setNewNumber();
+    assign(ret_num, num);
+    ret_num->negative = 0;
+
+    int numToInt = toInt(ret_num);
+
     Number* diff = setNewNumber();
     assign(diff, one);
-    assign(ret_num, num);
 
     for (int i = 1; i < numToInt-1; i++) {
         diff = multiplyByInt(one, i);
         multiplyEquals(ret_num, subtractNumbers(num, diff));
     }
+
+    num->negative = negative;
+    ret_num->negative = negative;
     return ret_num;
 }
 
@@ -1574,6 +1629,7 @@ void setPrecision(Number* num, int precision) {
                 num->decimal_part[i] = 0;
             }
             num->digits_decimal = precision;
+            return;
         }
     }
 
@@ -1613,15 +1669,25 @@ void setPrecision(Number* num, int precision) {
         num->digits_decimal = 1;
         num->decimal_part[0] = 0;
     } else if (num->digits_whole < precision) {
-        // TODO manually shifting comma?
         Number* ShiftedComma = multiplyNumbers(num, raiseByPow(ten, num->digits_decimal));
-//        exit(1);
         setPrecision(ShiftedComma, precision);
-        divideEquals(ShiftedComma, raiseByPow(ten, num->digits_decimal));
-        // TODO do without ShiftedComma variable
-        assign(num, ShiftedComma);
-    }
+        //divideEquals(ShiftedComma, raiseByPow(ten, num->digits_decimal));
+        Number* temp = setNewNumber();
+        temp->digits_whole = ShiftedComma->digits_whole - num->digits_decimal;
+        temp->digits_decimal = num->digits_decimal;
 
+        for (int i = ShiftedComma->digits_whole-1, j = 0; i >= num->digits_decimal; i--, j++) {
+            temp->whole_part[temp->digits_whole-1-j] = ShiftedComma->whole_part[i];
+        }
+
+        for (int i = num->digits_decimal-1, j = 0; i >= 0; i--, j++) {
+            temp->decimal_part[j] = ShiftedComma->whole_part[i];
+        }
+
+        fixNumber(temp);
+        // TODO do without ShiftedComma variable
+        assign(num, temp);
+    }
 }
 
 

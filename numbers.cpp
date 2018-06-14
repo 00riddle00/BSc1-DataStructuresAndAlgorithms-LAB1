@@ -1444,18 +1444,25 @@ Number* modulus(Number* num1, Number* num2) {
 
 /* functions to be tested */
 Number* factorial(Number* num) {
-    int numToInt = toInt(num);
+    int negative = num->negative;
+    num->negative = 0;
+    Number* ret_num = setNewNumber();
+    assign(ret_num, num);
+    ret_num->negative = 0;
+
+    int numToInt = toInt(ret_num);
 
     Number* one = setNumberFromChar((char*) ONE);
-    Number* ret_num = setNewNumber();
     Number* diff = setNewNumber();
     assign(diff, one);
-    assign(ret_num, num);
 
     for (int i = 1; i < numToInt-1; i++) {
         diff = multiplyByInt(one, i);
         multiplyEquals(ret_num, subtractNumbers(num, diff));
     }
+
+    num->negative = negative;
+    ret_num->negative = negative;
     return ret_num;
 }
 

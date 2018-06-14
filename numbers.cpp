@@ -1611,17 +1611,24 @@ void setMaxPrecision(Number* num, int precision) {
 // without altering the precision of the whole part. The remaining free space
 // is filled with zeroes
 void setPrecision(Number* num, int precision) {
+    debug("-----------------------------");
+    debug("prec %d", precision);
+    debug("here");
+    printEntry(num);
 
     if (precision < 0) {
+        debug("Less than");
         precision = -precision;
         int dec_num = num->digits_decimal;
         if (dec_num == precision) {
             return;
         } else if (dec_num > precision) {
+            debug("More");
             if (num->digits_whole == 1 && num->whole_part[0] == 0) {
                 setPrecision(num, num->digits_whole + precision - 1);
                 return;
             } else {
+                debug("nwp %d", num->digits_whole+precision);
                 setPrecision(num, num->digits_whole + precision);
                 return;
             }
@@ -1644,21 +1651,29 @@ void setPrecision(Number* num, int precision) {
     // TODO wrap num->digits_whole in a variable
     // TODO fixNumber might be needed
     if (num->digits_whole >= precision) {
+        debug("Daugiau");
         if (num->digits_whole > precision) {
+            debug("DarDaugiau");
             int last_index = num->digits_whole - precision;
+            debug("li%d", last_index);
             int rounded_index = last_index - 1;
+            debug("ri %d", rounded_index);
+            debug("ri2: %d", num->whole_part[rounded_index]);
             if (num->whole_part[rounded_index] < 5) {
                 for (int i = rounded_index; i >= 0; i--) {
                     num->whole_part[i] = 0;
                 }
                 // else if num->whole_part[rounded_index >= 5)
             } else {
+                debug("ELSEELE");
                 Number *roundingTens = raiseByPow(ten, rounded_index + 1);
                 Number *numberToBeSubtracted = setNewNumber();
                 assign(numberToBeSubtracted, num);
                 numberToBeSubtracted->digits_whole = rounded_index + 1;
                 Number *numberToAddWhenRounding = subtractNumbers(roundingTens, numberToBeSubtracted);
                 plusEquals(num, numberToAddWhenRounding);
+                debug("after");
+                printEntry(num);
 
             }
         }
@@ -1669,13 +1684,35 @@ void setPrecision(Number* num, int precision) {
         num->digits_decimal = 1;
         num->decimal_part[0] = 0;
     } else if (num->digits_whole < precision) {
+        debug("maziau");
         // TODO manually shifting comma?
         Number* ShiftedComma = multiplyNumbers(num, raiseByPow(ten, num->digits_decimal));
+        debug("SC");
+        printEntry(ShiftedComma);
 //        exit(1);
         setPrecision(ShiftedComma, precision);
-        divideEquals(ShiftedComma, raiseByPow(ten, num->digits_decimal));
+        debug("SC after");
+        debug("ndd %d", num->digits_decimal);
+        //divideEquals(ShiftedComma, raiseByPow(ten, num->digits_decimal));
+        Number* temp = setNewNumber();
+        temp->digits_whole = ShiftedComma->digits_whole - num->digits_decimal;
+        temp->digits_decimal = num->digits_decimal;
+
+
+        for (int i = ShiftedComma->digits_whole-1, j = 0; i >= num->digits_decimal; i--, j++) {
+            temp->whole_part[temp->digits_whole-1-j] = ShiftedComma->whole_part[i];
+        }
+
+        for (int i = num->digits_decimal-1, j = 0; i >= 0; i--, j++) {
+            temp->decimal_part[j] = ShiftedComma->whole_part[i];
+        }
+
+        debug("SC after divide");
+        //printEntry(ShiftedComma);
+        printEntry(temp);
+        fixNumber(temp);
         // TODO do without ShiftedComma variable
-        assign(num, ShiftedComma);
+        assign(num, temp);
     }
 
 }

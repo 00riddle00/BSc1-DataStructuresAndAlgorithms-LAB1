@@ -85,37 +85,56 @@ char* numToChar(Number* number) {
 }
 
 Number* setNumberFromDouble(double number) {
-    // TODO negative input different logic
-    char charray[2*16+1];
+    int negative = 0;
+
+    if (number < 0) {
+        negative = 1;
+        number = - number;
+    }
 
     double temp = number;
 
+    char charray[2*16+1+1];
+
     int whole_digits = 0;
-    while (temp > 1) {
+    while (temp >= 1) {
         temp /= 10;
         whole_digits++;
     }
 
-    sprintf(charray, "%*.*f", whole_digits, 16-whole_digits, number);
+    // TODO what if the number is out of bounds of the charray
+    if (whole_digits > 16) {
+        sprintf(charray, "%*.1f\0", whole_digits, number);
+    } else {
+        sprintf(charray, "%*.*f\0", whole_digits, 16-whole_digits, number);
+    }
 
+//     TODO rm this debugging code
+//    int i = 0;
+//    while (charray[i] != '\0') {
+//        printf("%c", charray[i]);
+//        i++;
+//    }
+//    printf("\n");
+//
     Number* res = setNumberFromChar(charray);
     fixNumber(res);
-    if (number < 0) {
-        res->negative = 1;
+    if (whole_digits > 16) {
+        setPrecision(res, 16);
     }
+    res->negative = negative;
     return res;
 }
 
 Number* setNumberFromInt(int number) {
 
     int negative = 0;
-    int temp = number;
 
     if (number < 0) {
         negative = 1;
         number = -number;
-        temp = -temp;
     }
+    int temp = number;
 
     int whole_digits = 0;
 
@@ -135,7 +154,9 @@ Number* setNumberFromInt(int number) {
         //printf("%c", charray[i]);
         //i++;
     //}
+    //printf("\n");
     //
+
     Number* res = setNumberFromChar(charray);
     fixNumber(res);
     res->negative = negative;

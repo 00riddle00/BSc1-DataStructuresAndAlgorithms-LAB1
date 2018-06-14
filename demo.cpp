@@ -7,6 +7,7 @@
 #include <string.h>
 #include <assert.h>
 #include <climits>
+#include <cfloat>
 
 // Header file with useful debugging macros
 #include "dbg.h"
@@ -163,6 +164,63 @@ int main() {
     num4 = setNumberFromInt(1000000001);
     assert(strcmp(numToChar(num4), "1000000001.0") == 0 && "setNumberFromInt test09 failed");
     // // setNumberFromInt
+
+    // setNumberFromDouble
+
+    Number* num5;
+
+    num5 = setNumberFromDouble(0);
+    assert(strcmp(numToChar(num5), "0.0") == 0 && "setNumberFromDouble test01 failed");
+
+    num5 = setNumberFromDouble(100);
+    assert(strcmp(numToChar(num5), "100.0") == 0 && "setNumberFromDouble test02 failed");
+
+    num5 = setNumberFromDouble(-100);
+    assert(strcmp(numToChar(num5), "-100.0") == 0 && "setNumberFromDouble test03 failed");
+
+    num5 = setNumberFromDouble(1);
+    assert(strcmp(numToChar(num5), "1.0") == 0 && "setNumberFromDouble test04 failed");
+
+    num5 = setNumberFromDouble(-1);
+    assert(strcmp(numToChar(num5), "-1.0") == 0 && "setNumberFromDouble test05 failed");
+
+    num5 = setNumberFromDouble(123456789);
+    assert(strcmp(numToChar(num5), "123456789.0") == 0 && "setNumberFromDouble test06 failed");
+
+    num5 = setNumberFromDouble(1234567891);
+    assert(strcmp(numToChar(num5), "1234567891.0") == 0 && "setNumberFromDouble test07 failed");
+
+    num5 = setNumberFromDouble(-1234567891);
+    assert(strcmp(numToChar(num5), "-1234567891.0") == 0 && "setNumberFromDouble test08 failed");
+
+    num5 = setNumberFromDouble(1000000001);
+    assert(strcmp(numToChar(num5), "1000000001.0") == 0 && "setNumberFromDouble test09 failed");
+
+    num5 = setNumberFromDouble(123412341324.2134213412);
+    assert(strcmp(numToChar(num5), "123412341324.2134") == 0 && "setNumberFromDouble test10 failed");
+
+    num5 = setNumberFromDouble(-123412341324.2134213412);
+    assert(strcmp(numToChar(num5), "-123412341324.2134") == 0 && "setNumberFromDouble test11 failed");
+
+    num5 = setNumberFromDouble(-12341.213412);
+    assert(strcmp(numToChar(num5), "-12341.213412") == 0 && "setNumberFromDouble test12 failed");
+
+    num5 = setNumberFromDouble(1111.1111);
+    assert(strcmp(numToChar(num5), "1111.1111") == 0 && "setNumberFromDouble test13 failed");
+
+    num5 = setNumberFromDouble(123456789123456789.0001);
+    assert(strcmp(numToChar(num5), "123456789123456800.0") == 0 && "setNumberFromDouble test14 failed");
+
+    num5 = setNumberFromDouble(12345678912345678912342184831.0001);
+    assert(strcmp(numToChar(num5), "12345678912345680000000000000.0") == 0 && "setNumberFromDouble test15 failed");
+
+    num5 = setNumberFromDouble(123456789.123456789);
+    assert(strcmp(numToChar(num5), "123456789.1234568") == 0 && "setNumberFromDouble test15 failed");
+    // // setNumberFromDouble
+
+
+
+
     
     /*  // testing utility functions */
 

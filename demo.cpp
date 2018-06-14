@@ -9,6 +9,7 @@
 #include <climits>
 
 // Header file with useful debugging macros
+#include "dbg.h"
 #include "numbers.h"
 
 
@@ -131,9 +132,55 @@ int main() {
     assert(strcmp(numToChar(num3), "1.3") == 0 && "modulusEquals test01 failed");
     /* // testing additional functions */
 
+    /*  testing utility functions */
+    Number* num4;
+
+    // setNumberFromInt
+    num4 = setNumberFromInt(100);
+    assert(strcmp(numToChar(num4), "100.0") == 0 && "setNumberFromInt test01 failed");
+
+    num4 = setNumberFromInt(-100);
+    assert(strcmp(numToChar(num4), "-100.0") == 0 && "setNumberFromInt test02 failed");
+
+    num4 = setNumberFromInt(1);
+    assert(strcmp(numToChar(num4), "1.0") == 0 && "setNumberFromInt test03 failed");
+
+    num4 = setNumberFromInt(-1);
+    assert(strcmp(numToChar(num4), "-1.0") == 0 && "setNumberFromInt test03 failed");
+    // // setNumberFromInt
+
+    num4 = setNumberFromInt(123456789);
+    printEntry(num4);
+    assert(strcmp(numToChar(num4), "123456789.0") == 0 && "setNumberFromInt test04 failed");
+    // // setNumberFromInt
+
+
+    debug("here1");
+    printEntry(num4);
+    debug("nw %d", num4->digits_whole);
+    debug("nd %d", num4->digits_decimal);
+    res = factorial(num4);
+    debug("res is");
+    printEntry(res);
+    exit(1);
+
+
+
+
+
+
+
+
+
+
+    /*  // testing utility functions */
+
+
+
+
+
     /* live tests */
     printf("-----------PREPARING FOR LIVE TESTS-----------\n");
-
     Number *num01 = setNumberFromChar((char *) "100.0");
     res = factorial(num01);
     assert(strcmp(numToChar(res), "93326215443944152681699238856266700490715968264381621468592963895217599993229915608941463976156518286253697920827223758251185210916864000000000000000000000000.0") == 0 && "factorial test01 failed");

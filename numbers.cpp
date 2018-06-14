@@ -84,6 +84,7 @@ char* numToChar(Number* number) {
 }
 
 Number* setNumberFromDouble(double number) {
+    // TODO negative input different logic
     char charray[2*16+1];
 
     double temp = number;
@@ -105,20 +106,43 @@ Number* setNumberFromDouble(double number) {
 }
 
 Number* setNumberFromInt(int number) {
-    char charray[10+2];
 
-    sprintf(charray, "%010d", number);
-    charray[10] = '.';
-    charray[11] = '0';
+    int negative = 0;
+    int temp = number;
+
+    if (number < 0) {
+        negative = 1;
+        number = -number;
+        temp = -temp;
+    }
+
+    int whole_digits = 0;
+
+    while (temp >= 1) {
+        temp /= 10;
+        whole_digits++;
+    }
+
+    int size = whole_digits + 2;
+    char charray[size];
+
+    sprintf(charray, "%0*d.0", whole_digits, number);
+//    charray[size-2] = '.';
+//    charray[size-1] = '0';
+
+    int i = 0;
+    while (charray[i] != '\0') {
+        printf("%c", charray[i]);
+        i++;
+    }
+    printf("\n");
+
 
     Number* res = setNumberFromChar(charray);
     fixNumber(res);
-    if (number < 0) {
-        res->negative = 1;
-    }
+    res->negative = negative;
     return res;
 }
-
 
 
 void getNumberChar(char* message, char* output)

@@ -215,13 +215,15 @@ int main() {
     assert(strcmp(numToChar(num5), "12345678912345680000000000000.0") == 0 && "setNumberFromDouble test15 failed");
 
     num5 = setNumberFromDouble(123456789.123456789);
-    assert(strcmp(numToChar(num5), "123456789.1234568") == 0 && "setNumberFromDouble test15 failed");
+    assert(strcmp(numToChar(num5), "123456789.1234568") == 0 && "setNumberFromDouble test16 failed");
+
+    num5 = setNumberFromDouble(0.123456789);
+    assert(strcmp(numToChar(num5), "0.123456789") == 0 && "setNumberFromDouble test17 failed");
+
+    num5 = setNumberFromDouble(0.123456789123456789);
+    assert(strcmp(numToChar(num5), "0.1234567891234568") == 0 && "setNumberFromDouble test18 failed");
     // // setNumberFromDouble
 
-
-
-
-    
     /*  // testing utility functions */
 
 

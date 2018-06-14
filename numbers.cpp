@@ -9,6 +9,7 @@
 #include <climits>
 
 // Header file with useful debugging macros
+#include "dbg.h"
 #include "numbers.h"
 
 // Define table as a global variable
@@ -124,20 +125,17 @@ Number* setNumberFromInt(int number) {
     }
 
     int size = whole_digits + 2;
-    char charray[size];
+    char charray[size+1];
 
-    sprintf(charray, "%0*d.0", whole_digits, number);
-//    charray[size-2] = '.';
-//    charray[size-1] = '0';
+    sprintf(charray, "%0*d.0\0", whole_digits, number);
 
-    int i = 0;
-    while (charray[i] != '\0') {
-        printf("%c", charray[i]);
-        i++;
-    }
-    printf("\n");
-
-
+    // TODO rm this debugging code
+    //int i = 0;
+    //while (charray[i] != '\0') {
+        //printf("%c", charray[i]);
+        //i++;
+    //}
+    //
     Number* res = setNumberFromChar(charray);
     fixNumber(res);
     res->negative = negative;

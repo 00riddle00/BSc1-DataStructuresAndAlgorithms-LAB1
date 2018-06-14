@@ -136,47 +136,35 @@ int main() {
     Number* num4;
 
     // setNumberFromInt
+    num4 = setNumberFromInt(0);
+    assert(strcmp(numToChar(num4), "0.0") == 0 && "setNumberFromInt test01 failed");
+
     num4 = setNumberFromInt(100);
-    assert(strcmp(numToChar(num4), "100.0") == 0 && "setNumberFromInt test01 failed");
+    assert(strcmp(numToChar(num4), "100.0") == 0 && "setNumberFromInt test02 failed");
 
     num4 = setNumberFromInt(-100);
-    assert(strcmp(numToChar(num4), "-100.0") == 0 && "setNumberFromInt test02 failed");
+    assert(strcmp(numToChar(num4), "-100.0") == 0 && "setNumberFromInt test03 failed");
 
     num4 = setNumberFromInt(1);
-    assert(strcmp(numToChar(num4), "1.0") == 0 && "setNumberFromInt test03 failed");
+    assert(strcmp(numToChar(num4), "1.0") == 0 && "setNumberFromInt test04 failed");
 
     num4 = setNumberFromInt(-1);
-    assert(strcmp(numToChar(num4), "-1.0") == 0 && "setNumberFromInt test03 failed");
-    // // setNumberFromInt
+    assert(strcmp(numToChar(num4), "-1.0") == 0 && "setNumberFromInt test05 failed");
 
     num4 = setNumberFromInt(123456789);
-    printEntry(num4);
-    assert(strcmp(numToChar(num4), "123456789.0") == 0 && "setNumberFromInt test04 failed");
+    assert(strcmp(numToChar(num4), "123456789.0") == 0 && "setNumberFromInt test06 failed");
+
+    num4 = setNumberFromInt(1234567891);
+    assert(strcmp(numToChar(num4), "1234567891.0") == 0 && "setNumberFromInt test07 failed");
+
+    num4 = setNumberFromInt(-1234567891);
+    assert(strcmp(numToChar(num4), "-1234567891.0") == 0 && "setNumberFromInt test08 failed");
+
+    num4 = setNumberFromInt(1000000001);
+    assert(strcmp(numToChar(num4), "1000000001.0") == 0 && "setNumberFromInt test09 failed");
     // // setNumberFromInt
-
-
-    debug("here1");
-    printEntry(num4);
-    debug("nw %d", num4->digits_whole);
-    debug("nd %d", num4->digits_decimal);
-    res = factorial(num4);
-    debug("res is");
-    printEntry(res);
-    exit(1);
-
-
-
-
-
-
-
-
-
-
+    
     /*  // testing utility functions */
-
-
-
 
 
     /* live tests */

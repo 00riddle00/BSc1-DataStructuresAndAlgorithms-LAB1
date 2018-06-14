@@ -23,20 +23,6 @@ int main() {
 
     Number *res;
 
-    res = setNumberFromChar((char *) "94498971652638775929231672647833888771141190540374490793799910241413225365722228670047638705370321438791975293971242620109600173039630619238456992875182844589511986507136169417095017804371947032.203664451869145012957479866119182321453596311449965459940509922047959178153412323810076888179364706154977928824519669175533302959921");
-    setPrecision(res, -100);
-    printEntry(res);
-    assert(strcmp(numToChar(res), "94498971652638775929231672647833888771141190540374490793799910241413225365722228670047638705370321438791975293971242620109600173039630619238456992875182844589511986507136169417095017804371947032.2036644518691450129574798661191823214535963114499654599405099220479591781534123238100768881793647062") == 0 && "setPrecision test0x failed");
-    debug("Assert worked!");
-
-    exit(1);
-
-
-
-
-
-
-
 /* test arithmetic */
     res = addNumbers(num1, num2);
     assert(strcmp(numToChar(res), "81222431942852815.06580908") == 0 && "addNumbers test01 failed");
@@ -300,26 +286,43 @@ int main() {
     res = setNumberFromChar((char *) "0.99");
     setPrecision(res, 1);
     assert(strcmp(numToChar(res), "1.0") == 0 && "setPrecision test01 failed");
+//    printf("...setPrecision test01 passed\n");
 
     res = setNumberFromChar((char *) "0.99");
     setPrecision(res, 2);
     assert(strcmp(numToChar(res), "0.99") == 0 && "setPrecision test02 failed");
+//    printf("...setPrecision test02 passed\n");
 
     res = setNumberFromChar((char *) "1234.1999");
     setPrecision(res, 5);
     assert(strcmp(numToChar(res), "1234.2") == 0 && "setPrecision test03 failed");
+//    printf("...setPrecision test03 passed\n");
 
     res = setNumberFromChar((char *) "9999.9999");
     setPrecision(res, 4);
-    assert(strcmp(numToChar(res), "10000.0") == 0 && "setPrecision test03 failed");
+    assert(strcmp(numToChar(res), "10000.0") == 0 && "setPrecision test04 failed");
+//    printf("...setPrecision test04 passed\n");
 
     res = setNumberFromChar((char *) "9999.999");
     setPrecision(res, -3);
-    assert(strcmp(numToChar(res), "9999.999") == 0 && "setPrecision test03 failed");
+    assert(strcmp(numToChar(res), "9999.999") == 0 && "setPrecision test05 failed");
+//    printf("...setPrecision test05 passed\n");
 
     res = setNumberFromChar((char *) "9999.999");
     setPrecision(res, -2);
-    assert(strcmp(numToChar(res), "10000.0") == 0 && "setPrecision test03 failed");
+    assert(strcmp(numToChar(res), "10000.0") == 0 && "setPrecision test06 failed");
+//    printf("...setPrecision test06 passed\n");
+
+    res = setNumberFromChar((char *) "94498971652638775929231672647833888771141190540374490793799910241413225365722228670047638705370321438791975293971242620109600173039630619238456992875182844589511986507136169417095017804371947032.203664451869145012957479866119182321453596311449965459940509922047959178153412323810076888179364706154977928824519669175533302959921");
+    setPrecision(res, -100);
+    assert(strcmp(numToChar(res), "94498971652638775929231672647833888771141190540374490793799910241413225365722228670047638705370321438791975293971242620109600173039630619238456992875182844589511986507136169417095017804371947032.2036644518691450129574798661191823214535963114499654599405099220479591781534123238100768881793647062") == 0 && "setPrecision test07 failed");
+//    printf("...setPrecision test07 passed\n");
+
+    res = setNumberFromChar((char *) "0.1234");
+    setPrecision(res, -10);
+    assert(strcmp(numToChar(res), "0.1234000000") == 0 && "setPrecision test08 failed");
+//    printf("...setPrecision test08 passed\n");
+
     // // test setPrecision
 
 
@@ -385,12 +388,11 @@ int main() {
     res = raiseByPow(res, 6);
     assert(strcmp(numToChar(res), "1000000.0") == 0 && "raiseByPow test04 failed");
 
-//    res = setNumberFromChar((char *) "-213421342318412384912738132894712.8128374823174812377321");
-//    res = raiseByPow(res, 6);
-//    setPrecision(res, -100);
-//      printEntry(res);
-//    assert(strcmp(numToChar(res), "94498971652638775929231672647833888771141190540374490793799910241413225365722228670047638705370321438791975293971242620109600173039630619238456992875182844589511986507136169417095017804371947032.203664451869145012957479866119182321453596311449965459940509922047959178153412323810076888179364706154977928824519669175533302959921") == 0 && "raiseByPow test05 failed");
-    // // test raiseByPow
+    res = setNumberFromChar((char *) "-213421342318412384912738132894712.8128374823174812377321");
+    res = raiseByPow(res, 6);
+    setPrecision(res, -100);
+    assert(strcmp(numToChar(res), "94498971652638775929231672647833888771141190540374490793799910241413225365722228670047638705370321438791975293971242620109600173039630619238456992875182844589511986507136169417095017804371947032.2036644518691450129574798661191823214535963114499654599405099220479591781534123238100768881793647062") == 0 && "raiseByPow test05 failed");
+     // test raiseByPow
 
       // TODO add these tests
 //    res = setNumberFromChar((char *) "5.0");
@@ -398,7 +400,7 @@ int main() {
 //    setPrecision(res, -100);
 //    assert(strcmp(numToChar(res), "1.6094379124341003746007593332261876395256013542685177219126478914741789877076577646301338780931796108") == 0 && "Log test01 failed");
 //    printf("...Log test01 passed\n");
-
+//
 //    res = setNumberFromChar((char *) "20.0");
 //    res = Sine(res);
 //    setPrecision(res, -100);

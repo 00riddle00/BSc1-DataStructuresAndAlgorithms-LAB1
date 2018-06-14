@@ -507,8 +507,8 @@ Number* subtractNumbers(Number* num1, Number* num2) {
     return res;
 }
 
-Number* multiplyNumbers(Number* num1, Number* num2) {
-    Number* res = multiply(num1, num2);
+void multiplyNumbers(Number* res, Number* num1, Number* num2) {
+    multiply(res, num1, num2);
     int sign1 = num1->negative;
     int sign2 = num2->negative;
 
@@ -522,8 +522,6 @@ Number* multiplyNumbers(Number* num1, Number* num2) {
     } else {
         res->negative = 1;
     }
-
-    return res;
 }
 
 Number* divideNumbers(Number* num1, Number* num2) {
@@ -833,11 +831,11 @@ Number* subtract(Number* num1, Number* num2) {
 
 
 
-Number* multiply(Number* num1, Number* num2) {
+void multiply(Number* res, Number* num1, Number* num2) {
 
     // TODO use setNewNumber here
     // FIXME maybe this makes it crash
-    Number* res = (Number*) calloc(1, sizeof(Number));
+//    Number* res = (Number*) calloc(1, sizeof(Number));
     // firstly, set the result as a whole part of the resulting number
     // set digits of the result to a maximum possible number after  multiplication
     res->digits_whole = num1->digits_whole + num1->digits_decimal + num2->digits_whole + num2->digits_decimal;
@@ -984,8 +982,6 @@ Number* multiply(Number* num1, Number* num2) {
     free(temp);
     free(n2);
     fixNumber(res);
-    return res;
-
 }
 
 
@@ -1043,16 +1039,19 @@ void minusEquals(Number* num1, Number* num2) {
 }
 
 void multiplyEquals(Number* num1, Number* num2) {
-    assign(num1, multiplyNumbers(num1, num2));
+    Number* res = setNewNumber();
+    multiplyNumbers(res, num1, num2);
+    assign(num1, res);
+    free(res);
 }
 
 void divideEquals(Number* num1, Number* num2) {
     assign(num1, divideNumbers(num1, num2));
 }
 
-void modulusEquals(Number* num1, Number* num2) {
-    assign(num1, modulus(num1, num2));
-}
+//void modulusEquals(Number* num1, Number* num2) {
+//    assign(num1, modulus(num1, num2));
+//}
 
 
 // utility functions
@@ -1111,7 +1110,7 @@ int isInteger(Number* num) {
     return (num->digits_decimal == 1 && num->decimal_part[0] == 0);
 }
 
-Number* multiplyByInt(Number* num1, int integer) {
+void multiplyByInt(Number* res, Number* num1, int integer) {
 
     // init to zero
     //Number* num2 = setNewNumber();
@@ -1123,7 +1122,8 @@ Number* multiplyByInt(Number* num1, int integer) {
         integer /= 10;
     }
 
-    return multiply(num1, num2);
+    multiply(res, num1, num2);
+    free(num2);
 }
 // // utility functions
 
@@ -1183,7 +1183,7 @@ Number* divide(Number* num1, Number* num2) {
          } else {
              multipl = setNumberFromDouble((double)mul);
          }
-        temp2 = multiply(num2, multipl);
+        multiply(temp2, num2, multipl);
         counter += mul;
         diff_in_tens = tmp->digits_whole - temp2->digits_whole;
 
@@ -1205,7 +1205,11 @@ Number* divide(Number* num1, Number* num2) {
             minusEquals(tmp, temp2);
 
         }
-        plusEquals(res, multiplyByInt(one, counter));
+        Number* temp1 = setNewNumber();
+        assign(temp1, one);
+        multiplyByInt(temp1, temp1, counter);
+        plusEquals(res, temp1);
+        free(temp1);
 
         free(multipl);
         free(temp2);
@@ -1244,9 +1248,9 @@ Number* divide(Number* num1, Number* num2) {
     assign(remainder, tmp);
 
     if (!quotient) {
-        one = multiply(one, zero_one);
-        tmp = multiply(tmp, ten);
-        remainder = multiply(remainder, ten);
+        multiplyEquals(one, zero_one);
+        multiplyEquals(tmp, ten);
+        multiplyEquals(remainder, ten);
     }
 
 
@@ -1279,8 +1283,8 @@ Number* divide(Number* num1, Number* num2) {
                 assign(tmp, remainder);
 
                 // the remainder is multiplied by ten
-                tmp = multiply(tmp, ten);
-                remainder = multiply(remainder, ten);
+                multiplyEquals(tmp, ten);
+                multiplyEquals(remainder, ten);
 
                 // enter a zero to the result, which means that the remainder
                 // was smaller than the divisor
@@ -1289,7 +1293,7 @@ Number* divide(Number* num1, Number* num2) {
                 if (res->digits_decimal > 1) {
                     res->decimal_part[(res->digits_decimal)++] = 0;
                 }
-                one = multiply(one, zero_one);
+                multiplyEquals(one, zero_one);
 
                 continue;
             }
@@ -1308,141 +1312,144 @@ Number* divide(Number* num1, Number* num2) {
             // get the new remainder (remainder -= divisor * (remainder / divisor))
             //
             //
-            remainder = subtract(remainder, multiplyByInt(num2, counter));
+            Number* temp1 = setNewNumber();
+            assign(temp1, num2);
+            multiplyByInt(temp1, temp1, counter);
+            remainder = subtract(remainder, temp1);
 
             //one->decimal_part[one->digits_decimal-1] = 0;
             //one->decimal_part[(one->digits_decimal)++] = 1;
-            one = multiply(one, zero_one);
+            multiplyEquals(one, zero_one);
             counter = 0;
 
             // tmp becomes remainder again
             assign(tmp, remainder);
 
-            remainder = multiply(remainder, ten);
-            tmp = multiply(tmp, ten);
+            multiplyEquals(remainder, ten);
+            multiplyEquals(tmp, ten);
 
         }
     }
 }
 
-
-Number* modulus(Number* num1, Number* num2) {
-
-    if (isZero(num1)) {
-        Number* zero = setNewNumber();
-        return zero;
-    } else if (isZero(num2)) {
-        printf("ERROR: Division from zero in modulus expression!\n");
-        exit(1);
-    }
-
-
-    // compare absolute values. return whether num1 > num2
-    int cmp_abs = compareNumbers(getAbsoluteValue(num1), getAbsoluteValue(num2));
-
-    // if the absolute values of numbers are equal, return zero
-    if (cmp_abs == 3) {
-        Number *zero = setNewNumber();
-        return zero;
-    }
-
-    // shows if num1 > num2 (value=1) or vice a versa (value=0)
-    int cmp_gt;
-
-
-    /* Finding which number is bigger, based on which absolute value
-     * is bigger and either the number is positive or negative
-     * (this saves computation time by avoiding another full comparison
-     * between numbers) */
-
-    // if |num1| > |num2|
-    if (cmp_abs == 1) {
-        // if num1 > 0
-        if (!num1->negative) {
-            // num1 > num2
-            cmp_gt = 1;
-        // else if num1 < 0
-        } else {
-            // num1 < num2
-            cmp_gt = 0;
-        }
-    // else if |num1| < |num2|
-    } else if (cmp_abs == 2) {
-        // if num2 > 0
-        if (!num2->negative) {
-            // num1 < num2
-            cmp_gt = 0;
-        // else if num2 < 0
-        } else {
-            // num1 > num2
-            cmp_gt = 1;
-
-        }
-    }
-
-    // if num1 < num2
-    if (cmp_gt == 0) {
-        // if num2 < 0
-        if (num2->negative) {
-            Number* ret_num = modulus(getAbsoluteValue(num1), getAbsoluteValue(num2));
-            ret_num->negative = 1;
-            return ret_num;
-        // else if num2 > 0
-        } else {
-            // if num1 > 0
-            if (!num1->negative) {
-                return num1;
-            }
-            // else if |num1| < |num2|
-            else if (cmp_abs == 2) {
-               return subtractNumbers(num2, getAbsoluteValue(num1)) ;
-            }
-            // else if |num1| > |num2|
-            else if(cmp_abs == 1) {
-                // if |num1|/num2 is integer
-                if (isInteger(divideNumbers(getAbsoluteValue(num1), num2))) {
-                    Number* zero = setNewNumber();
-                    return zero;
-                // else, if the quotient is not an integer
-                } else {
-                    Number* one = setNumberFromChar((char*) ONE);
-                    // return |(floor(|num1|/num2)+1)*num2| - |num1|
-                    return subtractNumbers(getAbsoluteValue(multiplyNumbers(addNumbers(getFloorNumber(divideNumbers(getAbsoluteValue(num1), num2)), one), num2)), getAbsoluteValue(num1));
-                }
-            }
-        }
-    // else if num1 > num2
-    } else if (cmp_gt == 1) {
-        // if num2 < 0
-        if (num2->negative) {
-            // if num1 > 0
-            if (!num1->negative) {
-                // if |num1| < |num2|
-                if (cmp_abs == 2) {
-                    return addNumbers(num1, num2);
-                // else if |num1| > |num2|
-                } else {
-                    Number *one = setNumberFromChar((char *) ONE);
-                    Number *ret_num = addNumbers(multiplyNumbers(addNumbers(getFloorNumber(getAbsoluteValue(divideNumbers(num1, num2))), one), num2), num1);
-                    return ret_num;
-                }
-            }
-            // else if num1 < 0
-            else {
-                // ret_num = -(modulus(|num1|,|num2|)
-                // FIXME inf recursion
-                Number* ret_num = modulus(getAbsoluteValue(num1), getAbsoluteValue(num2));
-                ret_num->negative = 1;
-                return ret_num;
-            }
-        // else if num2 > 0
-        } else {
-            //return num1 - floor(num1/num2)*num2
-            return subtractNumbers(num1, multiply(getFloorNumber(divideNumbers(num1, num2)), num2));
-        }
-    }
-
-}
+//
+//Number* modulus(Number* num1, Number* num2) {
+//
+//    if (isZero(num1)) {
+//        Number* zero = setNewNumber();
+//        return zero;
+//    } else if (isZero(num2)) {
+//        printf("ERROR: Division from zero in modulus expression!\n");
+//        exit(1);
+//    }
+//
+//
+//    // compare absolute values. return whether num1 > num2
+//    int cmp_abs = compareNumbers(getAbsoluteValue(num1), getAbsoluteValue(num2));
+//
+//    // if the absolute values of numbers are equal, return zero
+//    if (cmp_abs == 3) {
+//        Number *zero = setNewNumber();
+//        return zero;
+//    }
+//
+//    // shows if num1 > num2 (value=1) or vice a versa (value=0)
+//    int cmp_gt;
+//
+//
+//    /* Finding which number is bigger, based on which absolute value
+//     * is bigger and either the number is positive or negative
+//     * (this saves computation time by avoiding another full comparison
+//     * between numbers) */
+//
+//    // if |num1| > |num2|
+//    if (cmp_abs == 1) {
+//        // if num1 > 0
+//        if (!num1->negative) {
+//            // num1 > num2
+//            cmp_gt = 1;
+//        // else if num1 < 0
+//        } else {
+//            // num1 < num2
+//            cmp_gt = 0;
+//        }
+//    // else if |num1| < |num2|
+//    } else if (cmp_abs == 2) {
+//        // if num2 > 0
+//        if (!num2->negative) {
+//            // num1 < num2
+//            cmp_gt = 0;
+//        // else if num2 < 0
+//        } else {
+//            // num1 > num2
+//            cmp_gt = 1;
+//
+//        }
+//    }
+//
+//    // if num1 < num2
+//    if (cmp_gt == 0) {
+//        // if num2 < 0
+//        if (num2->negative) {
+//            Number* ret_num = modulus(getAbsoluteValue(num1), getAbsoluteValue(num2));
+//            ret_num->negative = 1;
+//            return ret_num;
+//        // else if num2 > 0
+//        } else {
+//            // if num1 > 0
+//            if (!num1->negative) {
+//                return num1;
+//            }
+//            // else if |num1| < |num2|
+//            else if (cmp_abs == 2) {
+//               return subtractNumbers(num2, getAbsoluteValue(num1)) ;
+//            }
+//            // else if |num1| > |num2|
+//            else if(cmp_abs == 1) {
+//                // if |num1|/num2 is integer
+//                if (isInteger(divideNumbers(getAbsoluteValue(num1), num2))) {
+//                    Number* zero = setNewNumber();
+//                    return zero;
+//                // else, if the quotient is not an integer
+//                } else {
+//                    Number* one = setNumberFromChar((char*) ONE);
+//                    // return |(floor(|num1|/num2)+1)*num2| - |num1|
+//                    return subtractNumbers(getAbsoluteValue(multiplyNumbers(addNumbers(getFloorNumber(divideNumbers(getAbsoluteValue(num1), num2)), one), num2)), getAbsoluteValue(num1));
+//                }
+//            }
+//        }
+//    // else if num1 > num2
+//    } else if (cmp_gt == 1) {
+//        // if num2 < 0
+//        if (num2->negative) {
+//            // if num1 > 0
+//            if (!num1->negative) {
+//                // if |num1| < |num2|
+//                if (cmp_abs == 2) {
+//                    return addNumbers(num1, num2);
+//                // else if |num1| > |num2|
+//                } else {
+//                    Number *one = setNumberFromChar((char *) ONE);
+//                    Number *ret_num = addNumbers(multiplyNumbers(addNumbers(getFloorNumber(getAbsoluteValue(divideNumbers(num1, num2))), one), num2), num1);
+//                    return ret_num;
+//                }
+//            }
+//            // else if num1 < 0
+//            else {
+//                // ret_num = -(modulus(|num1|,|num2|)
+//                // FIXME inf recursion
+//                Number* ret_num = modulus(getAbsoluteValue(num1), getAbsoluteValue(num2));
+//                ret_num->negative = 1;
+//                return ret_num;
+//            }
+//        // else if num2 > 0
+//        } else {
+//            //return num1 - floor(num1/num2)*num2
+//            return subtractNumbers(num1, multiply(getFloorNumber(divideNumbers(num1, num2)), num2));
+//        }
+//    }
+//
+//}
 
 /* functions to be tested */
 Number* factorial(Number* num) {
@@ -1465,7 +1472,7 @@ Number* factorial(Number* num) {
     assign(diff, one);
 
     for (int i = 1; i < numToInt-1; i++) {
-        diff = multiplyByInt(one, i);
+        multiplyByInt(diff, one, i);
         multiplyEquals(ret_num, subtractNumbers(num, diff));
     }
 
@@ -1474,36 +1481,36 @@ Number* factorial(Number* num) {
     return ret_num;
 }
 
-int isPrime(Number* num) {
-    Number* two = setNumberFromChar((char*)"2.0");
-    if (compareEqual(num, two)) {
-        return 1;
-    }
-    if (isZero(modulus(num, two))) {
-        return 0;
-    }
-    for (Number*i = setNumberFromChar((char *) "3.0"); compareLessThanOrEqual(multiplyNumbers(i, i), num); plusEquals(i, two)) {
-        if (isZero(modulus(num, i))) {
-            return 0;
-        }
-    }
-    return 1;
-}
-
-Number* nextPrime(Number* num) {
-    if (num->negative || isZero(num)) {
-        return setNumberFromChar((char *) "2.0");
-    } else {
-        num = getFloorNumber(num);
-        Number *diff = setNumberFromChar((char *) ONE);
-
-        while (!isPrime(addNumbers(num, diff))) {
-            plusEquals(diff, setNumberFromChar((char *) ONE));
-        }
-
-        return addNumbers(num, diff);
-    }
-}
+//int isPrime(Number* num) {
+//    Number* two = setNumberFromChar((char*)"2.0");
+//    if (compareEqual(num, two)) {
+//        return 1;
+//    }
+//    if (isZero(modulus(num, two))) {
+//        return 0;
+//    }
+//    for (Number*i = setNumberFromChar((char *) "3.0"); compareLessThanOrEqual(multiplyNumbers(i, i), num); plusEquals(i, two)) {
+//        if (isZero(modulus(num, i))) {
+//            return 0;
+//        }
+//    }
+//    return 1;
+//}
+//
+//Number* nextPrime(Number* num) {
+//    if (num->negative || isZero(num)) {
+//        return setNumberFromChar((char *) "2.0");
+//    } else {
+//        num = getFloorNumber(num);
+//        Number *diff = setNumberFromChar((char *) ONE);
+//
+//        while (!isPrime(addNumbers(num, diff))) {
+//            plusEquals(diff, setNumberFromChar((char *) ONE));
+//        }
+//
+//        return addNumbers(num, diff);
+//    }
+//}
 
 
 Number* raiseByPow(Number* num, int power) {
@@ -1542,7 +1549,10 @@ Number* Log(Number* num) {
     int count = 0;
     while (count < 290) {
         multiplyEquals(z, step);
-        plusEquals(ret_num, multiplyNumbers(divideNumbers(one, powe), z));
+        Number* temp1 = setNewNumber();
+        multiplyNumbers(temp1, divideNumbers(one, powe), z);
+        plusEquals(ret_num, temp1);
+        free(temp1);
         plusEquals(powe, two);
         count++;
     }
@@ -1555,24 +1565,24 @@ Number* Log(Number* num) {
     return ret_num;
 }
 
-Number* Sine(Number* num) {
-    Number* step = setNewNumber();
-    int n = 1;
-
-    int change_sign = 0;
-    while (n <= 200) {
-        //printf("MySine: %d\n", n);
-        if (change_sign) {
-            minusEquals(step, divide(raiseByPow(num, n), factorial(multiplyByInt(setNumberFromChar((char*)ONE), n))));
-            change_sign = 0;
-        } else {
-            plusEquals(step, divide(raiseByPow(num, n), factorial(multiplyByInt(setNumberFromChar((char*)ONE), n))));
-            change_sign = 1;
-        }
-        n += 2;
-    }
-    return step;
-}
+//Number* Sine(Number* num) {
+//    Number* step = setNewNumber();
+//    int n = 1;
+//
+//    int change_sign = 0;
+//    while (n <= 200) {
+//        printf("MySine: %d\n", n);
+//        if (change_sign) {
+//            minusEquals(step, divide(raiseByPow(num, n), factorial(multiplyByInt(setNumberFromChar((char*)ONE), n))));
+//            change_sign = 0;
+//        } else {
+//            plusEquals(step, divide(raiseByPow(num, n), factorial(multiplyByInt(setNumberFromChar((char*)ONE), n))));
+//            change_sign = 1;
+//        }
+//        n += 2;
+//    }
+//    return step;
+//}
 
 
 void setMaxPrecision(Number* num, int precision) {
@@ -1672,7 +1682,8 @@ void setPrecision(Number* num, int precision) {
         num->decimal_part[0] = 0;
     } else if (num->digits_whole < precision) {
         // TODO shift comma manually
-        Number* ShiftedComma = multiplyNumbers(num, raiseByPow(ten, num->digits_decimal));
+        Number* ShiftedComma = setNewNumber();
+        multiplyNumbers(ShiftedComma, num, raiseByPow(ten, num->digits_decimal));
         setPrecision(ShiftedComma, precision);
         //divideEquals(ShiftedComma, raiseByPow(ten, num->digits_decimal));
         Number* temp = setNewNumber();
@@ -1689,6 +1700,8 @@ void setPrecision(Number* num, int precision) {
 
         fixNumber(temp);
         // TODO do without ShiftedComma variable
+        free(temp);
+        free(ShiftedComma);
         assign(num, temp);
     }
 }

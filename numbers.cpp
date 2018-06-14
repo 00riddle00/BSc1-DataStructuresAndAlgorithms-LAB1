@@ -1541,15 +1541,14 @@ Number* Log(Number* num) {
         debug("inside while");
 //        printf("MyLog: %d\n", count);
         debug("1");
-        multiplyEquals(z, step);
+//        multiplyEquals(z, step);
         debug("2");
-        assign(y, multiplyNumbers(divideNumbers(one, powe), z));
+//        assign(y, multiplyNumbers(divideNumbers(one, powe), z));
         debug("3");
-//        plusEquals(ret_num, multiplyNumbers(divideNumbers(one, powe), multiplyNumbers(z, step)));
-        plusEquals(ret_num, y);
+//        plusEquals(ret_num, y);
         debug("4");
+        plusEquals(ret_num, multiplyNumbers(divideNumbers(one, powe), multiplyNumbers(z, step)));
         plusEquals(powe, two);
-
         count++;
     }
     multiplyEquals(ret_num, two);

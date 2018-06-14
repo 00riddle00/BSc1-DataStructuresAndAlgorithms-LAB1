@@ -182,7 +182,8 @@ void getNumberChar(char* message, char* output)
 
 Number* setNewNumber() {
 
-    Number* num = (Number*) malloc(sizeof(Number));
+//    Number* num = (Number*) malloc(sizeof(Number));
+    Number* num = (Number*) calloc(1, sizeof(Number));
 
     num->negative = 0;
     num->digits_whole = 1;
@@ -209,7 +210,8 @@ char* convertNumberToChar(Number* num) {
 
 Number* setNumberFromChar(char* numArray) {
 
-    Number* number = (Number*) malloc(sizeof(Number));
+//    Number* number = (Number*) malloc(sizeof(Number));
+    Number* number = (Number*) calloc(1, sizeof(Number));
 
     char whole_part[DIGITS];
     char decimal_part[DIGITS];
@@ -1539,15 +1541,7 @@ Number* Log(Number* num) {
 
     int count = 0;
     while (count < 290) {
-        debug("inside while");
-//        printf("MyLog: %d\n", count);
-        debug("1");
         multiplyEquals(z, step);
-        debug("2");
-//        assign(y, multiplyNumbers(divideNumbers(one, powe), z));
-        debug("3");
-//        plusEquals(ret_num, y);
-        debug("4");
         plusEquals(ret_num, multiplyNumbers(divideNumbers(one, powe), z));
         plusEquals(powe, two);
         count++;

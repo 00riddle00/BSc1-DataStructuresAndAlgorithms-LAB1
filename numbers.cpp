@@ -1526,6 +1526,7 @@ Number* Log(Number* num) {
     // TODO add validation for negative input
     Number *step = setNewNumber();
     Number *one = setNumberFromChar((char *) ONE);
+    Number *two = setNumberFromChar((char *) "2.0");
 
     Number *powe = setNumberFromChar((char *) ONE);
 
@@ -1536,16 +1537,22 @@ Number* Log(Number* num) {
     step = divideNumbers(raiseByPow(subtractNumbers(num, one), 2), raiseByPow(addNumbers(num, one), 2));
 
     int count = 0;
-    while (count < 290) {
+    while (count < 100) {
+        debug("inside while");
 //        printf("MyLog: %d\n", count);
+        debug("1");
         multiplyEquals(z, step);
-        assign(y, multiplyNumbers(divideNumbers(one, powe), z));
-        plusEquals(ret_num, y);
-        plusEquals(powe, setNumberFromChar((char *) "2.0"));
+        debug("2");
+//        assign(y, multiplyNumbers(divideNumbers(one, powe), z));
+        debug("3");
+        plusEquals(ret_num, multiplyNumbers(divideNumbers(one, powe), multiplyNumbers(z, step)));
+//        plusEquals(ret_num, y);
+        debug("4");
+        plusEquals(powe, two);
 
         count++;
     }
-    multiplyEquals(ret_num, setNumberFromChar((char*)"2.0"));
+    multiplyEquals(ret_num, two);
     free(step);
     free(one);
     free(powe);
@@ -1670,6 +1677,7 @@ void setPrecision(Number* num, int precision) {
         num->digits_decimal = 1;
         num->decimal_part[0] = 0;
     } else if (num->digits_whole < precision) {
+        // TODO shift comma manually
         Number* ShiftedComma = multiplyNumbers(num, raiseByPow(ten, num->digits_decimal));
         setPrecision(ShiftedComma, precision);
         //divideEquals(ShiftedComma, raiseByPow(ten, num->digits_decimal));

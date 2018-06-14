@@ -1444,6 +1444,13 @@ Number* modulus(Number* num1, Number* num2) {
 
 /* functions to be tested */
 Number* factorial(Number* num) {
+
+    Number* one = setNumberFromChar((char*) ONE);
+
+    if (isZero(num)) {
+        return one;
+    }
+
     int negative = num->negative;
     num->negative = 0;
     Number* ret_num = setNewNumber();
@@ -1452,7 +1459,6 @@ Number* factorial(Number* num) {
 
     int numToInt = toInt(ret_num);
 
-    Number* one = setNumberFromChar((char*) ONE);
     Number* diff = setNewNumber();
     assign(diff, one);
 

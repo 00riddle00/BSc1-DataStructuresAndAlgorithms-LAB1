@@ -552,6 +552,8 @@ void divideNumbers(Number* res, Number* num1, Number* num2) {
     num2->negative = 0;
 
     divide(res, num1, num2);
+    debug("res here");
+    printEntry(res);
 
     num1->negative = sign1;
     num2->negative = sign2;
@@ -1178,7 +1180,10 @@ void multiplyByInt(Number* res, Number* num1, int integer) {
 // FIXME hence the temporary guard if condition is added to stop 
 // FIXME division after the resulting number reaches 35 digits.
 void divide(Number* res, Number* num1, Number* num2) {
+    debug("------------------------------------");
 
+    printEntry(num1);
+    printEntry(num2);
 //    Number* res = setNewNumber();
     // make res to be zero
     res->whole_part[0] = 0;
@@ -1288,6 +1293,8 @@ void divide(Number* res, Number* num1, Number* num2) {
         free(zero_one);
         plusEquals(res, one);
         free(one);
+        debug("return1");
+        printEntry(res);
         return;
     }
 
@@ -1302,6 +1309,8 @@ void divide(Number* res, Number* num1, Number* num2) {
     }
 
 
+    debug("RES IS HERE");
+    printEntry(res);
 
     while (1) {
         tmp = subtract(tmp, num2);
@@ -1322,6 +1331,8 @@ void divide(Number* res, Number* num1, Number* num2) {
             free(tmp);
             // FIXME memory crash if this line is added
 //            free(remainder);
+            debug("return2");
+            printEntry(res);
             return;
         } else {
             // if the divisor (second number) is greater than the remainder,
@@ -1347,6 +1358,7 @@ void divide(Number* res, Number* num1, Number* num2) {
             }
             // FIXME temporary guard, else the program stops running 
             // FIXME (gets stuck)
+            // TODO do smth about this magic number
             if (res->digits_decimal >= 200) {
                 free(one);
                 free(ten);
@@ -1355,6 +1367,9 @@ void divide(Number* res, Number* num1, Number* num2) {
 //                free(remainder);
                 free(tmp);
                 fixNumber(res);
+                debug("return3");
+                printEntry(res);
+                debug("before return3");
                 return;
             }
             // get the new remainder (remainder -= divisor * (remainder / divisor))

@@ -1618,11 +1618,17 @@ Number* Log(Number* num) {
     int count = 0;
     while (count < 100) {
         debug("count: %d", count);
+        debug("1");
         multiplyEquals(z, step);
+        debug("2");
         divideNumbers(y, one, powe);
+        debug("3");
         multiplyNumbers(y, y, z);
+        debug("4");
         plusEquals(ret_num, y);
+        debug("5");
         plusEquals(powe, two);
+        debug("6");
         count++;
     }
     multiplyEquals(ret_num, two);

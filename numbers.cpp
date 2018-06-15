@@ -543,7 +543,7 @@ void multiplyNumbers(Number* res, Number* num1, Number* num2) {
     }
 }
 
-Number* divideNumbers(Number* num1, Number* num2) {
+void divideNumbers(Number* res, Number* num1, Number* num2) {
 
     int sign1 = num1->negative;
     int sign2 = num2->negative;
@@ -551,7 +551,7 @@ Number* divideNumbers(Number* num1, Number* num2) {
     num1->negative = 0;
     num2->negative = 0;
 
-    Number* res = divide(num1, num2);
+    divide(res, num1, num2);
 
     num1->negative = sign1;
     num2->negative = sign2;
@@ -566,8 +566,6 @@ Number* divideNumbers(Number* num1, Number* num2) {
     } else {
         res->negative = 1;
     }
-
-    return res;
 }
 
 Number* add(Number* num1, Number* num2, int negative) {
@@ -1088,7 +1086,10 @@ void multiplyEquals(Number* num1, Number* num2) {
 }
 
 void divideEquals(Number* num1, Number* num2) {
-    assign(num1, divideNumbers(num1, num2));
+    Number* res =setNewNumber();
+    divideNumbers(res, num1, num2);
+    assign(num1, res);
+    free(res);
 }
 
 //void modulusEquals(Number* num1, Number* num2) {
@@ -1176,9 +1177,14 @@ void multiplyByInt(Number* res, Number* num1, int integer) {
 // FIXME After that, the program freezes.
 // FIXME hence the temporary guard if condition is added to stop 
 // FIXME division after the resulting number reaches 35 digits.
-Number* divide(Number* num1, Number* num2) {
+void divide(Number* res, Number* num1, Number* num2) {
 
-    Number* res = setNewNumber();
+//    Number* res = setNewNumber();
+    // make res to be zero
+    res->whole_part[0] = 0;
+    res->decimal_part[0] = 0;
+    res->digits_whole = 1;
+    res->digits_decimal = 1;
 
     // initalize Number with the value of one
     Number* one = setNumberFromChar((char*) ONE);
@@ -1282,7 +1288,7 @@ Number* divide(Number* num1, Number* num2) {
         free(zero_one);
         plusEquals(res, one);
         free(one);
-        return res;
+        return;
     }
 
 
@@ -1316,7 +1322,7 @@ Number* divide(Number* num1, Number* num2) {
             free(tmp);
             // FIXME memory crash if this line is added
 //            free(remainder);
-            return res;
+            return;
         } else {
             // if the divisor (second number) is greater than the remainder,
             // multiply the remainder by ten and continue the division loop.
@@ -1349,7 +1355,7 @@ Number* divide(Number* num1, Number* num2) {
 //                free(remainder);
                 free(tmp);
                 fixNumber(res);
-                return res;
+                return;
             }
             // get the new remainder (remainder -= divisor * (remainder / divisor))
             //
@@ -1582,16 +1588,18 @@ Number* Log(Number* num) {
     Number *powe = setNumberFromChar((char *) ONE);
 
     Number *y = setNewNumber();
-    Number *z = divideNumbers(addNumbers(num, one), subtractNumbers(num, one));
+    Number *z = setNewNumber();
+    divideNumbers(z, addNumbers(num, one), subtractNumbers(num, one));
     Number *ret_num = setNewNumber();
 
-    step = divideNumbers(raiseByPow(subtractNumbers(num, one), 2), raiseByPow(addNumbers(num, one), 2));
+    divideNumbers(step, raiseByPow(subtractNumbers(num, one), 2), raiseByPow(addNumbers(num, one), 2));
 
     int count = 0;
     while (count < 100) {
         debug("count: %d", count);
         multiplyEquals(z, step);
-        multiplyNumbers(y, divideNumbers(one, powe), z);
+        divideNumbers(y, one, powe);
+        multiplyNumbers(y, y, z);
         plusEquals(ret_num, y);
         plusEquals(powe, two);
         count++;

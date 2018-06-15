@@ -188,7 +188,7 @@ int compareNumbers(Number* num1, Number* num2);
 Number *addNumbers(Number* num1, Number* num2);
 Number* subtractNumbers(Number* num1, Number* num2);
 void multiplyNumbers(Number* res, Number* num1, Number* num2);
-Number* divideNumbers(Number* num1, Number* num2);
+void divideNumbers(Number* res, Number* num1, Number* num2);
 
 // add two numbers
 // ::params:: num1 - first number ::params:: num2 - second number
@@ -218,7 +218,7 @@ void multiplyByInt(Number* res, Number* num1, int integer);
 // ::params:: num1 - first number
 // ::params:: num2 - second number
 // ::return::  a resulting Number
-Number* divide(Number* num1, Number* num2);
+void divide(Number* res, Number* num1, Number* num2);
 
 
 // TODO comment

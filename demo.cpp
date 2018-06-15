@@ -38,8 +38,10 @@ int main() {
            "multiplyNumbers test01 failed");
 //    printf("...multiplyNumbers test01 passed\n");
 
-    res = divideNumbers(num1, num2);
+    divideNumbers(res, num1, num2);
+    printEntry(res);
     assert(strcmp(numToChar(res), "-6561.54419860025807258480133651369799292598220471119087440522753152172937147050145087534158469354169467861073368962805080144763639103815994729925250725392659630057069975612925521735560029401045650694433091") == 0 && "divideNumbers test01 failed");
+    exit(1);
 //    printf("...divideNumbers test01 passed\n");
     /* // test arithmetic */
 

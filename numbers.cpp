@@ -1624,7 +1624,7 @@ Number* Log(Number* num) {
 
     int count = 0;
     while (count < 290) {
-        debug("count: %d", count);
+//        debug("count: %d", count);
         multiplyEquals(z, step);
         divideNumbers(y, one, powe);
         multiplyEquals(y, z);
@@ -1647,7 +1647,7 @@ Number* Sine(Number* num) {
 
     int change_sign = 0;
     while (n <= 200) {
-        printf("MySine: %d\n", n);
+//        printf("MySine: %d\n", n);
         Number* temp1 = setNumberFromInt(n);
         Number* temp2 = setNewNumber();
         divide(temp2, raiseByPow(num, n), factorial(temp1));

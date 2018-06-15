@@ -1753,6 +1753,8 @@ Number* Log(Number* num) {
                 }
                 multiplyEquals(part_of_sum, Log(setNumberFromInt(canonical[i])));
                 debug("after multiply");
+                printEntry(result);
+                debug("after res");
                 printEntry(part_of_sum);
                 plusEquals(result, part_of_sum);
                 debug("after add");

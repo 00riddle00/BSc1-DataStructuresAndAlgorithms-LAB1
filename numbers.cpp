@@ -1620,10 +1620,11 @@ Number* Log(Number* num) {
         debug("count: %d", count);
         multiplyEquals(z, step);
         divideNumbers(y, one, powe);
-        Number* temp = setNewNumber();
-        assign(temp, y);
-        multiplyNumbers(y, temp, z);
-        free(temp);
+//        Number* temp = setNewNumber();
+//        assign(temp, y);
+        multiplyEquals(y, z);
+//        multiplyNumbers(y, temp, z);
+//        free(temp);
         plusEquals(ret_num, y);
         plusEquals(powe, two);
         count++;

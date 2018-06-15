@@ -185,40 +185,40 @@ int compareLessThanOrEqual(Number* num1, Number* num2);
 int compareNumbers(Number* num1, Number* num2);
 
 // TODO add description
-Number *addNumbers(Number* num1, Number* num2);
-Number* subtractNumbers(Number* num1, Number* num2);
-Number* multiplyNumbers(Number* num1, Number* num2);
-Number* divideNumbers(Number* num1, Number* num2);
+void addNumbers(Number* res, Number* num1, Number* num2);
+void subtractNumbers(Number* res, Number* num1, Number* num2);
+void multiplyNumbers(Number* res, Number* num1, Number* num2);
+void divideNumbers(Number* res, Number* num1, Number* num2);
 
 // add two numbers
 // ::params:: num1 - first number ::params:: num2 - second number
 // ::params:: negative - whether result should be negative
 // ::return::  a resulting Number
-Number* add(Number* num1, Number* num2, int negative);
+void add(Number* res, Number* num1, Number* num2, int negative);
 
 // subtract two numbers
 // ::params:: num1 - first number
 // ::params:: num2 - second number
 // ::return::  a resulting Number
-Number* subtract(Number* num1, Number* num2);
+void subtract(Number* res, Number* num1, Number* num2);
 
 // multiply two numbers
 // ::params:: num1 - first number
 // ::params:: num2 - second number
 // ::return::  a resulting Number
-Number* multiply(Number* num1, Number* num2);
+void multiply(Number* res, Number* num1, Number* num2);
 
 // multiply a Number struct by int
 // ::params:: num1 - Number struct
 // ::params:: integer - integer to be multiplied by
 // ::return::  a resulting Number
-Number* multiplyByInt(Number* num1, int integer);
+void multiplyByInt(Number* res, Number* num1, int integer);
 
 // divide two numbers
 // ::params:: num1 - first number
 // ::params:: num2 - second number
 // ::return::  a resulting Number
-Number* divide(Number* num1, Number* num2);
+void divide(Number* res, Number* num1, Number* num2);
 
 
 // TODO comment

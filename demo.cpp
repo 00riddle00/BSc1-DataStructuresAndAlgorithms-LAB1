@@ -20,23 +20,26 @@ int main() {
     Number *num1 = setNumberFromChar((char *) "81234812384091238.8901234");
     Number *num2 = setNumberFromChar((char *) "-12380441238423.82431432");
 
-    Number *res;
+    Number *res = setNewNumber();
 
 /* test arithmetic */
-    res = addNumbers(num1, num2);
+    addNumbers(res, num1, num2);
     assert(strcmp(numToChar(res), "81222431942852815.06580908") == 0 && "addNumbers test01 failed");
 //    printf("...addNumbers test01 passed\n");
 
-    res = subtractNumbers(num1, num2);
+    subtractNumbers(res, num1, num2);
     assert(strcmp(numToChar(res), "81247192825329662.71443772") == 0 && "subtractNumbers test01 failed");
 //    printf("...subtractNumbers test01 passed\n");
 
-    res = multiplyNumbers(num1, num2);
+//    exit(1);
+
+    multiplyNumbers(res, num1, num2);
     assert(strcmp(numToChar(res), "-1005722821235625557767394406067.695067825187088") == 0 &&
            "multiplyNumbers test01 failed");
 //    printf("...multiplyNumbers test01 passed\n");
 
-    res = divideNumbers(num1, num2);
+
+    divideNumbers(res, num1, num2);
     assert(strcmp(numToChar(res), "-6561.54419860025807258480133651369799292598220471119087440522753152172937147050145087534158469354169467861073368962805080144763639103815994729925250725392659630057069975612925521735560029401045650694433091") == 0 && "divideNumbers test01 failed");
 //    printf("...divideNumbers test01 passed\n");
     /* // test arithmetic */
@@ -79,6 +82,7 @@ int main() {
 //    printf("...modulus test09 passed\n");
     /*  // test modulus */
 
+
     /* test comparison */
     int cmp;
 
@@ -111,6 +115,7 @@ int main() {
 //    printf("...assign test01 passed\n");
     /* // test comparison */
 
+
     /* test additional functions */
     int digit;
     Number *num3 = setNumberFromChar((char *) "123.456");
@@ -130,6 +135,7 @@ int main() {
     digit = getIthDigit(num3, -2);
     assert(digit == 5 && "getIthDigit test02 failed");
 //    printf("...getIthDigit test02 passed\n");
+
 
     increment(num3);
     assert(strcmp(numToChar(num3), "124.456") == 0 && "increment test01 failed");
@@ -321,15 +327,11 @@ int main() {
     setPrecision(res, -10);
     assert(strcmp(numToChar(res), "0.1234000000") == 0 && "setPrecision test08 failed");
 //    printf("...setPrecision test08 passed\n");
-
     // // test setPrecision
-
-
     /*  // test utility functions */
 
 
     /* live tests */
-
     // test factorial
     res = setNumberFromChar((char *) "10.0");
     res = factorial(res);
@@ -350,9 +352,10 @@ int main() {
     res = setNumberFromChar((char *) "0.0");
     res = factorial(res);
     assert(strcmp(numToChar(res), "1.0") == 0 && "factorial test05 failed");
+    printf("...factorial tests(5) passed\n");
     // // test factorial
 
-    // test nextPrime
+//     test nextPrime
     res = setNumberFromChar((char *) "7.0");
     res = nextPrime(res);
     assert(strcmp(numToChar(res), "11.0") == 0 && "nextPrime test01 failed");
@@ -368,7 +371,8 @@ int main() {
     res = setNumberFromChar((char *) "3617.0");
     res = nextPrime(res);
     assert(strcmp(numToChar(res), "3623.0") == 0 && "nextPrime test04 failed");
-    // // test nextPrime
+     // test nextPrime
+
 
     // test raiseByPow
     res = setNumberFromChar((char *) "0.0");
@@ -391,20 +395,24 @@ int main() {
     res = raiseByPow(res, 6);
     setPrecision(res, -100);
     assert(strcmp(numToChar(res), "94498971652638775929231672647833888771141190540374490793799910241413225365722228670047638705370321438791975293971242620109600173039630619238456992875182844589511986507136169417095017804371947032.2036644518691450129574798661191823214535963114499654599405099220479591781534123238100768881793647062") == 0 && "raiseByPow test05 failed");
+    printf("...raiseByPow tests(5) passed\n");
      // test raiseByPow
 
-      // TODO add these tests
-//    res = setNumberFromChar((char *) "5.0");
-//    res = Log(res);
-//    setPrecision(res, -100);
-//    assert(strcmp(numToChar(res), "1.6094379124341003746007593332261876395256013542685177219126478914741789877076577646301338780931796108") == 0 && "Log test01 failed");
-//    printf("...Log test01 passed\n");
-//
-//    res = setNumberFromChar((char *) "20.0");
-//    res = Sine(res);
-//    setPrecision(res, -100);
-//    assert(strcmp(numToChar(res), "0.9129452507276276543760999838456823012979325837081899563051281147688489193490729760444800496404699762") == 0 && "Sine test01 failed");
-//    printf("...Sine test01 passed\n");
+    // test Log
+    res = setNumberFromChar((char *) "5.0");
+    res = Log(res);
+    setPrecision(res, -100);
+    assert(strcmp(numToChar(res), "1.6094379124341003746007593332261876395256013542685177219126478914741789877076577646301338780931796108") == 0 && "Log test01 failed");
+    printf("...Log test01 passed\n");
+    // // test Log
+
+    // test Sine
+    res = setNumberFromChar((char *) "20.0");
+    res = Sine(res);
+    setPrecision(res, -100);
+    assert(strcmp(numToChar(res), "0.9129452507276276543760999838456823012979325837081899563051281147688489193490729760444800496404699762") == 0 && "Sine test01 failed");
+    printf("...Sine test01 passed\n");
+    // // test Sine
 //    /* // live tests */
 
     free(num1);

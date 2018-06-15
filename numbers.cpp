@@ -38,6 +38,25 @@ void saveNumber(Number* number) {
     table->size++;
 }
 
+void printEntry2(TempNumber* number) {
+
+        if (number->negative) {
+            printf("-");
+        }
+
+        for (int i = number->digits_whole - 1; i >= 0; i--) {
+            printf("%d", number->whole_part[i]);
+        }
+        printf(".");
+
+        for (int i = 0; i < number->digits_decimal; i++) {
+            printf("%d", number->decimal_part[i]);
+        }
+        printf("\n");
+}
+
+
+
 void printEntry(Number* number) {
 
         if (number->negative) {
@@ -181,7 +200,8 @@ void getNumberChar(char* message, char* output)
 
 Number* setNewNumber() {
 
-    Number* num = (Number*) malloc(sizeof(Number));
+//    Number* num = (Number*) malloc(sizeof(Number));
+    Number* num = (Number*) calloc(1, sizeof(Number));
 
     num->negative = 0;
     num->digits_whole = 1;
@@ -208,7 +228,8 @@ char* convertNumberToChar(Number* num) {
 
 Number* setNumberFromChar(char* numArray) {
 
-    Number* number = (Number*) malloc(sizeof(Number));
+//    Number* number = (Number*) malloc(sizeof(Number));
+    Number* number = (Number*) calloc(1, sizeof(Number));
 
     char whole_part[DIGITS];
     char decimal_part[DIGITS];
@@ -460,52 +481,46 @@ int compareNumbers(Number* num1, Number* num2) {
     return cmp;
 }
 
-Number *addNumbers(Number* num1, Number* num2) {
-    Number* res;
+void addNumbers(Number* res, Number* num1, Number* num2) {
     int sign1 = num1->negative;
     int sign2 = num2->negative;
 
     // both numbers positive
     if (!sign1 && !sign2) {
-        res = add(num1, num2, 0);
+        add(res, num1, num2, 0);
     // both numbers negative
     } else if (sign1 && sign2) {
-        res = add(num1, num2, 1);
+        add(res, num1, num2, 1);
     // first number is positive, second - negative
     } else if (!sign1 && sign2) {
-        res = subtract(num1, num2);
+        subtract(res, num1, num2);
     // first number is negative, second - positive
     } else if (sign1 && !sign2) {
-        res = subtract(num2, num1);
+        subtract(res, num2, num1);
     }
-
-    return res;
 }
 
-Number* subtractNumbers(Number* num1, Number* num2) {
-    Number* res;
+void subtractNumbers(Number* res , Number* num1, Number* num2) {
     int sign1 = num1->negative;
     int sign2 = num2->negative;
 
     // both numbers positive
     if (!sign1 && !sign2) {
-        res =  subtract(num1, num2);
+        subtract(res, num1, num2);
     // both numbers negative
     } else if (sign1 && sign2) {
-        res =  subtract(num1, num2);
+        subtract(res, num1, num2);
     // first number is positive, second - negative
     } else if (!sign1 && sign2) {
-        res = add(num1, num2, 0);
+        add(res, num1, num2, 0);
     // first number is negative, second - positive
     } else if (sign1 && !sign2) {
-        res = add(num1, num2, 1);
+        add(res, num1, num2, 1);
     }
-
-    return res;
 }
 
-Number* multiplyNumbers(Number* num1, Number* num2) {
-    Number* res = multiply(num1, num2);
+void multiplyNumbers(Number* res, Number* num1, Number* num2) {
+    multiply(res, num1, num2);
     int sign1 = num1->negative;
     int sign2 = num2->negative;
 
@@ -519,11 +534,9 @@ Number* multiplyNumbers(Number* num1, Number* num2) {
     } else {
         res->negative = 1;
     }
-
-    return res;
 }
 
-Number* divideNumbers(Number* num1, Number* num2) {
+void divideNumbers(Number* res, Number* num1, Number* num2) {
 
     int sign1 = num1->negative;
     int sign2 = num2->negative;
@@ -531,7 +544,7 @@ Number* divideNumbers(Number* num1, Number* num2) {
     num1->negative = 0;
     num2->negative = 0;
 
-    Number* res = divide(num1, num2);
+    divide(res, num1, num2);
 
     num1->negative = sign1;
     num2->negative = sign2;
@@ -546,11 +559,9 @@ Number* divideNumbers(Number* num1, Number* num2) {
     } else {
         res->negative = 1;
     }
-
-    return res;
 }
 
-Number* add(Number* num1, Number* num2, int negative) {
+void add(Number* res, Number* num1, Number* num2, int negative) {
 
     Number* bigger = setNewNumber();
     Number* smaller = setNewNumber();
@@ -570,7 +581,6 @@ Number* add(Number* num1, Number* num2, int negative) {
 
     // create result Number and populate it with decimal digits 
     // of the bigger number
-    Number* res = (Number*) calloc(1, sizeof(Number));
     for (int i = 0; i < bigger->digits_decimal; i++) {
         res->decimal_part[i] = bigger->decimal_part[i];
     }
@@ -692,14 +702,13 @@ Number* add(Number* num1, Number* num2, int negative) {
     free(bigger);
     free(smaller);
     fixNumber(res);
-    return res;
 }
 
 
 
 
 
-Number* subtract(Number* num1, Number* num2) {
+void subtract(Number* res, Number* num1, Number* num2) {
 
     int negative;
     // compare the two numbers
@@ -708,7 +717,6 @@ Number* subtract(Number* num1, Number* num2) {
     Number* first = setNewNumber();
     Number* second = setNewNumber();
 
-    Number* res = setNewNumber();
 
     // if first is greater or equal, 
     // subtract second number from the first
@@ -731,7 +739,12 @@ Number* subtract(Number* num1, Number* num2) {
     } else if (rs == 3) {
         free(first);
         free(second);
-        return res;
+        // TODO add zerofy fn
+        res->whole_part[0] = 0;
+        res->decimal_part[0] = 0;
+        res->digits_whole = 1;
+        res->digits_decimal = 1;
+        return;
     }
 
     // set decimal digits of the result to that of number having
@@ -824,17 +837,17 @@ Number* subtract(Number* num1, Number* num2) {
     free(first);
     free(second);
     fixNumber(res);
-    return res;
+    return;
 }
 
 
 
 
-Number* multiply(Number* num1, Number* num2) {
+void multiply(Number* res, Number* num1, Number* num2) {
 
     // TODO use setNewNumber here
     // FIXME maybe this makes it crash
-    Number* res = (Number*) calloc(1, sizeof(Number));
+//    Number* res = (Number*) calloc(1, sizeof(Number));
     // firstly, set the result as a whole part of the resulting number
     // set digits of the result to a maximum possible number after  multiplication
     res->digits_whole = num1->digits_whole + num1->digits_decimal + num2->digits_whole + num2->digits_decimal;
@@ -952,23 +965,44 @@ Number* multiply(Number* num1, Number* num2) {
     int whole_numbers = temp->digits_whole - decimal_numbers;
     res->digits_whole = whole_numbers;
 
+
     if (decimal_numbers > 500) {
         res->digits_decimal = 500;
 
-        for (int i = temp->digits_whole - 500 - (temp->digits_whole - decimal_numbers), j = 499; i < temp->digits_whole; i++, j--) {
+
+        for (int i = temp->digits_whole - 500 - (temp->digits_whole - decimal_numbers), j = 499; i < temp->digits_whole - (temp->digits_whole - decimal_numbers); i++, j--) {
+            if (j == -1) {
+                //debug("STOP!");
+                exit(1);
+            }
             res->decimal_part[j] = temp->whole_part[i];
         }
 
-        for (int i = temp->digits_whole - 1, j = whole_numbers - 1; i > temp->digits_whole - decimal_numbers - 1; i--, j--) {
+//        debug("temp");
+//        debug("dn %d", decimal_numbers);
+//        debug("dw %d", whole_numbers);
+//        printEntry2(temp);
+//        debug("res");
+//        printEntry(res);
+
+//        for (int i = temp->digits_whole - 1, j = whole_numbers - 1; i > temp->digits_whole - decimal_numbers - 1; i--, j--) {
+        for (int i = temp->digits_whole - 1, j = whole_numbers - 1; i > decimal_numbers - 1; i--, j--) {
+            if (j == -1) {
+                //debug("STOP2!!!");
+//                printEntry(res);
+                exit(1);
+            }
             res->whole_part[j] = temp->whole_part[i];
         }
     } else {
         res->digits_decimal = decimal_numbers;
 
+        // TODO check for -1 index
         for (int i = temp->digits_whole-1, j = whole_numbers - 1; i > temp->digits_whole - whole_numbers - 1; i--, j--) {
             res->whole_part[j] = temp->whole_part[i];
         }
 
+        // TODO check for -1 index
         for (int i = temp->digits_whole-whole_numbers-1, j = 0; i >= 0; i--, j++) {
             res->decimal_part[j] = temp->whole_part[i];
         }
@@ -981,8 +1015,6 @@ Number* multiply(Number* num1, Number* num2) {
     free(temp);
     free(n2);
     fixNumber(res);
-    return res;
-
 }
 
 
@@ -1023,28 +1055,40 @@ int getIthDigit(Number* num, int index) {
 
 // TODO optimize
 void increment(Number* num) {
-    assign(num, addNumbers(num, setNumberFromChar((char*) ONE)));
+    plusEquals(num, setNumberFromChar((char*) ONE));
 }
 
 // TODO optimize
 void decrement(Number* num) {
-    assign(num, subtractNumbers(num, setNumberFromChar((char*) ONE)));
+    minusEquals(num, setNumberFromChar((char*) ONE));
 }
 
 void plusEquals(Number* num1, Number* num2) {
-    assign(num1, addNumbers(num1, num2));
+    Number* temp = setNewNumber();
+    addNumbers(temp, num1, num2);
+    assign(num1, temp);
+    free(temp);
 }
 
 void minusEquals(Number* num1, Number* num2) {
-    assign(num1, subtractNumbers(num1, num2));
+    Number* temp = setNewNumber();
+    subtractNumbers(temp, num1, num2);
+    assign(num1, temp);
+    free(temp);
 }
 
 void multiplyEquals(Number* num1, Number* num2) {
-    assign(num1, multiplyNumbers(num1, num2));
+    Number* temp = setNewNumber();
+    multiplyNumbers(temp, num1, num2);
+    assign(num1, temp);
+    free(temp);
 }
 
 void divideEquals(Number* num1, Number* num2) {
-    assign(num1, divideNumbers(num1, num2));
+    Number* temp = setNewNumber();
+    divideNumbers(temp, num1, num2);
+    assign(num1, temp);
+    free(temp);
 }
 
 void modulusEquals(Number* num1, Number* num2) {
@@ -1108,7 +1152,7 @@ int isInteger(Number* num) {
     return (num->digits_decimal == 1 && num->decimal_part[0] == 0);
 }
 
-Number* multiplyByInt(Number* num1, int integer) {
+void multiplyByInt(Number* res, Number* num1, int integer) {
 
     // init to zero
     //Number* num2 = setNewNumber();
@@ -1120,7 +1164,8 @@ Number* multiplyByInt(Number* num1, int integer) {
         integer /= 10;
     }
 
-    return multiply(num1, num2);
+    multiply(res, num1, num2);
+    free(num2);
 }
 // // utility functions
 
@@ -1131,9 +1176,14 @@ Number* multiplyByInt(Number* num1, int integer) {
 // FIXME After that, the program freezes.
 // FIXME hence the temporary guard if condition is added to stop 
 // FIXME division after the resulting number reaches 35 digits.
-Number* divide(Number* num1, Number* num2) {
+void divide(Number* res, Number* num1, Number* num2) {
 
-    Number* res = setNewNumber();
+//    Number* res = setNewNumber();
+    // make res to be zero
+    res->whole_part[0] = 0;
+    res->decimal_part[0] = 0;
+    res->digits_whole = 1;
+    res->digits_decimal = 1;
 
     // initalize Number with the value of one
     Number* one = setNumberFromChar((char*) ONE);
@@ -1180,7 +1230,7 @@ Number* divide(Number* num1, Number* num2) {
          } else {
              multipl = setNumberFromDouble((double)mul);
          }
-        temp2 = multiply(num2, multipl);
+        multiply(temp2, num2, multipl);
         counter += mul;
         diff_in_tens = tmp->digits_whole - temp2->digits_whole;
 
@@ -1202,7 +1252,11 @@ Number* divide(Number* num1, Number* num2) {
             minusEquals(tmp, temp2);
 
         }
-        plusEquals(res, multiplyByInt(one, counter));
+        Number* temp1 = setNewNumber();
+        assign(temp1, one);
+        multiplyByInt(temp1, temp1, counter);
+        plusEquals(res, temp1);
+        free(temp1);
 
         free(multipl);
         free(temp2);
@@ -1233,7 +1287,7 @@ Number* divide(Number* num1, Number* num2) {
         free(zero_one);
         plusEquals(res, one);
         free(one);
-        return res;
+        return;
     }
 
 
@@ -1241,25 +1295,27 @@ Number* divide(Number* num1, Number* num2) {
     assign(remainder, tmp);
 
     if (!quotient) {
-        one = multiply(one, zero_one);
-        tmp = multiply(tmp, ten);
-        remainder = multiply(remainder, ten);
+        multiplyEquals(one, zero_one);
+        multiplyEquals(tmp, ten);
+        multiplyEquals(remainder, ten);
     }
 
 
 
     while (1) {
-        tmp = subtract(tmp, num2);
+        minusEquals(tmp, num2);
         // if remainder is not yet divided into equal parts or does
         // not yet become negative, continue the division
         if ((tmp->digits_whole > 1 || tmp->whole_part[0] != 0) && !(tmp->negative)) {
-            res = add(res, one, 0);
+            plusEquals(res, one);
+//            res = add(res, one, 0);
             counter++;
             continue;
         // stop if the remainder becomes equal to zero (ie becomes divided
         // into equal parts
         } else if (isZero(tmp)) {
-            res = add(res, one, 0);
+//            res = add(res, one, 0);
+            plusEquals(res, one);
             counter++;
             free(one);
             free(ten);
@@ -1267,7 +1323,7 @@ Number* divide(Number* num1, Number* num2) {
             free(tmp);
             // FIXME memory crash if this line is added
 //            free(remainder);
-            return res;
+            return;
         } else {
             // if the divisor (second number) is greater than the remainder,
             // multiply the remainder by ten and continue the division loop.
@@ -1276,8 +1332,8 @@ Number* divide(Number* num1, Number* num2) {
                 assign(tmp, remainder);
 
                 // the remainder is multiplied by ten
-                tmp = multiply(tmp, ten);
-                remainder = multiply(remainder, ten);
+                multiplyEquals(tmp, ten);
+                multiplyEquals(remainder, ten);
 
                 // enter a zero to the result, which means that the remainder
                 // was smaller than the divisor
@@ -1286,12 +1342,13 @@ Number* divide(Number* num1, Number* num2) {
                 if (res->digits_decimal > 1) {
                     res->decimal_part[(res->digits_decimal)++] = 0;
                 }
-                one = multiply(one, zero_one);
+                multiplyEquals(one, zero_one);
 
                 continue;
             }
             // FIXME temporary guard, else the program stops running 
             // FIXME (gets stuck)
+            // TODO do smth about this magic number
             if (res->digits_decimal >= 200) {
                 free(one);
                 free(ten);
@@ -1300,23 +1357,26 @@ Number* divide(Number* num1, Number* num2) {
 //                free(remainder);
                 free(tmp);
                 fixNumber(res);
-                return res;
+                return;
             }
             // get the new remainder (remainder -= divisor * (remainder / divisor))
             //
             //
-            remainder = subtract(remainder, multiplyByInt(num2, counter));
+            Number* temp1 = setNewNumber();
+            assign(temp1, num2);
+            multiplyByInt(temp1, temp1, counter);
+            minusEquals(remainder, temp1);
 
             //one->decimal_part[one->digits_decimal-1] = 0;
             //one->decimal_part[(one->digits_decimal)++] = 1;
-            one = multiply(one, zero_one);
+            multiplyEquals(one, zero_one);
             counter = 0;
 
             // tmp becomes remainder again
             assign(tmp, remainder);
 
-            remainder = multiply(remainder, ten);
-            tmp = multiply(tmp, ten);
+            multiplyEquals(remainder, ten);
+            multiplyEquals(tmp, ten);
 
         }
     }
@@ -1392,19 +1452,32 @@ Number* modulus(Number* num1, Number* num2) {
             }
             // else if |num1| < |num2|
             else if (cmp_abs == 2) {
-               return subtractNumbers(num2, getAbsoluteValue(num1)) ;
+                Number* temp = setNewNumber();
+                subtractNumbers(temp, num2, getAbsoluteValue(num1));
+               return temp;
             }
             // else if |num1| > |num2|
             else if(cmp_abs == 1) {
                 // if |num1|/num2 is integer
-                if (isInteger(divideNumbers(getAbsoluteValue(num1), num2))) {
+                Number*temp = setNewNumber();
+                divideNumbers(temp, getAbsoluteValue(num1), num2);
+                if (isInteger(temp)) {
                     Number* zero = setNewNumber();
+                    free(temp);
                     return zero;
                 // else, if the quotient is not an integer
                 } else {
+                    Number* temp01 = setNewNumber();
+                    Number* temp02 = setNewNumber();
                     Number* one = setNumberFromChar((char*) ONE);
+                    divideNumbers(temp01, getAbsoluteValue(num1), num2);
                     // return |(floor(|num1|/num2)+1)*num2| - |num1|
-                    return subtractNumbers(getAbsoluteValue(multiplyNumbers(addNumbers(getFloorNumber(divideNumbers(getAbsoluteValue(num1), num2)), one), num2)), getAbsoluteValue(num1));
+                    addNumbers(temp02, getFloorNumber(temp01), one);
+                    multiplyNumbers(temp01, temp02, num2);
+                    subtractNumbers(temp02, getAbsoluteValue(temp01), getAbsoluteValue(num1));
+                    free(temp);
+                    free(temp01);
+                    return temp02;
                 }
             }
         }
@@ -1416,12 +1489,21 @@ Number* modulus(Number* num1, Number* num2) {
             if (!num1->negative) {
                 // if |num1| < |num2|
                 if (cmp_abs == 2) {
-                    return addNumbers(num1, num2);
+                    Number* temp = setNewNumber();
+                    addNumbers(temp, num1, num2);
+                    return temp;
                 // else if |num1| > |num2|
                 } else {
                     Number *one = setNumberFromChar((char *) ONE);
-                    Number *ret_num = addNumbers(multiplyNumbers(addNumbers(getFloorNumber(getAbsoluteValue(divideNumbers(num1, num2))), one), num2), num1);
-                    return ret_num;
+
+                    Number* temp01 = setNewNumber();
+                    Number* temp02 = setNewNumber();
+                    divideNumbers(temp01, num1, num2);
+                    addNumbers(temp02, getFloorNumber(getAbsoluteValue(temp01)), one);
+                    multiplyNumbers(temp01, temp02, num2);
+                    addNumbers(temp02, temp01, num1);
+                    free(temp01);
+                    return temp02;
                 }
             }
             // else if num1 < 0
@@ -1435,7 +1517,13 @@ Number* modulus(Number* num1, Number* num2) {
         // else if num2 > 0
         } else {
             //return num1 - floor(num1/num2)*num2
-            return subtractNumbers(num1, multiply(getFloorNumber(divideNumbers(num1, num2)), num2));
+            Number* temp01 = setNewNumber();
+            Number* temp02 = setNewNumber();
+            divideNumbers(temp01, num1, num2);
+            multiply(temp02, getFloorNumber(temp01), num2);
+            subtractNumbers(temp01, num1, temp02);
+            free(temp02);
+            return temp01;
         }
     }
 
@@ -1460,18 +1548,23 @@ Number* factorial(Number* num) {
 
     Number* diff = setNewNumber();
     assign(diff, one);
+    Number* temp = setNewNumber();
 
     for (int i = 1; i < numToInt-1; i++) {
-        diff = multiplyByInt(one, i);
-        multiplyEquals(ret_num, subtractNumbers(num, diff));
+        multiplyByInt(diff, one, i);
+        subtractNumbers(temp, num, diff);
+        multiplyEquals(ret_num, temp);
     }
 
+    free(temp);
     num->negative = negative;
     ret_num->negative = negative;
     return ret_num;
 }
 
 int isPrime(Number* num) {
+    //debug("is prime");
+    //printEntry(num);
     Number* two = setNumberFromChar((char*)"2.0");
     if (compareEqual(num, two)) {
         return 1;
@@ -1479,7 +1572,7 @@ int isPrime(Number* num) {
     if (isZero(modulus(num, two))) {
         return 0;
     }
-    for (Number*i = setNumberFromChar((char *) "3.0"); compareLessThanOrEqual(multiplyNumbers(i, i), num); plusEquals(i, two)) {
+    for (Number*i = setNumberFromChar((char *) "3.0"); compareLessThanOrEqual(raiseByPow(i, 2), num); plusEquals(i, two)) {
         if (isZero(modulus(num, i))) {
             return 0;
         }
@@ -1492,13 +1585,17 @@ Number* nextPrime(Number* num) {
         return setNumberFromChar((char *) "2.0");
     } else {
         num = getFloorNumber(num);
-        Number *diff = setNumberFromChar((char *) ONE);
 
-        while (!isPrime(addNumbers(num, diff))) {
-            plusEquals(diff, setNumberFromChar((char *) ONE));
+        Number* temp = setNewNumber();
+        assign(temp, num);
+        increment(temp);
+
+        while (!isPrime(temp)) {
+            //debug("while loop");
+            increment(temp);
         }
 
-        return addNumbers(num, diff);
+        return temp;
     }
 }
 
@@ -1525,26 +1622,35 @@ Number* Log(Number* num) {
     // TODO add validation for negative input
     Number *step = setNewNumber();
     Number *one = setNumberFromChar((char *) ONE);
+    Number *two = setNumberFromChar((char *) "2.0");
 
     Number *powe = setNumberFromChar((char *) ONE);
 
     Number *y = setNewNumber();
-    Number *z = divideNumbers(addNumbers(num, one), subtractNumbers(num, one));
+    Number *z = setNewNumber();
+    Number* temp1 = setNewNumber();
+    Number* temp2 = setNewNumber();
+    addNumbers(temp1, num, one);
+    subtractNumbers(temp2, num, one);
+    divideNumbers(z, temp1, temp2);
     Number *ret_num = setNewNumber();
 
-    step = divideNumbers(raiseByPow(subtractNumbers(num, one), 2), raiseByPow(addNumbers(num, one), 2));
+    divideNumbers(step, raiseByPow(temp2, 2), raiseByPow(temp1, 2));
+
+    free(temp1);
+    free(temp2);
 
     int count = 0;
     while (count < 290) {
-//        printf("MyLog: %d\n", count);
+        //debug("Log: %d", count);
         multiplyEquals(z, step);
-        assign(y, multiplyNumbers(divideNumbers(one, powe), z));
+        divideNumbers(y, one, powe);
+        multiplyEquals(y, z);
         plusEquals(ret_num, y);
-        plusEquals(powe, setNumberFromChar((char *) "2.0"));
-
+        plusEquals(powe, two);
         count++;
     }
-    multiplyEquals(ret_num, setNumberFromChar((char*)"2.0"));
+    multiplyEquals(ret_num, two);
     free(step);
     free(one);
     free(powe);
@@ -1559,14 +1665,19 @@ Number* Sine(Number* num) {
 
     int change_sign = 0;
     while (n <= 200) {
-        //printf("MySine: %d\n", n);
+        //debug("Sine: %d", n);
+        Number* temp1 = setNumberFromInt(n);
+        Number* temp2 = setNewNumber();
+        divide(temp2, raiseByPow(num, n), factorial(temp1));
         if (change_sign) {
-            minusEquals(step, divide(raiseByPow(num, n), factorial(multiplyByInt(setNumberFromChar((char*)ONE), n))));
+            minusEquals(step, temp2);
             change_sign = 0;
         } else {
-            plusEquals(step, divide(raiseByPow(num, n), factorial(multiplyByInt(setNumberFromChar((char*)ONE), n))));
+            plusEquals(step, temp2);
             change_sign = 1;
         }
+        free(temp1);
+        free(temp2);
         n += 2;
     }
     return step;
@@ -1657,7 +1768,8 @@ void setPrecision(Number* num, int precision) {
                 Number *numberToBeSubtracted = setNewNumber();
                 assign(numberToBeSubtracted, num);
                 numberToBeSubtracted->digits_whole = rounded_index + 1;
-                Number *numberToAddWhenRounding = subtractNumbers(roundingTens, numberToBeSubtracted);
+                Number* numberToAddWhenRounding = setNewNumber();
+                subtractNumbers(numberToAddWhenRounding, roundingTens, numberToBeSubtracted);
                 plusEquals(num, numberToAddWhenRounding);
 
             }
@@ -1669,8 +1781,11 @@ void setPrecision(Number* num, int precision) {
         num->digits_decimal = 1;
         num->decimal_part[0] = 0;
     } else if (num->digits_whole < precision) {
-        Number* ShiftedComma = multiplyNumbers(num, raiseByPow(ten, num->digits_decimal));
+        // TODO shift comma manually
+        Number* ShiftedComma = setNewNumber();
+        multiplyNumbers(ShiftedComma, num, raiseByPow(ten, num->digits_decimal));
         setPrecision(ShiftedComma, precision);
+
         //divideEquals(ShiftedComma, raiseByPow(ten, num->digits_decimal));
         Number* temp = setNewNumber();
         temp->digits_whole = ShiftedComma->digits_whole - num->digits_decimal;
@@ -1685,8 +1800,10 @@ void setPrecision(Number* num, int precision) {
         }
 
         fixNumber(temp);
-        // TODO do without ShiftedComma variable
         assign(num, temp);
+        // TODO do without ShiftedComma variable
+        free(temp);
+        free(ShiftedComma);
     }
 }
 

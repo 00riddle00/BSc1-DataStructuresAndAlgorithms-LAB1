@@ -40,6 +40,7 @@ int main() {
            "multiplyNumbers test01 failed");
 //    printf("...multiplyNumbers test01 passed\n");
 
+
     divideNumbers(res, num1, num2);
     assert(strcmp(numToChar(res), "-6561.54419860025807258480133651369799292598220471119087440522753152172937147050145087534158469354169467861073368962805080144763639103815994729925250725392659630057069975612925521735560029401045650694433091") == 0 && "divideNumbers test01 failed");
 //    printf("...divideNumbers test01 passed\n");
@@ -116,6 +117,7 @@ int main() {
 //    printf("...assign test01 passed\n");
     /* // test comparison */
 
+
     /* test additional functions */
     int digit;
     Number *num3 = setNumberFromChar((char *) "123.456");
@@ -135,6 +137,7 @@ int main() {
     digit = getIthDigit(num3, -2);
     assert(digit == 5 && "getIthDigit test02 failed");
 //    printf("...getIthDigit test02 passed\n");
+
 
     increment(num3);
     assert(strcmp(numToChar(num3), "124.456") == 0 && "increment test01 failed");
@@ -396,12 +399,11 @@ int main() {
     assert(strcmp(numToChar(res), "94498971652638775929231672647833888771141190540374490793799910241413225365722228670047638705370321438791975293971242620109600173039630619238456992875182844589511986507136169417095017804371947032.2036644518691450129574798661191823214535963114499654599405099220479591781534123238100768881793647062") == 0 && "raiseByPow test05 failed");
      // test raiseByPow
 
-//    res = setNumberFromChar((char *) "5.0");
-//    res = Log(res);
-//    setPrecision(res, -100);
-//    assert(strcmp(numToChar(res), "1.6094379124341003746007593332261876394539244164511699093402757981296798658730525057550276194430010709") == 0 && "Log test01 failed");
-//    assert(strcmp(numToChar(res), "1.6094379124341003746007593332261876395256013542685177219126478914741789877076577646301338780931796108") == 0 && "Log test01 failed");
-//    printf("...Log test01 passed\n");
+    res = setNumberFromChar((char *) "5.0");
+    res = Log(res);
+    setPrecision(res, -100);
+    assert(strcmp(numToChar(res), "1.6094379124341003746007593332261876395256013542685177219126478914741789877076577646301338780931796108") == 0 && "Log test01 failed");
+    printf("...Log test01 passed\n");
 
 //    res = setNumberFromChar((char *) "20.0");
 //    res = Sine(res);

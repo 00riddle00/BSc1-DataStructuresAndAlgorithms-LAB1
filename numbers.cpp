@@ -1067,14 +1067,14 @@ void decrement(Number* num) {
 void plusEquals(Number* num1, Number* num2) {
     Number* temp = setNewNumber();
     addNumbers(temp, num1, num2);
-    assign(temp, num1);
+    assign(num1, temp);
     free(temp);
 }
 
 void minusEquals(Number* num1, Number* num2) {
     Number* temp = setNewNumber();
     subtractNumbers(temp, num1, num2);
-    assign(temp, num1);
+    assign(num1, temp);
     free(temp);
 }
 

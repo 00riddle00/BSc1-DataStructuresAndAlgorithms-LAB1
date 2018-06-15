@@ -1588,7 +1588,7 @@ Number* Log(Number* num) {
     step = divideNumbers(raiseByPow(subtractNumbers(num, one), 2), raiseByPow(addNumbers(num, one), 2));
 
     int count = 0;
-    while (count < 100) {
+    while (count < 290) {
         debug("count: %d", count);
         multiplyEquals(z, step);
         Number* temp1 = setNewNumber();

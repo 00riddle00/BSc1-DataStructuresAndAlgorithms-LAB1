@@ -156,6 +156,17 @@ Number* setNumberFromInt(int number);
 // ::params:: num2 - Number to be assigned
 void assign(Number* num1, Number* num2);
 
+
+// utillity functions
+void makeZero(Number* num);
+int isDivisibleByTwo(Number* num);
+int isDivisibleByThree(Number* num);
+int isDivisibleByFive(Number* num);
+
+// // utillity functions
+
+
+
 // fix zeroes in the number, ie if the number has no whole or 
 // decimal part, set it to zero. Else, remove zeroes at the front
 // of the whole part and at the back of the decimal part
@@ -221,6 +232,9 @@ void multiplyByInt(Number* res, Number* num1, int integer);
 void divide(Number* res, Number* num1, Number* num2);
 
 
+
+
+
 // TODO comment
 Number* modulus(Number* num1, Number* num2);
 
@@ -257,6 +271,8 @@ void modulusEquals(Number* num1, Number* num2);
 
 
 /* // additional functions */
+
+
 
 
 void setPrecision(Number* num, int precision);

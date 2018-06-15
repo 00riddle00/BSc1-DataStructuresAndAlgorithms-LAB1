@@ -23,6 +23,7 @@ int main() {
 
     Number *res = setNewNumber();
 
+
 /* test arithmetic */
     addNumbers(res, num1, num2);
     assert(strcmp(numToChar(res), "81222431942852815.06580908") == 0 && "addNumbers test01 failed");
@@ -31,8 +32,6 @@ int main() {
     subtractNumbers(res, num1, num2);
     assert(strcmp(numToChar(res), "81247192825329662.71443772") == 0 && "subtractNumbers test01 failed");
 //    printf("...subtractNumbers test01 passed\n");
-
-//    exit(1);
 
     multiplyNumbers(res, num1, num2);
     assert(strcmp(numToChar(res), "-1005722821235625557767394406067.695067825187088") == 0 &&

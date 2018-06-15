@@ -39,25 +39,6 @@ void saveNumber(Number* number) {
     table->size++;
 }
 
-void printEntry2(TempNumber* number) {
-
-        if (number->negative) {
-            printf("-");
-        }
-
-        for (int i = number->digits_whole - 1; i >= 0; i--) {
-            printf("%d", number->whole_part[i]);
-        }
-        printf(".");
-
-        for (int i = 0; i < number->digits_decimal; i++) {
-            printf("%d", number->decimal_part[i]);
-        }
-        printf("\n");
-}
-
-
-
 void printEntry(Number* number) {
 
         if (number->negative) {
@@ -741,10 +722,7 @@ void subtract(Number* res, Number* num1, Number* num2) {
         free(first);
         free(second);
         // TODO add zerofy fn
-        res->whole_part[0] = 0;
-        res->decimal_part[0] = 0;
-        res->digits_whole = 1;
-        res->digits_decimal = 1;
+        makeZero(res);
         return;
     }
 
@@ -1098,6 +1076,65 @@ void modulusEquals(Number* num1, Number* num2) {
 
 
 // utility functions
+void makeZero(Number* num) {
+    num->whole_part[0] = 0;
+    num->decimal_part[0] = 0;
+    num->digits_whole = 1;
+    num->digits_decimal = 1;
+}
+
+// works only with integers
+int isDivisibleByTwo(Number* num) {
+    switch(num->whole_part[0]) {
+        case 0:
+        case 2:
+        case 4:
+        case 6:
+        case 8:
+            return 1;
+        default:
+            return 0;
+    }
+}
+
+// works only with integers
+int isDivisibleByThree(Number* num) {
+    int sum = 0;
+    for (int i = 0; i < num->digits_whole; i++) {
+        sum += num->whole_part[i];
+    }
+
+    if (sum / 10 <= 0) {
+        switch (sum) {
+            case 3:
+            case 6:
+            case 9:
+                return 1;
+            default:
+                return 0;
+        }
+    } else {
+        Number *temp = setNumberFromInt(sum);
+        if (isDivisibleByThree(temp)) {
+            free(temp);
+            return 1;
+        } else {
+            free(temp);
+            return 0;
+        }
+    }
+}
+
+int isDivisibleByFive(Number* num) {
+    if (num->whole_part[0] == 5 || num->whole_part[0] == 0) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+
+
 int pow(int number, int power) {
     int orig_number = number;
     for (int i = 0; i < power-1; i++) {
@@ -1181,10 +1218,7 @@ void divide(Number* res, Number* num1, Number* num2) {
 
 //    Number* res = setNewNumber();
     // make res to be zero
-    res->whole_part[0] = 0;
-    res->decimal_part[0] = 0;
-    res->digits_whole = 1;
-    res->digits_decimal = 1;
+    makeZero(res);
 
     // initalize Number with the value of one
     Number* one = setNumberFromChar((char*) ONE);
@@ -1565,7 +1599,7 @@ Number* factorial(Number* num) {
 
 int isPrime(Number* num) {
     debug("is prime");
-    printEntry(num);
+//    printEntry(num);
     Number* two = setNumberFromChar((char*)"2.0");
     if (compareEqual(num, two)) {
         return 1;
@@ -1642,7 +1676,7 @@ Number* Log(Number* num) {
     free(temp2);
 
     int count = 0;
-    while (count < 290) {
+    while (count < 280) {
         debug("Log: %d", count);
         multiplyEquals(z, step);
         divideNumbers(y, one, powe);

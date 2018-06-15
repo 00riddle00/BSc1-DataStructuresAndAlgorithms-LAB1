@@ -222,7 +222,7 @@ void divide(Number* res, Number* num1, Number* num2);
 
 
 // TODO comment
-//Number* modulus(Number* num1, Number* num2);
+Number* modulus(Number* num1, Number* num2);
 
 /* additional functions */
 // TODO comment

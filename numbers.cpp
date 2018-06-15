@@ -1591,10 +1591,8 @@ Number* Log(Number* num) {
     while (count < 100) {
         debug("count: %d", count);
         multiplyEquals(z, step);
-        Number* temp1 = setNewNumber();
-        multiplyNumbers(temp1, divideNumbers(one, powe), z);
-        plusEquals(ret_num, temp1);
-        free(temp1);
+        multiplyNumbers(y, divideNumbers(one, powe), z);
+        plusEquals(ret_num, y);
         plusEquals(powe, two);
         count++;
     }

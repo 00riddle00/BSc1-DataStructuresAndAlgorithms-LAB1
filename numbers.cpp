@@ -1564,6 +1564,8 @@ Number* factorial(Number* num) {
 }
 
 int isPrime(Number* num) {
+    debug("is prime");
+    printEntry(num);
     Number* two = setNumberFromChar((char*)"2.0");
     if (compareEqual(num, two)) {
         return 1;
@@ -1584,16 +1586,15 @@ Number* nextPrime(Number* num) {
         return setNumberFromChar((char *) "2.0");
     } else {
         num = getFloorNumber(num);
-        Number *diff = setNumberFromChar((char *) ONE);
 
         Number* temp = setNewNumber();
         assign(temp, num);
+        increment(temp);
 
         while (!isPrime(temp)) {
-            increment(diff);
-            plusEquals(temp, diff);
+            debug("while loop");
+            increment(temp);
         }
-        addNumbers(temp, num, diff);
 
         return temp;
     }

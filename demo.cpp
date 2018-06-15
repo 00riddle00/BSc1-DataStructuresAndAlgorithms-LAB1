@@ -23,13 +23,6 @@ int main() {
 
     Number *res = setNewNumber();
 
-    res = setNumberFromChar((char *) "7.0");
-    res = nextPrime(res);
-    assert(strcmp(numToChar(res), "11.0") == 0 && "nextPrime test01 failed");
-    debug("hre");
-    exit(1);
-
-
 /* test arithmetic */
     addNumbers(res, num1, num2);
     assert(strcmp(numToChar(res), "81222431942852815.06580908") == 0 && "addNumbers test01 failed");

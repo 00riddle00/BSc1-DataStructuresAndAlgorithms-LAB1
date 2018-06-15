@@ -552,8 +552,6 @@ void divideNumbers(Number* res, Number* num1, Number* num2) {
     num2->negative = 0;
 
     divide(res, num1, num2);
-    debug("res here");
-    printEntry(res);
 
     num1->negative = sign1;
     num2->negative = sign2;
@@ -856,7 +854,6 @@ Number* subtract(Number* num1, Number* num2) {
 
 
 void multiply(Number* res, Number* num1, Number* num2) {
-//    debug("-------------------------------");
 
     // TODO use setNewNumber here
     // FIXME maybe this makes it crash
@@ -982,7 +979,6 @@ void multiply(Number* res, Number* num1, Number* num2) {
     if (decimal_numbers > 500) {
         res->digits_decimal = 500;
 
-//        debug("tdw %d", temp->digits_whole);
 
         for (int i = temp->digits_whole - 500 - (temp->digits_whole - decimal_numbers), j = 499; i < temp->digits_whole - (temp->digits_whole - decimal_numbers); i++, j--) {
             if (j == -1) {
@@ -1185,10 +1181,7 @@ void multiplyByInt(Number* res, Number* num1, int integer) {
 // FIXME hence the temporary guard if condition is added to stop 
 // FIXME division after the resulting number reaches 35 digits.
 void divide(Number* res, Number* num1, Number* num2) {
-    debug("------------------------------------");
 
-    printEntry(num1);
-    printEntry(num2);
 //    Number* res = setNewNumber();
     // make res to be zero
     res->whole_part[0] = 0;
@@ -1298,8 +1291,6 @@ void divide(Number* res, Number* num1, Number* num2) {
         free(zero_one);
         plusEquals(res, one);
         free(one);
-        debug("return1");
-        printEntry(res);
         return;
     }
 
@@ -1314,8 +1305,6 @@ void divide(Number* res, Number* num1, Number* num2) {
     }
 
 
-    debug("RES IS HERE");
-    printEntry(res);
 
     while (1) {
         tmp = subtract(tmp, num2);
@@ -1338,8 +1327,6 @@ void divide(Number* res, Number* num1, Number* num2) {
             free(tmp);
             // FIXME memory crash if this line is added
 //            free(remainder);
-            debug("return2");
-            printEntry(res);
             return;
         } else {
             // if the divisor (second number) is greater than the remainder,
@@ -1374,9 +1361,6 @@ void divide(Number* res, Number* num1, Number* num2) {
 //                free(remainder);
                 free(tmp);
                 fixNumber(res);
-                debug("return3");
-                printEntry(res);
-                debug("before return3");
                 return;
             }
             // get the new remainder (remainder -= divisor * (remainder / divisor))

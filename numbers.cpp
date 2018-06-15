@@ -1677,6 +1677,7 @@ int* CanonicalForm(Number* num) {
     result[6] = 7;
     result[8] = 11;
     result[10] = 13;
+    result[12] = 1;
 
 
     Number *temp = setNewNumber();
@@ -1685,7 +1686,7 @@ int* CanonicalForm(Number* num) {
 
     int power;
     Number *divisor = setNewNumber();
-    for (int i = 10; i >= 0; i = i - 2) {
+    for (int i = 12; i >= 0; i = i - 2) {
         power = 0;
         modulo = modulus(temp, setNumberFromInt(result[i]));
 
@@ -1711,7 +1712,7 @@ int* CanonicalForm(Number* num) {
         result[13] = 1;
     } else {
         result[12] = 1;
-        result[13] = 0;
+        result[13] = 1;
     }
     debug("result12: %d", result[12]);
 
@@ -1806,7 +1807,7 @@ Number* Log(Number* num) {
 
     int count = 0;
     while (count < 300) {
-//        debug("Log: %d", count);
+        debug("Log: %d", count);
         multiplyEquals(z, step);
         divideNumbers(y, one, powe);
         multiplyEquals(y, z);

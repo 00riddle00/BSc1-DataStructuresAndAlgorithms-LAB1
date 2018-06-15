@@ -328,8 +328,6 @@ int main() {
     // // test setPrecision
     /*  // test utility functions */
 
-    debug("here1");
-    exit(1);
 
     /* live tests */
     // test factorial
@@ -359,6 +357,7 @@ int main() {
 //    res = nextPrime(res);
 //    assert(strcmp(numToChar(res), "11.0") == 0 && "nextPrime test01 failed");
 
+
 //    res = setNumberFromChar((char *) "-5.0");
 //    res = nextPrime(res);
 //    assert(strcmp(numToChar(res), "2.0") == 0 && "nextPrime test02 failed");
@@ -371,6 +370,7 @@ int main() {
 //    res = nextPrime(res);
 //    assert(strcmp(numToChar(res), "3623.0") == 0 && "nextPrime test04 failed");
     // // test nextPrime
+
 
     // test raiseByPow
     res = setNumberFromChar((char *) "0.0");
@@ -395,6 +395,8 @@ int main() {
     assert(strcmp(numToChar(res), "94498971652638775929231672647833888771141190540374490793799910241413225365722228670047638705370321438791975293971242620109600173039630619238456992875182844589511986507136169417095017804371947032.2036644518691450129574798661191823214535963114499654599405099220479591781534123238100768881793647062") == 0 && "raiseByPow test05 failed");
      // test raiseByPow
 
+    debug("here1");
+//    exit(1);
 
 //       TODO add these tests
     res = setNumberFromChar((char *) "5.0");
@@ -402,6 +404,9 @@ int main() {
     setPrecision(res, -100);
     // FIXME wrong assert! (temporary)
     assert(strcmp(numToChar(res), "1.6094379124341003746007593332261876394539244164511699093402757981296798658730525057550276194430010709") == 0 && "Log test01 failed");
+
+    debug("here2");
+    exit(1);
 
 //    assert(strcmp(numToChar(res), "1.6094379124341003746007593332261876395256013542685177219126478914741789877076577646301338780931796108") == 0 && "Log test01 failed");
 

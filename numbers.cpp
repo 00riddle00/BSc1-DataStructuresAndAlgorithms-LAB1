@@ -1616,15 +1616,11 @@ Number* Log(Number* num) {
     divideNumbers(step, raiseByPow(subtractNumbers(num, one), 2), raiseByPow(addNumbers(num, one), 2));
 
     int count = 0;
-    while (count < 100) {
+    while (count < 290) {
         debug("count: %d", count);
         multiplyEquals(z, step);
         divideNumbers(y, one, powe);
-//        Number* temp = setNewNumber();
-//        assign(temp, y);
         multiplyEquals(y, z);
-//        multiplyNumbers(y, temp, z);
-//        free(temp);
         plusEquals(ret_num, y);
         plusEquals(powe, two);
         count++;

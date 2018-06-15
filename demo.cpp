@@ -396,11 +396,9 @@ int main() {
 
     res = setNumberFromChar((char *) "5.0");
     res = Log(res);
-    debug("after");
     setPrecision(res, -100);
-    // FIXME wrong assert! (temporary)
-    assert(strcmp(numToChar(res), "1.6094379124341003746007593332261876394539244164511699093402757981296798658730525057550276194430010709") == 0 && "Log test01 failed");
-//    assert(strcmp(numToChar(res), "1.6094379124341003746007593332261876395256013542685177219126478914741789877076577646301338780931796108") == 0 && "Log test01 failed");
+//    assert(strcmp(numToChar(res), "1.6094379124341003746007593332261876394539244164511699093402757981296798658730525057550276194430010709") == 0 && "Log test01 failed");
+    assert(strcmp(numToChar(res), "1.6094379124341003746007593332261876395256013542685177219126478914741789877076577646301338780931796108") == 0 && "Log test01 failed");
     printf("...Log test01 passed\n");
 
 //    res = setNumberFromChar((char *) "20.0");

@@ -1641,24 +1641,30 @@ Number* Log(Number* num) {
     return ret_num;
 }
 
-//Number* Sine(Number* num) {
-//    Number* step = setNewNumber();
-//    int n = 1;
-//
-//    int change_sign = 0;
-//    while (n <= 200) {
-//        printf("MySine: %d\n", n);
-//        if (change_sign) {
+Number* Sine(Number* num) {
+    Number* step = setNewNumber();
+    int n = 1;
+
+    int change_sign = 0;
+    while (n <= 200) {
+        printf("MySine: %d\n", n);
+        Number* temp1 = setNumberFromInt(n);
+        Number* temp2 = setNewNumber();
+        divide(temp2, raiseByPow(num, n), factorial(temp1));
+        if (change_sign) {
 //            minusEquals(step, divide(raiseByPow(num, n), factorial(multiplyByInt(setNumberFromChar((char*)ONE), n))));
-//            change_sign = 0;
-//        } else {
-//            plusEquals(step, divide(raiseByPow(num, n), factorial(multiplyByInt(setNumberFromChar((char*)ONE), n))));
-//            change_sign = 1;
-//        }
-//        n += 2;
-//    }
-//    return step;
-//}
+            minusEquals(step, temp2);
+            change_sign = 0;
+        } else {
+            plusEquals(step, temp2);
+            change_sign = 1;
+        }
+        free(temp1);
+        free(temp2);
+        n += 2;
+    }
+    return step;
+}
 
 
 void setMaxPrecision(Number* num, int precision) {

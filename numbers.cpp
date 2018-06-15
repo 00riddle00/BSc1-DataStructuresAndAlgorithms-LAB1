@@ -39,6 +39,25 @@ void saveNumber(Number* number) {
     table->size++;
 }
 
+void printEntry2(TempNumber* number) {
+
+        if (number->negative) {
+            printf("-");
+        }
+
+        for (int i = number->digits_whole - 1; i >= 0; i--) {
+            printf("%d", number->whole_part[i]);
+        }
+        printf(".");
+
+        for (int i = 0; i < number->digits_decimal; i++) {
+            printf("%d", number->decimal_part[i]);
+        }
+        printf("\n");
+}
+
+
+
 void printEntry(Number* number) {
 
         if (number->negative) {
@@ -832,6 +851,7 @@ Number* subtract(Number* num1, Number* num2) {
 
 
 void multiply(Number* res, Number* num1, Number* num2) {
+//    debug("-------------------------------");
 
     // TODO use setNewNumber here
     // FIXME maybe this makes it crash
@@ -953,23 +973,45 @@ void multiply(Number* res, Number* num1, Number* num2) {
     int whole_numbers = temp->digits_whole - decimal_numbers;
     res->digits_whole = whole_numbers;
 
+
     if (decimal_numbers > 500) {
         res->digits_decimal = 500;
 
-        for (int i = temp->digits_whole - 500 - (temp->digits_whole - decimal_numbers), j = 499; i < temp->digits_whole; i++, j--) {
+//        debug("tdw %d", temp->digits_whole);
+
+        for (int i = temp->digits_whole - 500 - (temp->digits_whole - decimal_numbers), j = 499; i < temp->digits_whole - (temp->digits_whole - decimal_numbers); i++, j--) {
+            if (j == -1) {
+                debug("STOP!");
+                exit(1);
+            }
             res->decimal_part[j] = temp->whole_part[i];
         }
 
-        for (int i = temp->digits_whole - 1, j = whole_numbers - 1; i > temp->digits_whole - decimal_numbers - 1; i--, j--) {
+//        debug("temp");
+//        debug("dn %d", decimal_numbers);
+//        debug("dw %d", whole_numbers);
+//        printEntry2(temp);
+//        debug("res");
+//        printEntry(res);
+
+//        for (int i = temp->digits_whole - 1, j = whole_numbers - 1; i > temp->digits_whole - decimal_numbers - 1; i--, j--) {
+        for (int i = temp->digits_whole - 1, j = whole_numbers - 1; i > decimal_numbers - 1; i--, j--) {
+            if (j == -1) {
+                debug("STOP2!!!");
+//                printEntry(res);
+                exit(1);
+            }
             res->whole_part[j] = temp->whole_part[i];
         }
     } else {
         res->digits_decimal = decimal_numbers;
 
+        // TODO check for -1 index
         for (int i = temp->digits_whole-1, j = whole_numbers - 1; i > temp->digits_whole - whole_numbers - 1; i--, j--) {
             res->whole_part[j] = temp->whole_part[i];
         }
 
+        // TODO check for -1 index
         for (int i = temp->digits_whole-whole_numbers-1, j = 0; i >= 0; i--, j++) {
             res->decimal_part[j] = temp->whole_part[i];
         }
@@ -1542,12 +1584,12 @@ Number* Log(Number* num) {
     Number *y = setNewNumber();
     Number *z = divideNumbers(addNumbers(num, one), subtractNumbers(num, one));
     Number *ret_num = setNewNumber();
-    Number* a = setNewNumber();
 
     step = divideNumbers(raiseByPow(subtractNumbers(num, one), 2), raiseByPow(addNumbers(num, one), 2));
 
     int count = 0;
-    while (count < 290) {
+    while (count < 100) {
+        debug("count: %d", count);
         multiplyEquals(z, step);
         Number* temp1 = setNewNumber();
         multiplyNumbers(temp1, divideNumbers(one, powe), z);
@@ -1685,6 +1727,7 @@ void setPrecision(Number* num, int precision) {
         Number* ShiftedComma = setNewNumber();
         multiplyNumbers(ShiftedComma, num, raiseByPow(ten, num->digits_decimal));
         setPrecision(ShiftedComma, precision);
+
         //divideEquals(ShiftedComma, raiseByPow(ten, num->digits_decimal));
         Number* temp = setNewNumber();
         temp->digits_whole = ShiftedComma->digits_whole - num->digits_decimal;
@@ -1699,10 +1742,10 @@ void setPrecision(Number* num, int precision) {
         }
 
         fixNumber(temp);
+        assign(num, temp);
         // TODO do without ShiftedComma variable
         free(temp);
         free(ShiftedComma);
-        assign(num, temp);
     }
 }
 

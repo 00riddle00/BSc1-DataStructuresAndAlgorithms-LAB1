@@ -93,6 +93,8 @@ typedef struct {
     int capacity;
 } Table;
 
+
+
 /* table operation functions */
 
 // initialize table
@@ -156,6 +158,20 @@ Number* setNumberFromInt(int number);
 // ::params:: num2 - Number to be assigned
 void assign(Number* num1, Number* num2);
 
+
+// utillity functions
+void makeZero(Number* num);
+int isDivisibleByTwo(Number* num);
+int isDivisibleByThree(Number* num);
+int isDivisibleByFive(Number* num);
+
+int* CanonicalForm(Number* num);
+
+int isPrime(Number* num);
+// // utillity functions
+
+
+
 // fix zeroes in the number, ie if the number has no whole or 
 // decimal part, set it to zero. Else, remove zeroes at the front
 // of the whole part and at the back of the decimal part
@@ -165,6 +181,7 @@ void fixNumber(Number* num);
 // check if a Number struct has a value of zero (0.0)
 // ::params:: num - Number to be checked
 int isZero(Number* num);
+int isOne(Number* num);
 
 // compare two numbers
 // ::params:: num1 - first number
@@ -221,6 +238,9 @@ void multiplyByInt(Number* res, Number* num1, int integer);
 void divide(Number* res, Number* num1, Number* num2);
 
 
+
+
+
 // TODO comment
 Number* modulus(Number* num1, Number* num2);
 
@@ -257,7 +277,14 @@ void modulusEquals(Number* num1, Number* num2);
 
 
 /* // additional functions */
-
+//Number* cons_13 = setNumberFromInt(13);
+//Number* cons_11 = setNumberFromInt(11);
+//Number* cons_7 = setNumberFromInt(7);
+//Number* cons_3 = setNumberFromInt(3);
+//Number* cons_2 = setNumberFromInt(2);
+//Number* cons_1 = setNumberFromInt(1);
+//Number* cons_0 = setNumberFromInt(0);
+//Number* cons_0_1 = setNumberFromChar((char*)"0.1");
 
 void setPrecision(Number* num, int precision);
 

@@ -1639,16 +1639,12 @@ Number* nextPrime(Number* num) {
         increment(temp);
 
         while (!isPrime(temp)) {
-            debug("NUM");
-            printEntry(temp);
-            debug("while loop");
             increment(temp);
         }
 
         return temp;
     }
 }
-
 
 Number* raiseByPow(Number* num, int power) {
     if (power == 0) {
@@ -1670,7 +1666,7 @@ Number* raiseByPow(Number* num, int power) {
 
 // works only with integers
 int* CanonicalForm(Number* num) {
-    int *result = (int *) calloc(1, 14 * sizeof(int));
+    int *result = (int *) calloc(1, 12 * sizeof(int));
     result[0] = 2;
     result[2] = 3;
     result[4] = 5;
@@ -1699,38 +1695,14 @@ int* CanonicalForm(Number* num) {
         result[i + 1] = power;
     }
 
-    debug("result is:");
-    for (int i = 0; i < 12; i++) {
-        printf("%d ", result[i]);
-    }
-    debug("temp is:");
-    printEntry(temp);
-    if (!isOne(temp)) {
-        debug("not one");
-        result[12] = toInt(temp);
-        result[13] = 1;
-    } else {
-        result[12] = 1;
-        result[13] = 1;
-    }
-    debug("result12: %d", result[12]);
-
 //    free(temp);
 //    free(modulo);
 //    free(divisor);
     return result;
 }
 
-
-
-
-
-
-
 Number* Log(Number* num) {
     // TODO add validation for negative input
-    debug("num is");
-    printEntry(num);
 
     if (isOne(num)) {
         return setNewNumber();
@@ -1743,21 +1715,14 @@ Number* Log(Number* num) {
             Number *part_of_sum = setNewNumber();
             assign(temp, num);
 
-            debug("her");
             int *canonical = CanonicalForm(num);
-            debug("here");
-            for (int i = 0; i < 14; i = i + 2) {
+            for (int i = 0; i < 12; i = i + 2) {
                 part_of_sum = setNumberFromInt(canonical[i + 1]);
                 if (isZero(part_of_sum)) {
                     continue;
                 }
                 multiplyEquals(part_of_sum, Log(setNumberFromInt(canonical[i])));
-                debug("after multiply");
-                printEntry(result);
-                debug("after res");
-                printEntry(part_of_sum);
                 plusEquals(result, part_of_sum);
-                debug("after add");
             }
 
             free(temp);
@@ -1778,9 +1743,6 @@ Number* Log(Number* num) {
             times++;
         }
         semi_res = Log(temp);
-        debug("here");
-        printEntry(semi_res);
-//        exit(1);
         temp = Log(setNumberFromInt(10*times));
         minusEquals(semi_res, temp);
         free(ten);
@@ -1811,7 +1773,7 @@ Number* Log(Number* num) {
 
     int count = 0;
     while (count < 300) {
-        debug("Log: %d", count);
+//        debug("Log: %d", count);
         multiplyEquals(z, step);
         divideNumbers(y, one, powe);
         multiplyEquals(y, z);
@@ -1834,7 +1796,7 @@ Number* Sine(Number* num) {
 
     int change_sign = 0;
     while (n <= 200) {
-        debug("Sine: %d", n);
+//        debug("Sine: %d", n);
         Number* temp1 = setNumberFromInt(n);
         Number* temp2 = setNewNumber();
         divide(temp2, raiseByPow(num, n), factorial(temp1));

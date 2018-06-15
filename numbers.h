@@ -185,8 +185,8 @@ int compareLessThanOrEqual(Number* num1, Number* num2);
 int compareNumbers(Number* num1, Number* num2);
 
 // TODO add description
-Number *addNumbers(Number* num1, Number* num2);
-Number* subtractNumbers(Number* num1, Number* num2);
+void addNumbers(Number* res, Number* num1, Number* num2);
+void subtractNumbers(Number* res, Number* num1, Number* num2);
 void multiplyNumbers(Number* res, Number* num1, Number* num2);
 void divideNumbers(Number* res, Number* num1, Number* num2);
 
@@ -194,13 +194,13 @@ void divideNumbers(Number* res, Number* num1, Number* num2);
 // ::params:: num1 - first number ::params:: num2 - second number
 // ::params:: negative - whether result should be negative
 // ::return::  a resulting Number
-Number* add(Number* num1, Number* num2, int negative);
+void add(Number* res, Number* num1, Number* num2, int negative);
 
 // subtract two numbers
 // ::params:: num1 - first number
 // ::params:: num2 - second number
 // ::return::  a resulting Number
-Number* subtract(Number* num1, Number* num2);
+void subtract(Number* res, Number* num1, Number* num2);
 
 // multiply two numbers
 // ::params:: num1 - first number
@@ -222,7 +222,7 @@ void divide(Number* res, Number* num1, Number* num2);
 
 
 // TODO comment
-Number* modulus(Number* num1, Number* num2);
+//Number* modulus(Number* num1, Number* num2);
 
 /* additional functions */
 // TODO comment

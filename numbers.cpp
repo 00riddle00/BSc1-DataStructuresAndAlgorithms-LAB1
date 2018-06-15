@@ -1677,7 +1677,6 @@ int* CanonicalForm(Number* num) {
     result[6] = 7;
     result[8] = 11;
     result[10] = 13;
-    result[12] = 1;
 
 
     Number *temp = setNewNumber();
@@ -1686,7 +1685,7 @@ int* CanonicalForm(Number* num) {
 
     int power;
     Number *divisor = setNewNumber();
-    for (int i = 12; i >= 0; i = i - 2) {
+    for (int i = 10; i >= 0; i = i - 2) {
         power = 0;
         modulo = modulus(temp, setNumberFromInt(result[i]));
 

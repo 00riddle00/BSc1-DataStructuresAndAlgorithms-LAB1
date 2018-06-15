@@ -1186,6 +1186,10 @@ int isZero(Number* num) {
     return (!getWholeLen(num) && !getDecimalLen(num));
 }
 
+int isOne(Number* num) {
+    return (!getDecimalLen(num) && getWholeLen(num) == 1 && num->whole_part[0] == 1);
+}
+
 int isInteger(Number* num) {
     return (num->digits_decimal == 1 && num->decimal_part[0] == 0);
 }
@@ -1600,15 +1604,23 @@ Number* factorial(Number* num) {
 int isPrime(Number* num) {
     Number* two = setNumberFromChar((char*)"2.0");
 
-    if (num->digits_whole == 1 && num->whole_part[0] == 2) {
-        return 1;
+    if (num->digits_whole == 1) {
+        switch (num->whole_part[0]) {
+            case 2:
+            case 3:
+            case 5:
+            case 7:
+                return 1;
+            default:
+                return 0;
+        }
     }
 
     if (isDivisibleByTwo(num) || isDivisibleByThree(num) || isDivisibleByFive(num)) {
         return 0;
     }
 
-    for (Number*i = setNumberFromChar((char *) "7.0"); compareLessThanOrEqual(raiseByPow(i, 2), num); plusEquals(i, two)) {
+    for (Number*i = setNumberFromChar((char *) "11.0"); compareLessThanOrEqual(raiseByPow(i, 2), num); plusEquals(i, two)) {
         if (isZero(modulus(num, i))) {
             return 0;
         }
@@ -1654,8 +1666,96 @@ Number* raiseByPow(Number* num, int power) {
     return ret_val;
 }
 
+// works only with integers
+int* CanonicalForm(Number* num) {
+    int *result = (int *) calloc(1, 12 * sizeof(int));
+    result[0] = 2;
+    result[2] = 3;
+    result[4] = 5;
+    result[6] = 7;
+    result[8] = 11;
+    result[10] = 13;
+
+
+    Number *temp = setNewNumber();
+    assign(temp, num);
+    Number *modulo = setNewNumber();
+
+    int power;
+    Number *divisor = setNewNumber();
+    for (int i = 10; i >= 0; i = i - 2) {
+        power = 0;
+        modulo = modulus(temp, setNumberFromInt(result[i]));
+
+        while (isZero(modulo)) {
+            divide(divisor, temp, setNumberFromInt(result[i]));
+            assign(temp, divisor);
+            modulo = modulus(temp, setNumberFromInt(result[i]));
+            power++;
+        }
+
+        result[i + 1] = power;
+    }
+
+    debug("result is:");
+    for (int i = 0; i < 12; i++) {
+        printf("%d ", result[i]);
+    }
+    printf("\n");
+//    free(temp);
+//    free(modulo);
+//    free(divisor);
+    return result;
+}
+
+
+
+
+
+
+
 Number* Log(Number* num) {
     // TODO add validation for negative input
+
+    if (isOne(num)) {
+        return setNewNumber();
+    }
+
+    debug("num is");
+    printEntry(num);
+
+    if (!isPrime(num)) {
+//        if (num->digits_whole > 1) {
+            debug("here");
+            Number* temp = setNewNumber();
+            Number* result = setNewNumber();
+            Number* part_of_sum = setNewNumber();
+            assign(temp, num);
+
+            debug("her");
+            int* canonical = CanonicalForm(num);
+            debug("here");
+            for (int i = 0; i < 12; i = i + 2) {
+                part_of_sum = setNumberFromInt(canonical[i+1]);
+                if (isZero(part_of_sum)) {
+                    continue;
+                }
+                debug("partofsum");
+                printEntry(part_of_sum);
+                multiplyEquals(part_of_sum, Log(setNumberFromInt(canonical[i])));
+                plusEquals(result, part_of_sum);
+            }
+
+            free(temp);
+            free(part_of_sum);
+
+            if (!isZero(result)) {
+                return result;
+            }
+//        }
+    }
+
+
     Number *step = setNewNumber();
     Number *one = setNumberFromChar((char *) ONE);
     Number *two = setNumberFromChar((char *) "2.0");
@@ -1677,7 +1777,7 @@ Number* Log(Number* num) {
     free(temp2);
 
     int count = 0;
-    while (count < 280) {
+    while (count < 300) {
         debug("Log: %d", count);
         multiplyEquals(z, step);
         divideNumbers(y, one, powe);

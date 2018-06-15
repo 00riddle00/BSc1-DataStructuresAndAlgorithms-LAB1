@@ -23,6 +23,17 @@ int main() {
 
     Number *res = setNewNumber();
 
+    res = setNumberFromChar((char *) "10000.0");
+    res = Log(res);
+    setPrecision(res, -100);
+    printEntry(res);
+//    assert(strcmp(numToChar(res), "0.0") == 0 && "Log test01 failed");
+//    assert(strcmp(numToChar(res), "1.6094379124341003746007593332261876395256013542685177219126478914741789877076577646301338780931796108") == 0 && "Log test01 failed");
+    printf("...Log test01 passed\n");
+    exit(1);
+
+
+
 
 /* test arithmetic */
     addNumbers(res, num1, num2);

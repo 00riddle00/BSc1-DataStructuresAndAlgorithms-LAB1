@@ -570,6 +570,11 @@ void divideNumbers(Number* res, Number* num1, Number* num2) {
     }
 }
 
+void addTemp(Number* res, Number* num1, Number* num2) {
+    Number* temp = addNumbers(num1, num2);
+    assign(res, temp);
+}
+
 Number* add(Number* num1, Number* num2, int negative) {
 
     Number* bigger = setNewNumber();
@@ -1094,9 +1099,9 @@ void divideEquals(Number* num1, Number* num2) {
     free(res);
 }
 
-//void modulusEquals(Number* num1, Number* num2) {
-//    assign(num1, modulus(num1, num2));
-//}
+void modulusEquals(Number* num1, Number* num2) {
+    assign(num1, modulus(num1, num2));
+}
 
 
 // utility functions
@@ -1317,13 +1322,15 @@ void divide(Number* res, Number* num1, Number* num2) {
         // if remainder is not yet divided into equal parts or does
         // not yet become negative, continue the division
         if ((tmp->digits_whole > 1 || tmp->whole_part[0] != 0) && !(tmp->negative)) {
-            res = add(res, one, 0);
+            addTemp(res, res, one);
+//            res = add(res, one, 0);
             counter++;
             continue;
         // stop if the remainder becomes equal to zero (ie becomes divided
         // into equal parts
         } else if (isZero(tmp)) {
-            res = add(res, one, 0);
+//            res = add(res, one, 0);
+            addTemp(res, res, one);
             counter++;
             free(one);
             free(ten);

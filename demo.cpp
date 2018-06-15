@@ -41,47 +41,47 @@ int main() {
     divideNumbers(res, num1, num2);
     printEntry(res);
     assert(strcmp(numToChar(res), "-6561.54419860025807258480133651369799292598220471119087440522753152172937147050145087534158469354169467861073368962805080144763639103815994729925250725392659630057069975612925521735560029401045650694433091") == 0 && "divideNumbers test01 failed");
-    exit(1);
 //    printf("...divideNumbers test01 passed\n");
     /* // test arithmetic */
 
     /* test modulus  (all possible combinations the quotient of two positive/negative numbers */
-//    res = modulus(setNumberFromChar((char *) "-20.0"), setNumberFromChar((char *) "-7.0"));
-//    assert(strcmp(numToChar(res), "-6.0") == 0 && "modulus test01 failed");
+    res = modulus(setNumberFromChar((char *) "-20.0"), setNumberFromChar((char *) "-7.0"));
+    assert(strcmp(numToChar(res), "-6.0") == 0 && "modulus test01 failed");
 //    printf("...modulus test01 passed\n");
 
-//    res = modulus(setNumberFromChar((char *) "4.0"), setNumberFromChar((char *) "17.0"));
-//    assert(strcmp(numToChar(res), "4.0") == 0 && "modulus test02 failed");
+    res = modulus(setNumberFromChar((char *) "4.0"), setNumberFromChar((char *) "17.0"));
+    assert(strcmp(numToChar(res), "4.0") == 0 && "modulus test02 failed");
 //    printf("...modulus test02 passed\n");
 
-//    res = modulus(setNumberFromChar((char *) "-3.0"), setNumberFromChar((char *) "19.0"));
-//    assert(strcmp(numToChar(res), "16.0") == 0 && "modulus test03 failed");
+    res = modulus(setNumberFromChar((char *) "-3.0"), setNumberFromChar((char *) "19.0"));
+    assert(strcmp(numToChar(res), "16.0") == 0 && "modulus test03 failed");
 //    printf("...modulus test03 passed\n");
 
-//    res = modulus(setNumberFromChar((char *) "-16.0"), setNumberFromChar((char *) "4.0"));
-//    assert(strcmp(numToChar(res), "0.0") == 0 && "modulus test04 failed");
+    res = modulus(setNumberFromChar((char *) "-16.0"), setNumberFromChar((char *) "4.0"));
+    assert(strcmp(numToChar(res), "0.0") == 0 && "modulus test04 failed");
 //    printf("...modulus test04 passed\n");
 
-//    res = modulus(setNumberFromChar((char *) "-16.0"), setNumberFromChar((char *) "3.0"));
-//    assert(strcmp(numToChar(res), "2.0") == 0 && "modulus test05 failed");
+    res = modulus(setNumberFromChar((char *) "-16.0"), setNumberFromChar((char *) "3.0"));
+    assert(strcmp(numToChar(res), "2.0") == 0 && "modulus test05 failed");
 //    printf("...modulus test05 passed\n");
 //
-//    res = modulus(setNumberFromChar((char*)"2.0"), setNumberFromChar((char*)"-19.0"));
-//    assert(strcmp(numToChar(res), "-17.0") == 0 && "modulus test06 failed");
+    res = modulus(setNumberFromChar((char*)"2.0"), setNumberFromChar((char*)"-19.0"));
+    assert(strcmp(numToChar(res), "-17.0") == 0 && "modulus test06 failed");
 //    printf("...modulus test06 passed\n");
 
-//    res = modulus(setNumberFromChar((char*)"19.0"), setNumberFromChar((char*)"-12.0"));
-//    assert(strcmp(numToChar(res), "-5.0") == 0 && "modulus test07 failed");
+    res = modulus(setNumberFromChar((char*)"19.0"), setNumberFromChar((char*)"-12.0"));
+    assert(strcmp(numToChar(res), "-5.0") == 0 && "modulus test07 failed");
 //    printf("...modulus test07 passed\n");
 
-//    res = modulus(setNumberFromChar((char *) "20.0"), setNumberFromChar((char *) "7.0"));
-//    assert(strcmp(numToChar(res), "6.0") == 0 && "modulus test08 failed");
+    res = modulus(setNumberFromChar((char *) "20.0"), setNumberFromChar((char *) "7.0"));
+    assert(strcmp(numToChar(res), "6.0") == 0 && "modulus test08 failed");
 //    printf("...modulus test08 passed\n");
 
-//    res = modulus(setNumberFromChar((char *) "0.0"), setNumberFromChar((char *) "7.0"));
-//    assert(strcmp(numToChar(res), "0.0") == 0 && "modulus test09 failed");
+    res = modulus(setNumberFromChar((char *) "0.0"), setNumberFromChar((char *) "7.0"));
+    assert(strcmp(numToChar(res), "0.0") == 0 && "modulus test09 failed");
 //    printf("...modulus test09 passed\n");
     /*  // test modulus */
+
 
     /* test comparison */
     int cmp;
@@ -163,9 +163,9 @@ int main() {
     assert(strcmp(numToChar(num3), "5.0") == 0 && "divideEquals test01 failed");
 //    printf("...divideEquals test01 passed\n");
 
-//    assign(num3, setNumberFromChar((char *) "5.5"));
-//    modulusEquals(num3, setNumberFromChar((char *) "1.4"));
-//    assert(strcmp(numToChar(num3), "1.3") == 0 && "modulusEquals test01 failed");
+    assign(num3, setNumberFromChar((char *) "5.5"));
+    modulusEquals(num3, setNumberFromChar((char *) "1.4"));
+    assert(strcmp(numToChar(num3), "1.3") == 0 && "modulusEquals test01 failed");
 //    printf("...modulusEquals test01 passed\n");
     /* // test additional functions */
 
@@ -328,6 +328,8 @@ int main() {
     // // test setPrecision
     /*  // test utility functions */
 
+    debug("here1");
+    exit(1);
 
     /* live tests */
     // test factorial

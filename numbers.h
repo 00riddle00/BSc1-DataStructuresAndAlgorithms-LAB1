@@ -222,7 +222,7 @@ void divide(Number* res, Number* num1, Number* num2);
 
 
 // TODO comment
-//Number* modulus(Number* num1, Number* num2);
+Number* modulus(Number* num1, Number* num2);
 
 /* additional functions */
 // TODO comment
@@ -253,7 +253,7 @@ void multiplyEquals(Number* num1, Number* num2);
 void divideEquals(Number* num1, Number* num2);
 
 // TODO comment
-//void modulusEquals(Number* num1, Number* num2);
+void modulusEquals(Number* num1, Number* num2);
 
 
 /* // additional functions */

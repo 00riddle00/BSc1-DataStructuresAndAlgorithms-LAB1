@@ -1752,6 +1752,7 @@ Number* Log(Number* num) {
                     continue;
                 }
                 multiplyEquals(part_of_sum, Log(setNumberFromInt(canonical[i])));
+                debug("after multiply");
                 plusEquals(result, part_of_sum);
             }
 

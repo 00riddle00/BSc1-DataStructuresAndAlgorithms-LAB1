@@ -23,8 +23,8 @@ int main() {
 
     Number *res = setNewNumber();
 
-//    res = setNumberFromChar((char *) "155.0");
-    res = setNumberFromChar((char *) "31.0");
+    res = setNumberFromChar((char *) "155.0");
+//    res = setNumberFromChar((char *) "31.0");
     res = Log(res);
     setPrecision(res, -100);
     debug("res is");

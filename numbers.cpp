@@ -1598,16 +1598,17 @@ Number* factorial(Number* num) {
 }
 
 int isPrime(Number* num) {
-    debug("is prime");
-//    printEntry(num);
     Number* two = setNumberFromChar((char*)"2.0");
-    if (compareEqual(num, two)) {
+
+    if (num->digits_whole == 1 && num->whole_part[0] == 2) {
         return 1;
     }
-    if (isZero(modulus(num, two))) {
+
+    if (isDivisibleByTwo(num) || isDivisibleByThree(num) || isDivisibleByFive(num)) {
         return 0;
     }
-    for (Number*i = setNumberFromChar((char *) "3.0"); compareLessThanOrEqual(raiseByPow(i, 2), num); plusEquals(i, two)) {
+
+    for (Number*i = setNumberFromChar((char *) "7.0"); compareLessThanOrEqual(raiseByPow(i, 2), num); plusEquals(i, two)) {
         if (isZero(modulus(num, i))) {
             return 0;
         }

@@ -10,7 +10,9 @@
 #include <cfloat>
 
 // Header file with useful debugging macros
+//#include "dbg.h"
 #include "numbers.h"
+
 
 
 int main() {
@@ -35,7 +37,6 @@ int main() {
     assert(strcmp(numToChar(res), "-1005722821235625557767394406067.695067825187088") == 0 &&
            "multiplyNumbers test01 failed");
 //    printf("...multiplyNumbers test01 passed\n");
-
 
     divideNumbers(res, num1, num2);
     assert(strcmp(numToChar(res), "-6561.54419860025807258480133651369799292598220471119087440522753152172937147050145087534158469354169467861073368962805080144763639103815994729925250725392659630057069975612925521735560029401045650694433091") == 0 && "divideNumbers test01 failed");
@@ -392,8 +393,26 @@ int main() {
     res = raiseByPow(res, 6);
     setPrecision(res, -100);
     assert(strcmp(numToChar(res), "94498971652638775929231672647833888771141190540374490793799910241413225365722228670047638705370321438791975293971242620109600173039630619238456992875182844589511986507136169417095017804371947032.2036644518691450129574798661191823214535963114499654599405099220479591781534123238100768881793647062") == 0 && "raiseByPow test05 failed");
-    printf("...raiseByPow tests(5) passed\n");
-     // test raiseByPow
+
+    res = setNumberFromChar((char *) "-21342134231841238.812837");
+    res = raiseByPow(res, 5);
+    setPrecision(res, -100);
+    assert(strcmp(numToChar(res), "-4427812637016018054953301802858186906534656748459271515524109285463583661259198754.5749559583568953288484048479570000000000000000000000000000000000000000000000000000000000000000000000") == 0 && "raiseByPow test06 failed");
+
+    res = setNumberFromChar((char *) "-2.0");
+    res = raiseByPow(res, 5);
+    setPrecision(res, -1);
+    assert(strcmp(numToChar(res), "-32.0") == 0 && "raiseByPow test07 failed");
+
+//    res = setNumberFromChar((char *) "-0.81283774812377321");
+//    res = raiseByPow(res, 21);
+//    setPrecision(res, -100);
+//    printEntry(res);
+//    assert(strcmp(numToChar(res), "94498971652638775929231672647833888771141190540374490793799910241413225365722228670047638705370321438791975293971242620109600173039630619238456992875182844589511986507136169417095017804371947032.2036644518691450129574798661191823214535963114499654599405099220479591781534123238100768881793647062") == 0 && "raiseByPow test05 failed");
+    printf("...raiseByPow tests(7) passed\n");
+
+
+    // test raiseByPow
 
     // test Log
     res = setNumberFromChar((char *) "5.0");
@@ -426,10 +445,17 @@ int main() {
     assert(strcmp(numToChar(res), "13.8155105579642741041079487281061852456066089317726378561999674058054356580641148814159832305375897901") == 0 && "Log test05 failed");
     printf("...Log test05 passed\n");
 
+//    res = setNumberFromChar((char *) "13.5");
+//    res = Log(res);
+//    setPrecision(res, -100);
+//    assert(strcmp(numToChar(res), "2.602689685444383764768503589309400545866971539107993101083402991419089257686132185014983937444777578") == 0 && "Log test05 failed");
+
+    // TODO make this test work
 //    res = setNumberFromChar((char *) "15.5");
 //    res = Log(res);
 //    setPrecision(res, -100);
 //    assert(strcmp(numToChar(res), "-0.6931471805599453094172321214581765680755001343602552541206800094933936219696947156058633269964186875") == 0 && "Log test02 failed");
+
     // // test Log
 
     // test Sine

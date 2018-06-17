@@ -23,7 +23,7 @@ myType convert(string s){
 // convert from myType to string
 string toStr(myType m){
 	/* YOUR CODE HERE */
-	char* num = convertNumberToChar(m);
+	char* num = numToChar(m);
 	return string(num);
 }
 
@@ -67,13 +67,14 @@ myType myPrime(myType n){
 }
 myType myPow(double d, int p){
 	/* YOUR CODE HERE */
-	return raiseByPow(setNumberFromDouble(d), p);
+    return raiseByPow(setNumberFromDouble(d), p);
 }
 myType myLog(double d){
 	/* YOUR CODE HERE */
     myType res = Log(setNumberFromDouble(d));
     setPrecision(res, -100);
     return res;
+
 }
 myType mySin(double d){
 	/* YOUR CODE HERE */

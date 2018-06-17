@@ -9,6 +9,7 @@
 #include <climits>
 
 // Header file with useful debugging macros
+//#include "dbg.h"
 #include "numbers.h"
 
 // Define table as a global variable
@@ -62,25 +63,28 @@ void printTable() {
     }
 }
 
+char* numToChar(Number* num) {
+    int negative = num->negative;
+    // +1 is for dot "." between whole and decimal parts
+    // another +1 is for null terminating character
+    int char_len = num->digits_whole + num->digits_decimal + negative + 1+1;
+    char* res = (char*) malloc(char_len * sizeof(char));
 
-char* numToChar(Number* number) {
-        char* numArray = (char*) calloc(1, DIGITS * 2 * sizeof(char));
-        int index = 0;
+    if (negative) {
+        res[0] = '-';
+    }
+    for (int i = 0; i < num->digits_whole; i++) {
+        res[i+negative] = (char) (num->whole_part[num->digits_whole-1-i] + '0');
+    }
+    res[num->digits_whole+negative] = '.';
+    for (int i = num->digits_whole + 1, j = 0; i <= num->digits_whole + num->digits_decimal; i++, j++) {
+        res[i+negative] = (char) (num->decimal_part[j] + '0');
+    }
 
-        if (number->negative) {
-            numArray[0] = '-';
-            index++;
-        }
+    // FIXME Writing out of bounds of an array???
+    res[char_len-1] = '\0';
 
-        for (int i = number->digits_whole - 1; i >= 0; i--, index++) {
-            numArray[index] = number->whole_part[i] + '0';
-        }
-        numArray[index++] = '.';
-
-        for (int i = 0; i < number->digits_decimal; i++, index++) {
-            numArray[index] = number->decimal_part[i] + '0';
-        }
-        return numArray;
+    return res;
 }
 
 Number* setNumberFromDouble(double number) {
@@ -193,18 +197,7 @@ Number* setNewNumber() {
     return num;
 }
 
-char* convertNumberToChar(Number* num) {
-    int char_len = num->digits_whole + num->digits_decimal;
-    char* res = (char*) malloc((char_len+1) * sizeof(char));
-    for (int i = 0; i < num->digits_whole; i++) {
-        res[i] = (char) (num->whole_part[num->digits_whole-1-i] + '0');
-    }
-    res[num->digits_whole] = '.';
-    for (int i = num->digits_whole + 1, j = 0; i <= num->digits_whole + num->digits_decimal; i++, j++) {
-        res[i] = (char) (num->decimal_part[j] + '0');
-    }
-    return res;
-}
+
 
 
 Number* setNumberFromChar(char* numArray) {
@@ -262,6 +255,7 @@ Number* setNumberFromChar(char* numArray) {
     /// TODO handle this error
     if(error) {
         printf("Invalid number. Number 0.0 is returned/written\n");
+        //debug("Invalid number. Number 0.0 is returned/written\n");
         free(number);
         Number* zero = setNumberFromChar((char*)"0.0");
         return zero;
@@ -1685,9 +1679,14 @@ int* CanonicalForm(Number* num) {
         result[i + 1] = power;
     }
 
+    // debug code
+//    for (int i = 0; i < 12; i++) {
+//        printf("%d ", result[i]);
+//    }
+
 //    free(temp);
-//    free(modulo);
-//    free(divisor);
+    free(modulo);
+    free(divisor);
     return result;
 }
 
@@ -1697,7 +1696,6 @@ Number* Log(Number* num) {
     if (isOne(num)) {
         return setNewNumber();
     }
-
     if (isInteger(num)) {
         if (!isPrime(num)) {
             Number *temp = setNewNumber();

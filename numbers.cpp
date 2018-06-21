@@ -1699,6 +1699,30 @@ int* CanonicalForm(Number* num) {
     return result;
 }
 
+Number* getLog(int prime_num) {
+    switch (prime_num) {
+        case 2:
+            return setNumberFromChar((char*)"0.693147180559945309417232121458176568075500134360255254120680009493393621969694715605863326996418687542001481020570685733685520235758130557032670751635");
+        case 3:
+            return setNumberFromChar((char*)"1.098612288668109691395245236922525704647490557822749451734694333637494293218608966873615754813732088787970029065957865742368004225930519821052801870767");
+        case 5:
+            return setNumberFromChar((char*)"1.609437912434100374600759333226187639525601354268517721912647891474178987707657764630133878093179610799966303021715562899724005229324676199633616617463");
+        case 7:
+            return setNumberFromChar((char*)"1.945910149055313305105352743443179729637084729581861188459390149937579862752069267787658498587871526993061694205851140911723752257677786843148958095163");
+        case 11:
+            return setNumberFromChar((char*)"2.397895272798370544061943577965129299821706853937417175218567709130573623913236713075054708002634791414715725888137998522255569158595787395355302390801");
+        case 13:
+            return setNumberFromChar((char*)"2.564949357461536736053487441565318604805267944760207116419045510663464667324410179399574663440489488769258192092762721631532154491986587013825268116972");
+        default:
+            printf("wrong number passed to getLog()");
+            exit(1);
+    }
+}
+
+
+
+
+
 Number* Log(Number* num) {
     // TODO add validation for negative input
 
@@ -1718,7 +1742,10 @@ Number* Log(Number* num) {
                 if (isZero(part_of_sum)) {
                     continue;
                 }
-                multiplyEquals(part_of_sum, Log(setNumberFromInt(canonical[i])));
+                Number* temp01 = getLog(canonical[i]);
+//                multiplyEquals(part_of_sum, Log(setNumberFromInt(canonical[i])));
+                multiplyEquals(part_of_sum, temp01);
+                free(temp01);
                 plusEquals(result, part_of_sum);
             }
 
@@ -1870,7 +1897,7 @@ void setPrecision(Number* num, int precision) {
         multiplyEquals(num, raiseByPow(ten, zero_count));
 
         if (precision > 0) {
-            setPrecision(num, precision);
+            setAbsolutePrecision(num, precision);
             divideEquals(num, raiseByPow(ten, zero_count));
             int current_precision = getWholeLen(num) + getDecimalLen(num) - zero_count;
             while (current_precision < precision) {
@@ -1883,7 +1910,7 @@ void setPrecision(Number* num, int precision) {
         } else {
             initial_precision = -precision;
             precision = -precision;
-            setPrecision(num, precision - zero_count);
+            setAbsolutePrecision(num, precision - zero_count);
             divideEquals(num, raiseByPow(ten, zero_count));
             int current_precision = getWholeLen(num) + getDecimalLen(num);
             while (current_precision < initial_precision) {

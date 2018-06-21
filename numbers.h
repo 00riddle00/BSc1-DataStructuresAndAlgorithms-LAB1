@@ -287,6 +287,8 @@ void modulusEquals(Number* num1, Number* num2);
 //Number* cons_0_1 = setNumberFromChar((char*)"0.1");
 
 void setPrecision(Number* num, int precision);
+void setAbsolutePrecision(Number* num, int precision);
+void setDecimalPrecision(Number* num, int precision);
 
 /* functions to be tested */
 // TODO comment

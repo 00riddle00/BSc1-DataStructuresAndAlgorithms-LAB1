@@ -123,7 +123,7 @@ Number* setNumberFromDouble(double number) {
     Number* res = setNumberFromChar(charray);
     fixNumber(res);
     if (whole_digits > 16) {
-        setPrecision(res, 16);
+        setAbsolutePrecision(res, 16);
     }
     res->negative = negative;
     return res;
@@ -1844,23 +1844,39 @@ void setMaxPrecision(Number* num, int precision) {
 
 
 
-// this operation is irreversible!
-// negative precision means how many numbers after the comma there will be,
-// without altering the precision of the whole part. The remaining free space
-// is filled with zeroes
 void setPrecision(Number* num, int precision) {
+    int negative = num->negative;
+    num->negative = 0;
+    if (precision > 0) {
+        setAbsolutePrecision(num, precision);
+    // else if (precision < 0);
+    } else {
+        setDecimalPrecision(num, -precision);
+    }
+    num->negative = negative;
+}
 
-    if (precision < 0) {
-        precision = -precision;
+
+
+
+void setDecimalPrecision(Number* num, int precision) {
         int dec_num = num->digits_decimal;
         if (dec_num == precision) {
             return;
         } else if (dec_num > precision) {
             if (num->digits_whole == 1 && num->whole_part[0] == 0) {
-                setPrecision(num, num->digits_whole + precision - 1);
+                for (int i = 0; i < dec_num; i++) {
+                    if (num->decimal_part[i] == 0) {
+                        precision--;
+                    } else {
+                        setAbsolutePrecision(num, precision);
+                        return;
+                    }
+                }
+                setAbsolutePrecision(num, precision);
                 return;
             } else {
-                setPrecision(num, num->digits_whole + precision);
+                setAbsolutePrecision(num, num->digits_whole + precision);
                 return;
             }
         } else {
@@ -1870,7 +1886,14 @@ void setPrecision(Number* num, int precision) {
             num->digits_decimal = precision;
             return;
         }
-    }
+}
+
+
+// this operation is irreversible!
+// negative precision means how many numbers after the comma there will be,
+// without altering the precision of the whole part. The remaining free space
+// is filled with zeroes
+void setAbsolutePrecision(Number* num, int precision) {
 
     // TODO rm magic numbers
     if (getWholeLen(num) + getDecimalLen(num) >= 500 && (getDecimalLen(num) != 0 && num->decimal_part[0] != 0)) {
@@ -1912,7 +1935,7 @@ void setPrecision(Number* num, int precision) {
         // TODO shift comma manually
         Number* ShiftedComma = setNewNumber();
         multiplyNumbers(ShiftedComma, num, raiseByPow(ten, num->digits_decimal));
-        setPrecision(ShiftedComma, precision);
+        setAbsolutePrecision(ShiftedComma, precision);
 
         //divideEquals(ShiftedComma, raiseByPow(ten, num->digits_decimal));
         Number* temp = setNewNumber();

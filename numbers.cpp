@@ -9,7 +9,7 @@
 #include <climits>
 
 // Header file with useful debugging macros
-#include "dbg.h"
+//#include "dbg.h"
 #include "numbers.h"
 
 // Define table as a global variable
@@ -254,8 +254,8 @@ Number* setNumberFromChar(char* numArray) {
 
     /// TODO handle this error
     if(error) {
-//        printf("Invalid number. Number 0.0 is returned/written\n");
-        debug("Invalid number. Number 0.0 is returned/written\n");
+        printf("Invalid number. Number 0.0 is returned/written\n");
+        //debug("Invalid number. Number 0.0 is returned/written\n");
         free(number);
         Number* zero = setNumberFromChar((char*)"0.0");
         return zero;
@@ -943,10 +943,6 @@ void multiply(Number* res, Number* num1, Number* num2) {
 
 
         for (int i = temp->digits_whole - 500 - (temp->digits_whole - decimal_numbers), j = 499; i < temp->digits_whole - (temp->digits_whole - decimal_numbers); i++, j--) {
-            if (j == -1) {
-                debug("STOP!");
-                exit(1);
-            }
             res->decimal_part[j] = temp->whole_part[i];
         }
 
@@ -959,11 +955,6 @@ void multiply(Number* res, Number* num1, Number* num2) {
 
 //        for (int i = temp->digits_whole - 1, j = whole_numbers - 1; i > temp->digits_whole - decimal_numbers - 1; i--, j--) {
         for (int i = temp->digits_whole - 1, j = whole_numbers - 1; i > decimal_numbers - 1; i--, j--) {
-            if (j == -1) {
-                debug("STOP2!!!");
-//                printEntry(res);
-                exit(1);
-            }
             res->whole_part[j] = temp->whole_part[i];
         }
     } else {

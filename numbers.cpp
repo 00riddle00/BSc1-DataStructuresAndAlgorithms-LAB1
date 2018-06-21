@@ -1847,6 +1847,41 @@ void setMaxPrecision(Number* num, int precision) {
 void setPrecision(Number* num, int precision) {
     int negative = num->negative;
     num->negative = 0;
+
+
+    if (getWholeLen(num) == 0 && num->decimal_part[0] == 0) {
+        Number *ten = setNumberFromChar((char *) "10.0");
+        int zero_count = 1;
+        int initial_precision;
+        while (num->decimal_part[zero_count] == 0) {
+            zero_count++;
+        }
+        multiplyEquals(num, raiseByPow(ten, zero_count));
+
+        if (precision > 0) {
+            setPrecision(num, precision);
+            divideEquals(num, raiseByPow(ten, zero_count));
+            int current_precision = getWholeLen(num) + getDecimalLen(num) - zero_count;
+            while (current_precision < precision) {
+                num->decimal_part[num->digits_decimal++] = 0;
+                current_precision++;
+            }
+            return;
+        // else if (precision < 0);
+        } else {
+            initial_precision = -precision;
+            precision = -precision;
+            setPrecision(num, precision - zero_count);
+            divideEquals(num, raiseByPow(ten, zero_count));
+            int current_precision = getWholeLen(num) + getDecimalLen(num);
+            while (current_precision < initial_precision) {
+                num->decimal_part[num->digits_decimal++] = 0;
+                current_precision++;
+            }
+            return;
+        }
+    }
+
     if (precision > 0) {
         setAbsolutePrecision(num, precision);
     // else if (precision < 0);

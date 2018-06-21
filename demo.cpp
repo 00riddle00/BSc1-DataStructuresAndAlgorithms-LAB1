@@ -326,6 +326,17 @@ int main() {
     setPrecision(res, -10);
     assert(strcmp(numToChar(res), "0.1234000000") == 0 && "setPrecision test08 failed");
 //    printf("...setPrecision test08 passed\n");
+
+    res = setNumberFromChar((char *) "0.001234567800999");
+    setPrecision(res, 11);
+    assert(strcmp(numToChar(res), "0.0012345678010") == 0 && "setPrecision test09 failed");
+    printf("...setPrecision test09 passed\n");
+
+//    setPrecision(res, -13);
+    res = setNumberFromChar((char *) "0.001234567800999");
+    setPrecision(res, -13);
+    assert(strcmp(numToChar(res), "0.0012345678010") == 0 && "setPrecision test10 failed");
+//    printf("...setPrecision test10 passed\n");
     // // test setPrecision
     /*  // test utility functions */
 

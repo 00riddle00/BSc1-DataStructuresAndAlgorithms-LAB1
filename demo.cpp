@@ -10,7 +10,7 @@
 #include <cfloat>
 
 // Header file with useful debugging macros
-//#include "dbg.h"
+#include "dbg.h"
 #include "numbers.h"
 
 
@@ -326,6 +326,17 @@ int main() {
     setPrecision(res, -10);
     assert(strcmp(numToChar(res), "0.1234000000") == 0 && "setPrecision test08 failed");
 //    printf("...setPrecision test08 passed\n");
+
+    res = setNumberFromChar((char *) "0.001234567800999");
+    setPrecision(res, 11);
+    assert(strcmp(numToChar(res), "0.0012345678010") == 0 && "setPrecision test09 failed");
+    printf("...setPrecision test09 passed\n");
+
+//    setPrecision(res, -13);
+    res = setNumberFromChar((char *) "0.001234567800999");
+    setPrecision(res, -13);
+    assert(strcmp(numToChar(res), "0.0012345678010") == 0 && "setPrecision test10 failed");
+//    printf("...setPrecision test10 passed\n");
     // // test setPrecision
     /*  // test utility functions */
 
@@ -404,14 +415,11 @@ int main() {
     setPrecision(res, -1);
     assert(strcmp(numToChar(res), "-32.0") == 0 && "raiseByPow test07 failed");
 
-//    res = setNumberFromChar((char *) "-0.81283774812377321");
-//    res = raiseByPow(res, 21);
-//    setPrecision(res, -100);
-//    printEntry(res);
-//    assert(strcmp(numToChar(res), "94498971652638775929231672647833888771141190540374490793799910241413225365722228670047638705370321438791975293971242620109600173039630619238456992875182844589511986507136169417095017804371947032.2036644518691450129574798661191823214535963114499654599405099220479591781534123238100768881793647062") == 0 && "raiseByPow test05 failed");
-    printf("...raiseByPow tests(7) passed\n");
-
-
+    res = setNumberFromChar((char *) "-0.81283774812377321");
+    res = raiseByPow(res, 21);
+    setPrecision(res, -100);
+    assert(strcmp(numToChar(res), "-0.0128849027266675582106017273025115097551710131152152545199892742678193564787573274237090885897338010") == 0 && "raiseByPow test08 failed");
+    printf("...raiseByPow tests(8) passed\n");
     // test raiseByPow
 
     // test Log
@@ -439,11 +447,17 @@ int main() {
     assert(strcmp(numToChar(res), "-0.6931471805599453094172321214581765680755001343602552541206800094933936219696947156058633269964186875") == 0 && "Log test04 failed");
     printf("...Log test04 passed\n");
 
+    res = setNumberFromChar((char *) "100.0");
+    res = Log(res);
+    setPrecision(res, -100);
+    assert(strcmp(numToChar(res), "4.6051701859880913680359829093687284152022029772575459520666558019351452193547049604719944101791965967") == 0 && "Log test05 failed");
+    printf("...Log test05 passed\n");
+
     res = setNumberFromChar((char *) "1000000.0");
     res = Log(res);
     setPrecision(res, -100);
-    assert(strcmp(numToChar(res), "13.8155105579642741041079487281061852456066089317726378561999674058054356580641148814159832305375897901") == 0 && "Log test05 failed");
-    printf("...Log test05 passed\n");
+    assert(strcmp(numToChar(res), "13.8155105579642741041079487281061852456066089317726378561999674058054356580641148814159832305375897901") == 0 && "Log test06 failed");
+    printf("...Log test06 passed\n");
 
 //    res = setNumberFromChar((char *) "13.5");
 //    res = Log(res);

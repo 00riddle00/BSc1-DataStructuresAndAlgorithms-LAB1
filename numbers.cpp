@@ -9,7 +9,7 @@
 #include <climits>
 
 // Header file with useful debugging macros
-//#include "dbg.h"
+#include "dbg.h"
 #include "numbers.h"
 
 // Define table as a global variable
@@ -123,7 +123,7 @@ Number* setNumberFromDouble(double number) {
     Number* res = setNumberFromChar(charray);
     fixNumber(res);
     if (whole_digits > 16) {
-        setPrecision(res, 16);
+        setAbsolutePrecision(res, 16);
     }
     res->negative = negative;
     return res;
@@ -254,8 +254,8 @@ Number* setNumberFromChar(char* numArray) {
 
     /// TODO handle this error
     if(error) {
-        printf("Invalid number. Number 0.0 is returned/written\n");
-        //debug("Invalid number. Number 0.0 is returned/written\n");
+//        printf("Invalid number. Number 0.0 is returned/written\n");
+        debug("Invalid number. Number 0.0 is returned/written\n");
         free(number);
         Number* zero = setNumberFromChar((char*)"0.0");
         return zero;
@@ -943,6 +943,10 @@ void multiply(Number* res, Number* num1, Number* num2) {
 
 
         for (int i = temp->digits_whole - 500 - (temp->digits_whole - decimal_numbers), j = 499; i < temp->digits_whole - (temp->digits_whole - decimal_numbers); i++, j--) {
+            if (j == -1) {
+                debug("STOP!");
+                exit(1);
+            }
             res->decimal_part[j] = temp->whole_part[i];
         }
 
@@ -955,6 +959,11 @@ void multiply(Number* res, Number* num1, Number* num2) {
 
 //        for (int i = temp->digits_whole - 1, j = whole_numbers - 1; i > temp->digits_whole - decimal_numbers - 1; i--, j--) {
         for (int i = temp->digits_whole - 1, j = whole_numbers - 1; i > decimal_numbers - 1; i--, j--) {
+            if (j == -1) {
+                debug("STOP2!!!");
+//                printEntry(res);
+                exit(1);
+            }
             res->whole_part[j] = temp->whole_part[i];
         }
     } else {
@@ -1690,6 +1699,37 @@ int* CanonicalForm(Number* num) {
     return result;
 }
 
+Number* getLog(int prime_num) {
+
+    switch (prime_num) {
+        case 2:
+            static Number* LOG_2 = setNumberFromChar((char*)"0.693147180559945309417232121458176568075500134360255254120680009493393621969694715605863326996418687542001481020570685733685520235758130557032670751635");
+            return LOG_2;
+        case 3:
+            static Number* LOG_3 = setNumberFromChar((char*)"1.098612288668109691395245236922525704647490557822749451734694333637494293218608966873615754813732088787970029065957865742368004225930519821052801870767");
+            return LOG_3;
+        case 5:
+            static Number* LOG_5 = setNumberFromChar((char*)"1.609437912434100374600759333226187639525601354268517721912647891474178987707657764630133878093179610799966303021715562899724005229324676199633616617463");
+            return LOG_5;
+        case 7:
+            static Number* LOG_7 = setNumberFromChar((char*)"1.945910149055313305105352743443179729637084729581861188459390149937579862752069267787658498587871526993061694205851140911723752257677786843148958095163");
+            return LOG_7;
+        case 11:
+            static Number* LOG_11 = setNumberFromChar((char*)"2.397895272798370544061943577965129299821706853937417175218567709130573623913236713075054708002634791414715725888137998522255569158595787395355302390801");
+            return LOG_11;
+        case 13:
+            static Number* LOG_13 = setNumberFromChar((char*)"2.564949357461536736053487441565318604805267944760207116419045510663464667324410179399574663440489488769258192092762721631532154491986587013825268116972");
+            return LOG_13;
+        default:
+            printf("wrong number passed to getLog()");
+            exit(1);
+    }
+}
+
+
+
+
+
 Number* Log(Number* num) {
     // TODO add validation for negative input
 
@@ -1709,7 +1749,7 @@ Number* Log(Number* num) {
                 if (isZero(part_of_sum)) {
                     continue;
                 }
-                multiplyEquals(part_of_sum, Log(setNumberFromInt(canonical[i])));
+                multiplyEquals(part_of_sum, getLog(canonical[i]));
                 plusEquals(result, part_of_sum);
             }
 
@@ -1835,23 +1875,87 @@ void setMaxPrecision(Number* num, int precision) {
 
 
 
-// this operation is irreversible!
-// negative precision means how many numbers after the comma there will be,
-// without altering the precision of the whole part. The remaining free space
-// is filled with zeroes
 void setPrecision(Number* num, int precision) {
+    int negative = num->negative;
+    num->negative = 0;
 
-    if (precision < 0) {
-        precision = -precision;
+    if (isZero(num)) {
+        if (precision < 0) {
+            precision = -precision;
+        }
+        for (int i = 1; i < precision; i++) {
+            num->decimal_part[i] = 0;
+            num->digits_decimal++;
+        }
+        return;
+    }
+
+
+    if (getWholeLen(num) == 0 && num->decimal_part[0] == 0) {
+        Number *ten = setNumberFromChar((char *) "10.0");
+        int zero_count = 1;
+        int initial_precision;
+        while (num->decimal_part[zero_count] == 0) {
+            zero_count++;
+        }
+        multiplyEquals(num, raiseByPow(ten, zero_count));
+
+        if (precision > 0) {
+            setAbsolutePrecision(num, precision);
+            divideEquals(num, raiseByPow(ten, zero_count));
+            int current_precision = getWholeLen(num) + getDecimalLen(num) - zero_count;
+            while (current_precision < precision) {
+                num->decimal_part[num->digits_decimal++] = 0;
+                current_precision++;
+            }
+            num->negative = negative;
+            return;
+        // else if (precision < 0);
+        } else {
+            initial_precision = -precision;
+            precision = -precision;
+            setAbsolutePrecision(num, precision - zero_count);
+            divideEquals(num, raiseByPow(ten, zero_count));
+            int current_precision = getWholeLen(num) + getDecimalLen(num);
+            while (current_precision < initial_precision) {
+                num->decimal_part[num->digits_decimal++] = 0;
+                current_precision++;
+            }
+            num->negative = negative;
+            return;
+        }
+    }
+
+    if (precision > 0) {
+        setAbsolutePrecision(num, precision);
+    // else if (precision < 0);
+    } else {
+        setDecimalPrecision(num, -precision);
+    }
+    num->negative = negative;
+}
+
+
+
+
+void setDecimalPrecision(Number* num, int precision) {
         int dec_num = num->digits_decimal;
         if (dec_num == precision) {
             return;
         } else if (dec_num > precision) {
             if (num->digits_whole == 1 && num->whole_part[0] == 0) {
-                setPrecision(num, num->digits_whole + precision - 1);
+                for (int i = 0; i < dec_num; i++) {
+                    if (num->decimal_part[i] == 0) {
+                        precision--;
+                    } else {
+                        setAbsolutePrecision(num, precision);
+                        return;
+                    }
+                }
+                setAbsolutePrecision(num, precision);
                 return;
             } else {
-                setPrecision(num, num->digits_whole + precision);
+                setAbsolutePrecision(num, num->digits_whole + precision);
                 return;
             }
         } else {
@@ -1861,7 +1965,14 @@ void setPrecision(Number* num, int precision) {
             num->digits_decimal = precision;
             return;
         }
-    }
+}
+
+
+// this operation is irreversible!
+// negative precision means how many numbers after the comma there will be,
+// without altering the precision of the whole part. The remaining free space
+// is filled with zeroes
+void setAbsolutePrecision(Number* num, int precision) {
 
     // TODO rm magic numbers
     if (getWholeLen(num) + getDecimalLen(num) >= 500 && (getDecimalLen(num) != 0 && num->decimal_part[0] != 0)) {
@@ -1903,7 +2014,7 @@ void setPrecision(Number* num, int precision) {
         // TODO shift comma manually
         Number* ShiftedComma = setNewNumber();
         multiplyNumbers(ShiftedComma, num, raiseByPow(ten, num->digits_decimal));
-        setPrecision(ShiftedComma, precision);
+        setAbsolutePrecision(ShiftedComma, precision);
 
         //divideEquals(ShiftedComma, raiseByPow(ten, num->digits_decimal));
         Number* temp = setNewNumber();

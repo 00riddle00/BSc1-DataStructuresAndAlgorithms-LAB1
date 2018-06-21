@@ -72,14 +72,14 @@ myType myPow(double d, int p){
 myType myLog(double d){
 	/* YOUR CODE HERE */
     myType res = Log(setNumberFromDouble(d));
-    setPrecision(res, -100);
+    setPrecision(res, -99);
     return res;
 
 }
 myType mySin(double d){
 	/* YOUR CODE HERE */
 	myType res = Sine(setNumberFromDouble(d));
-	setPrecision(res, -100);
+	setPrecision(res, -99);
 	return res;
 }
 myType mySqrt(double d){

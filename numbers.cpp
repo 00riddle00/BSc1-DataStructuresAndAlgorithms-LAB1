@@ -1848,6 +1848,17 @@ void setPrecision(Number* num, int precision) {
     int negative = num->negative;
     num->negative = 0;
 
+    if (isZero(num)) {
+        if (precision < 0) {
+            precision = -precision;
+        }
+        for (int i = 1; i < precision; i++) {
+            num->decimal_part[i] = 0;
+            num->digits_decimal++;
+        }
+        return;
+    }
+
 
     if (getWholeLen(num) == 0 && num->decimal_part[0] == 0) {
         Number *ten = setNumberFromChar((char *) "10.0");
@@ -1866,6 +1877,7 @@ void setPrecision(Number* num, int precision) {
                 num->decimal_part[num->digits_decimal++] = 0;
                 current_precision++;
             }
+            num->negative = negative;
             return;
         // else if (precision < 0);
         } else {
@@ -1878,6 +1890,7 @@ void setPrecision(Number* num, int precision) {
                 num->decimal_part[num->digits_decimal++] = 0;
                 current_precision++;
             }
+            num->negative = negative;
             return;
         }
     }

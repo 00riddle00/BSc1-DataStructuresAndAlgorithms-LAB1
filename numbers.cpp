@@ -1832,6 +1832,15 @@ Number* Sine(Number* num) {
     return step;
 }
 
+Number* getAvg(Number* num[], int size) {
+    Number* avg = setNewNumber();
+    for (int i = 0; i < size; i++) {
+        plusEquals(avg, num[i]);
+    }
+    divideEquals(avg, setNumberFromInt(size));
+    return avg;
+}
+
 
 void setMaxPrecision(Number* num, int precision) {
     TempNumber *temp = (TempNumber *) calloc(1, sizeof(TempNumber));

@@ -5,7 +5,7 @@ CFLAGS=-Wall -Wextra -g -std=c++11
 all: numbers.o demo #test #helpers.o #demo_ui
 
 #test: test.cpp numbers.o
-	#$(CC) $(CFLAGS) -o test test.cpp numbers.o
+#	$(CC) $(CFLAGS) -o test test.cpp numbers.o
 
 demo: demo.cpp numbers.o
 	$(CC) $(CFLAGS) -o demo demo.cpp numbers.o 

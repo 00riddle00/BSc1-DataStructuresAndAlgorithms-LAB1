@@ -342,6 +342,7 @@ int compare(Number* num1, Number* num2) {
         return 2;
     // case for equal number of digits
     } else {
+        // TODO do binary search
         // compare whole parts
         for (int i = num1->digits_whole-1; i >= 0; i--) {
             if (num1->whole_part[i] > num2->whole_part[i]) {
@@ -1840,6 +1841,54 @@ Number* getAvg(Number* num[], int size) {
     divideEquals(avg, setNumberFromInt(size));
     return avg;
 }
+
+int findNum(Number** data, int size, Number* value) {
+    for (int i = 0; i < size; i++) {
+        Number* numSearched = data[i];
+
+        if (compareEqual(numSearched, value)) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+
+void swap(Number* bigger, Number* smaller) {
+    Number *temp = setNewNumber();
+    assign(temp, smaller);
+    assign(smaller, bigger);
+    assign(bigger, temp);
+    free(temp);
+}
+
+void sortNums(Number** target, int size) {
+    int i = 0;
+    int j = 0;
+
+    int count_operations = 1;
+
+    for (i = 0; i < size; i++) {
+        if (count_operations == 0)
+            break;
+        count_operations = 0;
+        for (j = 0; j < size - 1; j++) {
+            if (compareGreaterThan(target[j], target[j+1])) {
+                swap(target[j], target[j + 1]);
+                count_operations++;
+            }
+        }
+        for (j = size - 1; j > 0; j--) {
+            if (compareLessThan(target[j], target[j-1])) {
+                swap(target[j], target[j - 1]);
+                count_operations++;
+            }
+        }
+    }
+}
+
+
+
 
 
 void setMaxPrecision(Number* num, int precision) {

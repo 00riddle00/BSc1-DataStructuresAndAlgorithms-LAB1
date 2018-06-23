@@ -94,9 +94,11 @@ myType myAvg(myType *data, int n){
 }
 int myFind(myType *data, int n, myType value){
 	/* YOUR CODE HERE */
+	return findNum(data, n, value);
 }
 void mySort(myType *data, int n){
 	/* YOUR CODE HERE */
+	sortNums(data, n);
 }
 
 /* DO NOT MODIFY CODE BELOW */

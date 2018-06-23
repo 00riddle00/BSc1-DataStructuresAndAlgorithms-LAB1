@@ -255,7 +255,6 @@ Number* setNumberFromChar(char* numArray) {
     /// TODO handle this error
     if(error) {
         printf("Invalid number. Number 0.0 is returned/written\n");
-        //debug("Invalid number. Number 0.0 is returned/written\n");
         free(number);
         Number* zero = setNumberFromChar((char*)"0.0");
         return zero;
@@ -1871,16 +1870,8 @@ void setPrecision(Number* num, int precision) {
     num->negative = 0;
 
     if (isZero(num)) {
-        if (precision < 0) {
-            precision = -precision;
-        }
-        for (int i = 1; i < precision; i++) {
-            num->decimal_part[i] = 0;
-            num->digits_decimal++;
-        }
         return;
     }
-
 
     if (getWholeLen(num) == 0 && num->decimal_part[0] == 0) {
         Number *ten = setNumberFromChar((char *) "10.0");
@@ -1893,28 +1884,14 @@ void setPrecision(Number* num, int precision) {
 
         if (precision > 0) {
             setAbsolutePrecision(num, precision);
-            divideEquals(num, raiseByPow(ten, zero_count));
-            int current_precision = getWholeLen(num) + getDecimalLen(num) - zero_count;
-            while (current_precision < precision) {
-                num->decimal_part[num->digits_decimal++] = 0;
-                current_precision++;
-            }
-            num->negative = negative;
-            return;
         // else if (precision < 0);
         } else {
-            initial_precision = -precision;
             precision = -precision;
             setAbsolutePrecision(num, precision - zero_count);
-            divideEquals(num, raiseByPow(ten, zero_count));
-            int current_precision = getWholeLen(num) + getDecimalLen(num);
-            while (current_precision < initial_precision) {
-                num->decimal_part[num->digits_decimal++] = 0;
-                current_precision++;
-            }
-            num->negative = negative;
-            return;
         }
+        divideEquals(num, raiseByPow(ten, zero_count));
+        num->negative = negative;
+        return;
     }
 
     if (precision > 0) {
@@ -1930,32 +1907,32 @@ void setPrecision(Number* num, int precision) {
 
 
 void setDecimalPrecision(Number* num, int precision) {
-        int dec_num = num->digits_decimal;
-        if (dec_num == precision) {
-            return;
-        } else if (dec_num > precision) {
-            if (num->digits_whole == 1 && num->whole_part[0] == 0) {
-                for (int i = 0; i < dec_num; i++) {
-                    if (num->decimal_part[i] == 0) {
-                        precision--;
-                    } else {
-                        setAbsolutePrecision(num, precision);
-                        return;
-                    }
+    int dec_num = num->digits_decimal;
+    if (dec_num <= precision) {
+        return;
+    } else if (dec_num > precision) {
+        if (num->digits_whole == 1 && num->whole_part[0] == 0) {
+            for (int i = 0; i < dec_num; i++) {
+                if (num->decimal_part[i] == 0) {
+                    precision--;
+                } else {
+                    setAbsolutePrecision(num, precision);
+                    return;
                 }
-                setAbsolutePrecision(num, precision);
-                return;
-            } else {
-                setAbsolutePrecision(num, num->digits_whole + precision);
-                return;
             }
+            setAbsolutePrecision(num, precision);
+            return;
         } else {
-            for(int i = num->digits_decimal; i < precision; i++) {
-                num->decimal_part[i] = 0;
-            }
-            num->digits_decimal = precision;
+            setAbsolutePrecision(num, num->digits_whole + precision);
             return;
         }
+    } else {
+        for(int i = num->digits_decimal; i < precision; i++) {
+            num->decimal_part[i] = 0;
+        }
+        num->digits_decimal = precision;
+        return;
+    }
 }
 
 

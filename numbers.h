@@ -165,12 +165,14 @@ int isDivisibleByTwo(Number* num);
 int isDivisibleByThree(Number* num);
 int isDivisibleByFive(Number* num);
 
+// // utillity functions
 int* CanonicalForm(Number* num);
 
 int isPrime(Number* num);
-// // utillity functions
 
-
+Number* getAvg(Number* num[], int size);
+int findNum(Number** data, int size, Number* value);
+void sortNums(Number** target, int size);
 
 // fix zeroes in the number, ie if the number has no whole or 
 // decimal part, set it to zero. Else, remove zeroes at the front

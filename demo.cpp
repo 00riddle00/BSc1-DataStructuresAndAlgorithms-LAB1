@@ -505,11 +505,11 @@ int main() {
     // // test Log
 
     // test Sine
-    res = setNumberFromChar((char *) "20.0");
-    res = Sine(res);
-    setPrecision(res, -99);
-    assert(strcmp(numToChar(res), "0.912945250727627654376099983845682301297932583708189956305128114768848919349072976044480049640469976") == 0 && "Sine test01 failed");
-    printf("...Sine test01 passed\n");
+//    res = setNumberFromChar((char *) "20.0");
+//    res = Sine(res);
+//    setPrecision(res, -99);
+//    assert(strcmp(numToChar(res), "0.912945250727627654376099983845682301297932583708189956305128114768848919349072976044480049640469976") == 0 && "Sine test01 failed");
+//    printf("...Sine test01 passed\n");
     // // test Sine
 //    /* // live tests */
 

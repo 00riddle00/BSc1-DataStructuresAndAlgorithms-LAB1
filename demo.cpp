@@ -484,13 +484,11 @@ int main() {
     assert(strcmp(numToChar(res), "0.0") == 0 && "Log test09 failed");
     printf("...Log test09 passed\n");
 
-    // FIXME does not pass
-//    res = setNumberFromChar((char *) "0.7");
-//    res = Log(res);
-//    setPrecision(res, -99);
-//    printEntry(res);
-//    assert(strcmp(numToChar(res), "-0.356674943938732378912638711241184477964016759046911787573937751029992746925283212448338706501726771") == 0 && "Log test10 failed");
-//    printf("...Log test10 passed\n");
+    res = setNumberFromChar((char *) "0.7");
+    res = Log(res);
+    setPrecision(res, -99);
+    assert(strcmp(numToChar(res), "-0.356674943938732378912638711241184477964016759046911787573937751029992746925283212448338706501726771") == 0 && "Log test10 failed");
+    printf("...Log test10 passed\n");
 
     res = setNumberFromChar((char *) "1.20");
     res = Log(res);

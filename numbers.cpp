@@ -1691,6 +1691,7 @@ int* CanonicalForm(Number* num) {
 
 Number* getLog(int prime_num) {
 
+    // TODO remove this temporary hack and count each LOG using Log() function;
     switch (prime_num) {
         case 2:
             static Number* LOG_2 = setNumberFromChar((char*)"0.693147180559945309417232121458176568075500134360255254120680009493393621969694715605863326996418687542001481020570685733685520235758130557032670751635");
@@ -1718,11 +1719,9 @@ Number* getLog(int prime_num) {
 
 
 
-
-
 Number* Log(Number* num) {
-    // TODO add validation for negative input
 
+    // TODO add validation for negative input
     if (isOne(num)) {
         return setNewNumber();
     }
@@ -1790,7 +1789,8 @@ Number* Log(Number* num) {
     free(temp2);
 
     int count = 0;
-    while (count < 300) {
+
+    while (count < 400) {
 //        debug("Log: %d", count);
         multiplyEquals(z, step);
         divideNumbers(y, one, powe);

@@ -24,6 +24,16 @@ int main() {
 
     Number *res = setNewNumber();
 
+    // FIXME does not pass
+    res = setNumberFromChar((char *) "24392.0");
+    res = Log(res);
+    setPrecision(res, -99);
+    printEntry(res);
+    assert(strcmp(numToChar(res), "10.102010488668090709523108315377598927675356968219971513291207212905617079917723807020637638746466385") == 0 && "Log test02 failed");
+    printf("...Log test02 passed\n");
+    exit(1);
+
+
 /* test arithmetic */
     addNumbers(res, num1, num2);
     assert(strcmp(numToChar(res), "81222431942852815.06580908") == 0 && "addNumbers test01 failed");
@@ -501,6 +511,14 @@ int main() {
     setPrecision(res, -99);
     assert(strcmp(numToChar(res), "-2.302585092994045684017991454684364207601101488628772976033327900967572609677352480235997205089598298") == 0 && "Log test12 failed");
     printf("...Log test12 passed\n");
+
+    // FIXME does not pass
+/*    res = setNumberFromChar((char *) "2.7182818285");*/
+    //res = Log(res);
+    //setPrecision(res, -99);
+    //assert(strcmp(numToChar(res), "1.000000000015066415928851892925238435963141587542804820418867079787116896581421424933322038112898450") == 0 && "Log test13 failed");
+    //printf("...Log test13 passed\n");
+
     // //LIVE log tests
     // // test Log
 

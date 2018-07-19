@@ -24,16 +24,6 @@ int main() {
 
     Number *res = setNewNumber();
 
-    // FIXME does not pass
-    res = setNumberFromChar((char *) "24392.0");
-    res = Log(res);
-    setPrecision(res, -99);
-    printEntry(res);
-    assert(strcmp(numToChar(res), "10.102010488668090709523108315377598927675356968219971513291207212905617079917723807020637638746466385") == 0 && "Log test02 failed");
-    printf("...Log test02 passed\n");
-    exit(1);
-
-
 /* test arithmetic */
     addNumbers(res, num1, num2);
     assert(strcmp(numToChar(res), "81222431942852815.06580908") == 0 && "addNumbers test01 failed");
@@ -444,11 +434,14 @@ int main() {
     printf("...Log test01 passed\n");
 
     // FIXME does not pass
-//    res = setNumberFromChar((char *) "24392.0");
-//    res = Log(res);
-//    setPrecision(res, -99);
-//    assert(strcmp(numToChar(res), "10.102010488668090709523108315377598927675356968219971513291207212905617079917723807020637638746466385") == 0 && "Log test02 failed");
-//    printf("...Log test02 passed\n");
+    // TODO (optimize) the biggest prime number in a canonical form 
+    // (17) is too big to be efficiently processed via current algorithm
+    //res = setNumberFromChar((char *) "136.0");
+    //res = Log(res);
+    //setPrecision(res, -99);
+    //printEntry(res);
+    //assert(strcmp(numToChar(res), "4.912654885736052008501230982247656239814703415666510549659277766362473441710015427729684849026759010") == 0 && "Log test02 failed");
+    //printf("...Log test02 passed\n");
 
     res = setNumberFromChar((char *) "2.5");
     res = Log(res);
@@ -462,62 +455,56 @@ int main() {
     assert(strcmp(numToChar(res), "-0.693147180559945309417232121458176568075500134360255254120680009493393621969694715605863326996418688") == 0 && "Log test04 failed");
     printf("...Log test04 passed\n");
 
+
     res = setNumberFromChar((char *) "1000000.0");
     res = Log(res);
     setPrecision(res, -99);
     assert(strcmp(numToChar(res), "13.81551055796427410410794872810618524560660893177263785619996740580543565806411488141598323053758979") == 0 && "Log test05 failed");
     printf("...Log test05 passed\n");
 
-    // FIXME does not pass
-//    res = setNumberFromChar((char *) "13.5");
-//    res = Log(res);
-//    setPrecision(res, -100);
-//    assert(strcmp(numToChar(res), "2.602689685444383764768503589309400545866971539107993101083402991419089257686132185014983937444777578") == 0 && "Log test06 failed");
-//    printf("...Log test06 passed\n");
-
-    res = setNumberFromChar((char *) "15.5");
+    res = setNumberFromChar((char *) "13.5");
     res = Log(res);
-    setPrecision(res, -100);
-    assert(strcmp(numToChar(res), "-0.6931471805599453094172321214581765680755001343602552541206800094933936219696947156058633269964186875") == 0 && "Log test07 failed");
-    printf("...Log test07 passed\n");
+    setPrecision(res, -99);
+    assert(strcmp(numToChar(res), "2.602689685444383764768503589309400545866971539107993101083402991419089257686132185014983937444777579") == 0 && "Log test06 failed");
+    printf("...Log test06 passed\n");
 
     // LIVE log tests
     res = setNumberFromChar((char *) "100.0");
     res = Log(res);
     setPrecision(res, -99);
-    assert(strcmp(numToChar(res), "4.605170185988091368035982909368728415202202977257545952066655801935145219354704960471994410179196597") == 0 && "Log test08 failed");
-    printf("...Log test08 passed\n");
+    assert(strcmp(numToChar(res), "4.605170185988091368035982909368728415202202977257545952066655801935145219354704960471994410179196597") == 0 && "Log test07 failed");
+    printf("...Log test07 passed\n");
 
     res = setNumberFromChar((char *) "1.0");
     res = Log(res);
     setPrecision(res, -99);
-    assert(strcmp(numToChar(res), "0.0") == 0 && "Log test09 failed");
-    printf("...Log test09 passed\n");
+    assert(strcmp(numToChar(res), "0.0") == 0 && "Log test08 failed");
+    printf("...Log test08 passed\n");
 
     res = setNumberFromChar((char *) "0.7");
     res = Log(res);
     setPrecision(res, -99);
-    assert(strcmp(numToChar(res), "-0.356674943938732378912638711241184477964016759046911787573937751029992746925283212448338706501726771") == 0 && "Log test10 failed");
-    printf("...Log test10 passed\n");
+    assert(strcmp(numToChar(res), "-0.356674943938732378912638711241184477964016759046911787573937751029992746925283212448338706501726771") == 0 && "Log test09 failed");
+    printf("...Log test09 passed\n");
 
     res = setNumberFromChar((char *) "1.20");
     res = Log(res);
     setPrecision(res, -99);
-    assert(strcmp(numToChar(res), "0.182321556793954626211718025154514633197389337914486983942726451656708927480645917849345203716971166") == 0 && "Log test11 failed");
-    printf("...Log test11 passed\n");
+    assert(strcmp(numToChar(res), "0.182321556793954626211718025154514633197389337914486983942726451656708927480645917849345203716971166") == 0 && "Log test10 failed");
+    printf("...Log test10 passed\n");
 
     res = setNumberFromChar((char *) "0.1");
     res = Log(res);
     setPrecision(res, -99);
-    assert(strcmp(numToChar(res), "-2.302585092994045684017991454684364207601101488628772976033327900967572609677352480235997205089598298") == 0 && "Log test12 failed");
-    printf("...Log test12 passed\n");
+    assert(strcmp(numToChar(res), "-2.302585092994045684017991454684364207601101488628772976033327900967572609677352480235997205089598298") == 0 && "Log test11 failed");
+    printf("...Log test11 passed\n");
 
     // FIXME does not pass
 /*    res = setNumberFromChar((char *) "2.7182818285");*/
     //res = Log(res);
     //setPrecision(res, -99);
-    //assert(strcmp(numToChar(res), "1.000000000015066415928851892925238435963141587542804820418867079787116896581421424933322038112898450") == 0 && "Log test13 failed");
-    //printf("...Log test13 passed\n");
+    //assert(strcmp(numToChar(res), "1.000000000015066415928851892925238435963141587542804820418867079787116896581421424933322038112898450") == 0 && "Log test12 failed");
+    //printf("...Log test12 passed\n");
 
     // //LIVE log tests
     // // test Log

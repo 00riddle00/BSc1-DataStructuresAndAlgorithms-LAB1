@@ -1720,6 +1720,7 @@ Number* getLog(int prime_num) {
 
 
 
+// TODO add comments 
 Number* Log(Number* num) {
 
     // TODO add validation for negative input
@@ -1728,23 +1729,41 @@ Number* Log(Number* num) {
     }
     if (isInteger(num)) {
         if (!isPrime(num)) {
+            Number *canon = setNumberFromChar(ONE);
+            Number *remaining_number = setNewNumber();
             Number *temp = setNewNumber();
             Number *result = setNewNumber();
-            Number *part_of_sum = setNewNumber();
-            assign(temp, num);
+            Number *canon_power = setNewNumber();
+            Number *canon_member = setNewNumber();
 
             int *canonical = CanonicalForm(num);
             for (int i = 0; i < 12; i = i + 2) {
-                part_of_sum = setNumberFromInt(canonical[i + 1]);
-                if (isZero(part_of_sum)) {
+                canon_member = setNumberFromInt(canonical[i]);
+                canon_power = setNumberFromInt(canonical[i + 1]);
+                
+                if (isZero(canon_power)) {
                     continue;
                 }
-                multiplyEquals(part_of_sum, getLog(canonical[i]));
-                plusEquals(result, part_of_sum);
+
+                temp = raiseByPow(canon_member, canonical[i+1]);
+                multiplyEquals(canon, temp);
+
+                multiplyEquals(canon_power, getLog(canonical[i]));
+                plusEquals(result, canon_power);
             }
+            printEntry(canon);
 
             free(temp);
-            free(part_of_sum);
+            free(canon_power);
+
+            printEntry(result);
+
+            divide(remaining_number, num, canon);
+            printEntry(remaining_number);
+
+            if (compareNotEqual(remaining_number, setNumberFromChar(ONE))) {
+                plusEquals(result, Log(remaining_number));
+            }
 
             if (!isZero(result)) {
                 return result;

@@ -24,6 +24,29 @@ int main() {
 
     Number *res = setNewNumber();
 
+    num1 = setNumberFromChar((char *) "27182818285.0");
+    num2 = setNumberFromChar((char *) "13.0");
+    divideNumbers(res, num1, num2);
+    assert(strcmp(numToChar(res), "2090986022.0") == 0 && "divideNumbers test01 failed");
+    exit(1);
+
+
+    res = modulus(setNumberFromChar((char *) "27182818285.0"), setNumberFromChar((char *) "13.0"));
+    assert(strcmp(numToChar(res), "12.0") == 0 && "modulus test01 failed");
+    exit(1);
+
+
+    // FIXME does not pass
+    res = setNumberFromChar((char *) "2.7182818285");
+    res = Log(res);
+    setPrecision(res, -99);
+    printEntry(res);
+    assert(strcmp(numToChar(res), "1.000000000015066415928851892925238435963141587542804820418867079787116896581421424933322038112898450") == 0 && "Log test12 failed");
+    printf("...Log test12 passed\n");
+    exit(1);
+
+
+
 /* test arithmetic */
     addNumbers(res, num1, num2);
     assert(strcmp(numToChar(res), "81222431942852815.06580908") == 0 && "addNumbers test01 failed");
@@ -79,6 +102,11 @@ int main() {
     res = modulus(setNumberFromChar((char *) "0.0"), setNumberFromChar((char *) "7.0"));
     assert(strcmp(numToChar(res), "0.0") == 0 && "modulus test09 failed");
 //    printf("...modulus test09 passed\n");
+
+    res = modulus(setNumberFromChar((char *) "27182818285.0"), setNumberFromChar((char *) "13.0"));
+    assert(strcmp(numToChar(res), "12.0") == 0 && "modulus test10 failed");
+//    printf("...modulus test10 passed\n");
+
     /*  // test modulus */
 
 

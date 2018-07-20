@@ -110,56 +110,7 @@ Number* setNumberFromDouble(double number) {
         sprintf(charray, "%*.1f\0", whole_digits, number);
     } else {
         sprintf(charray, "%*.*f\0", whole_digits, 16-whole_digits, number);
-    }
-
-//     TODO rm this debugging code
-//    int i = 0;
-//    while (charray[i] != '\0') {
-//        printf("%c", charray[i]);
-//        i++;
-//    }
-//    printf("\n");
-//
-    Number* res = setNumberFromChar(charray);
-    fixNumber(res);
-    if (whole_digits > 16) {
-        setAbsolutePrecision(res, 16);
-    }
-    res->negative = negative;
-    return res;
-}
-
-Number* setNumberFromInt(int number) {
-
-    int negative = 0;
-
-    if (number < 0) {
-        negative = 1;
-        number = -number;
-    }
-    int temp = number;
-
-    int whole_digits = 0;
-
-    while (temp >= 1) {
-        temp /= 10;
-        whole_digits++;
-    }
-
-    int size = whole_digits + 2;
-    char charray[size+1];
-
-    sprintf(charray, "%0*d.0\0", whole_digits, number);
-
-    // TODO rm this debugging code
-    //int i = 0;
-    //while (charray[i] != '\0') {
-        //printf("%c", charray[i]);
-        //i++;
-    //}
-    //printf("\n");
-    //
-
+    :co 50
     Number* res = setNumberFromChar(charray);
     fixNumber(res);
     res->negative = negative;
@@ -1687,6 +1638,7 @@ int* CanonicalForm(Number* num) {
 //    free(temp);
     free(modulo);
     free(divisor);
+    debug("c end");
     return result;
 }
 
@@ -1736,8 +1688,12 @@ Number* Log(Number* num) {
             Number *canon_power = setNewNumber();
             Number *canon_member = setNewNumber();
 
+
+            debug("3");
             int *canonical = CanonicalForm(num);
+            debug("4");
             for (int i = 0; i < 12; i = i + 2) {
+                debug("for %d", i);
                 canon_member = setNumberFromInt(canonical[i]);
                 canon_power = setNumberFromInt(canonical[i + 1]);
                 
@@ -1770,6 +1726,7 @@ Number* Log(Number* num) {
             }
         }
     } else {
+        debug("else");
         Number *temp = setNewNumber();
         Number *ten = setNumberFromInt(10);
         Number* semi_res = setNewNumber();
@@ -1779,7 +1736,10 @@ Number* Log(Number* num) {
             multiplyEquals(temp, ten);
             times++;
         }
+        debug("1");
+        printEntry(temp);
         semi_res = Log(temp);
+        debug("2");
         temp = Log(setNumberFromInt(10*times));
         minusEquals(semi_res, temp);
         free(ten);

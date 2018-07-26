@@ -41,18 +41,25 @@ void saveNumber(Number* number) {
 
 void printEntry(Number* number) {
 
+        debug("p11");
+        debug("%d", number->negative);
+        debug("p22");
         if (number->negative) {
+            debug("p1.1");
             printf("-");
         }
 
+        debug("p2");
         for (int i = number->digits_whole - 1; i >= 0; i--) {
             printf("%d", number->whole_part[i]);
         }
         printf(".");
+        debug("p3");
 
         for (int i = 0; i < number->digits_decimal; i++) {
             printf("%d", number->decimal_part[i]);
         }
+        debug("p4");
         printf("\n");
 }
 
@@ -696,6 +703,7 @@ void subtract(Number* res, Number* num1, Number* num2) {
     // if first is greater or equal, 
     // subtract second number from the first
     if (rs == 1) {
+        debug("neg = 0");
         negative = 0;
 
         assign(first, num1);
@@ -704,6 +712,7 @@ void subtract(Number* res, Number* num1, Number* num2) {
     // if first is less than second,
     // subtract first number from the second
     } else if (rs == 2) {
+        debug("neg = 1");
         negative = 1;
 
         assign(first, num2);
@@ -712,6 +721,7 @@ void subtract(Number* res, Number* num1, Number* num2) {
     // else if numbers are equal, return zero 
     // (zeroth Number struct)
     } else if (rs == 3) {
+        debug("rs == 3");
         free(first);
         free(second);
         // TODO add zerofy fn
@@ -856,6 +866,7 @@ void multiply(Number* res, Number* num1, Number* num2) {
     // the end of the number, or multiply it by 10^n, where n is the number of 
     // decimal digits (digits after the dot).
     Number* n2 = (Number*) calloc(1, sizeof(Number));
+    debug("1");
 
     for (int i = num2->digits_decimal - 1, j = 0; i >= 0; i--, j++) {
         n2->whole_part[j] = num2->decimal_part[i];
@@ -912,15 +923,26 @@ void multiply(Number* res, Number* num1, Number* num2) {
 
     int result = 0;
     carry = 0;
+    debug("2");
 
 
     // create new temp number which can hold 1000 digits as a whole part
     TempNumber* temp = (TempNumber*) calloc(1, sizeof(TempNumber));
     temp->digits_whole = 0;
 
+    debug("3");
     // add all partial products together
+    
+    debug("3.2");
+    debug("%d", res->negative);
+    debug("4");
+    printEntry(res);
+    debug("5");
+
     for (int j = 0; j < res->digits_whole; j++) {
+        debug("for %d", j);
         for (int i = 0; i < n2->digits_whole; i++) {
+            debug("for2 %d", i);
             result += a[i][j];
         }
 
@@ -932,6 +954,7 @@ void multiply(Number* res, Number* num1, Number* num2) {
         result = 0;
     }
 
+    debug("6");
 
     // add decimal part and whole part from the temp number to the resulting number (res)
     int whole_numbers = temp->digits_whole - decimal_numbers;
@@ -971,6 +994,7 @@ void multiply(Number* res, Number* num1, Number* num2) {
         }
 
     }
+    debug("4");
 
     // TODO readd free statements
     free(n1);
@@ -1189,8 +1213,19 @@ void multiplyByInt(Number* res, Number* num1, int integer) {
         num2->whole_part[num2->digits_whole-1] = integer % 10;
         integer /= 10;
     }
+    fixNumber(num2);
 
+    debug("bf entries");
+    printEntry(res);
+    printEntry(num1);
+    printEntry(num2);
+
+    debug("bf multiply");
+    debug("%d", res->negative);
+    debug("%d", num1->negative);
+    debug("%d", num2->negative);
     multiply(res, num1, num2);
+    debug("after multipy");
     free(num2);
 }
 // // utility functions

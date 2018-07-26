@@ -17,24 +17,12 @@
 
 int main() {
 
-//    printf("[Testing...]\n");
+    //printf("[Testing...]\n");
 
     Number *num1 = setNumberFromChar((char *) "81234812384091238.8901234");
     Number *num2 = setNumberFromChar((char *) "-12380441238423.82431432");
 
     Number *res = setNewNumber();
-
-    num1 = setNumberFromChar((char *) "27182818285.0");
-    num2 = setNumberFromChar((char *) "13.0");
-    divideNumbers(res, num1, num2);
-    assert(strcmp(numToChar(res), "2090986022.0") == 0 && "divideNumbers test01 failed");
-    exit(1);
-
-
-    res = modulus(setNumberFromChar((char *) "27182818285.0"), setNumberFromChar((char *) "13.0"));
-    assert(strcmp(numToChar(res), "12.0") == 0 && "modulus test01 failed");
-    exit(1);
-
 
     // FIXME does not pass
     res = setNumberFromChar((char *) "2.7182818285");

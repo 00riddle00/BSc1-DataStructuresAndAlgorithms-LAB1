@@ -25,10 +25,14 @@ int main() {
     Number *res = setNewNumber();
 
     // FIXME does not pass
-    res = setNumberFromChar((char *) "2.7182818285");
+//    res = setNumberFromChar((char *) "2.7182818285");
+//    res = setNumberFromChar((char *) "27182818285.0");
+    res = setNumberFromChar((char *) "271.0");
     res = Log(res);
-    setPrecision(res, -99);
+//    setPrecision(res, -99);
+    debug("RES");
     printEntry(res);
+    exit(1);
     assert(strcmp(numToChar(res), "1.000000000015066415928851892925238435963141587542804820418867079787116896581421424933322038112898450") == 0 && "Log test12 failed");
     printf("...Log test12 passed\n");
     exit(1);

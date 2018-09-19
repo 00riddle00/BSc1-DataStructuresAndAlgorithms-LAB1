@@ -923,26 +923,26 @@ void multiply(Number* res, Number* num1, Number* num2) {
 
     int result = 0;
     carry = 0;
-    debug("2");
+//    debug("2");
 
 
     // create new temp number which can hold 1000 digits as a whole part
     TempNumber* temp = (TempNumber*) calloc(1, sizeof(TempNumber));
     temp->digits_whole = 0;
 
-    debug("3");
+//    debug("3");
     // add all partial products together
     
-    debug("3.2");
-    debug("%d", res->negative);
-    debug("4");
-    printEntry(res);
-    debug("5");
+//    debug("3.2");
+//    debug("%d", res->negative);
+//    debug("4");
+//    printEntry(res);
+//    debug("5");
 
     for (int j = 0; j < res->digits_whole; j++) {
-        debug("for %d", j);
+//        debug("for %d", j);
         for (int i = 0; i < n2->digits_whole; i++) {
-            debug("for2 %d", i);
+//            debug("for2 %d", i);
             result += a[i][j];
         }
 
@@ -954,7 +954,7 @@ void multiply(Number* res, Number* num1, Number* num2) {
         result = 0;
     }
 
-    debug("6");
+//    debug("6");
 
     // add decimal part and whole part from the temp number to the resulting number (res)
     int whole_numbers = temp->digits_whole - decimal_numbers;
@@ -1786,15 +1786,15 @@ Number* Log(Number* num) {
                 multiplyEquals(canon_power, getLog(canonical[i]));
                 plusEquals(result, canon_power);
             }
-            printEntry(canon);
+//            printEntry(canon);
 
             free(temp);
             free(canon_power);
 
-            printEntry(result);
+//            printEntry(result);
 
             divide(remaining_number, num, canon);
-            printEntry(remaining_number);
+//            printEntry(remaining_number);
 
             if (compareNotEqual(remaining_number, setNumberFromChar(ONE))) {
                 plusEquals(result, Log(remaining_number));
@@ -1846,7 +1846,7 @@ Number* Log(Number* num) {
     int count = 0;
 
     while (count < 400) {
-//        debug("Log: %d", count);
+        debug("Log: %d", count);
         multiplyEquals(z, step);
         divideNumbers(y, one, powe);
         multiplyEquals(y, z);

@@ -27,7 +27,7 @@ int main() {
     // FIXME does not pass
 //    res = setNumberFromChar((char *) "2.7182818285");
 //    res = setNumberFromChar((char *) "27182818285.0");
-    res = setNumberFromChar((char *) "271.0");
+    res = setNumberFromChar((char *) "2718.0");
     res = Log(res);
 //    setPrecision(res, -99);
     debug("RES");

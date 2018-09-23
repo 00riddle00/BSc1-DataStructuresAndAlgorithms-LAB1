@@ -41,25 +41,25 @@ void saveNumber(Number* number) {
 
 void printEntry(Number* number) {
 
-        debug("p11");
-        debug("%d", number->negative);
-        debug("p22");
+//        debug("p11");
+//        debug("%d", number->negative);
+//        debug("p22");
         if (number->negative) {
-            debug("p1.1");
+//            debug("p1.1");
             printf("-");
         }
 
-        debug("p2");
+//        debug("p2");
         for (int i = number->digits_whole - 1; i >= 0; i--) {
             printf("%d", number->whole_part[i]);
         }
         printf(".");
-        debug("p3");
+//        debug("p3");
 
         for (int i = 0; i < number->digits_decimal; i++) {
             printf("%d", number->decimal_part[i]);
         }
-        debug("p4");
+//        debug("p4");
         printf("\n");
 }
 
@@ -703,7 +703,7 @@ void subtract(Number* res, Number* num1, Number* num2) {
     // if first is greater or equal, 
     // subtract second number from the first
     if (rs == 1) {
-        debug("neg = 0");
+//        debug("neg = 0");
         negative = 0;
 
         assign(first, num1);
@@ -712,7 +712,7 @@ void subtract(Number* res, Number* num1, Number* num2) {
     // if first is less than second,
     // subtract first number from the second
     } else if (rs == 2) {
-        debug("neg = 1");
+//        debug("neg = 1");
         negative = 1;
 
         assign(first, num2);
@@ -721,7 +721,7 @@ void subtract(Number* res, Number* num1, Number* num2) {
     // else if numbers are equal, return zero 
     // (zeroth Number struct)
     } else if (rs == 3) {
-        debug("rs == 3");
+//        debug("rs == 3");
         free(first);
         free(second);
         // TODO add zerofy fn
@@ -866,7 +866,7 @@ void multiply(Number* res, Number* num1, Number* num2) {
     // the end of the number, or multiply it by 10^n, where n is the number of 
     // decimal digits (digits after the dot).
     Number* n2 = (Number*) calloc(1, sizeof(Number));
-    debug("1");
+//    debug("1");
 
     for (int i = num2->digits_decimal - 1, j = 0; i >= 0; i--, j++) {
         n2->whole_part[j] = num2->decimal_part[i];
@@ -994,7 +994,7 @@ void multiply(Number* res, Number* num1, Number* num2) {
         }
 
     }
-    debug("4");
+//    debug("4");
 
     // TODO readd free statements
     free(n1);
@@ -1215,17 +1215,17 @@ void multiplyByInt(Number* res, Number* num1, int integer) {
     }
     fixNumber(num2);
 
-    debug("bf entries");
-    printEntry(res);
-    printEntry(num1);
-    printEntry(num2);
+//    debug("bf entries");
+//    printEntry(res);
+//    printEntry(num1);
+//    printEntry(num2);
 
-    debug("bf multiply");
-    debug("%d", res->negative);
-    debug("%d", num1->negative);
-    debug("%d", num2->negative);
+//    debug("bf multiply");
+//    debug("%d", res->negative);
+//    debug("%d", num1->negative);
+//    debug("%d", num2->negative);
     multiply(res, num1, num2);
-    debug("after multipy");
+//    debug("after multipy");
     free(num2);
 }
 // // utility functions
